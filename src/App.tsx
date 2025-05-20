@@ -4,7 +4,6 @@ import AuthPage from "../src/pages/AuthPage.tsx";
 import authService from '../src/services/auth.service.ts';
 import type {JSX} from "react";
 
-// Protected route component to prevent unauthorized access
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     if (!authService.isAuthenticated()) {
         return <Navigate to="/auth" replace />;
@@ -15,8 +14,8 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 function App() {
     return (
         <Router>
-            <div className="flex flex-col min-h-screen">
-                <main className="flex-grow container mx-auto px-4 py-8">
+            <div>
+                <main>
                     <Routes>
                         {/* Protected Home Route */}
                         <Route

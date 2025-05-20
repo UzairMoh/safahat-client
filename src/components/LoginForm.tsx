@@ -1,8 +1,9 @@
 ﻿import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import type {LoginRequest} from '../types';
-import authService from "../services/auth.service.ts"
+import { Mail, Lock, ArrowRight, Loader } from 'lucide-react';
+import type { LoginRequest } from '../types';
+import authService from "../services/auth.service";
 
 interface LoginFormProps {
     onSuccess: () => void;
@@ -22,8 +23,9 @@ const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
         try {
             await authService.login(data);
             onSuccess();
-        } catch (err: any) {
-            setError(err.response?.data?.error || 'Failed to login. Please try again.');
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { error?: string } } };
+            setError(error.response?.data?.error || 'Failed to login. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -34,15 +36,13 @@ const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="w-full max-w-md"
+            className="w-full"
         >
-            <h2 className="text-3xl font-bold mb-6 text-center">Sign In</h2>
-
             {error && (
                 <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
-                    className="bg-red-50 border border-red-200 text-red-800 rounded-md p-4 mb-6"
+                    className="bg-red-50 border border-red-200 text-red-700 rounded-md p-4 mb-6"
                 >
                     {error}
                 </motion.div>
@@ -50,68 +50,121 @@ const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="email" className="block text-sm font-medium text-[#938384] mb-1">
                         Email
                     </label>
-                    <input
-                        id="email"
-                        type="email"
-                        {...register('email', {
-                            required: 'Email is required',
-                            pattern: {
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: 'Invalid email address'
-                            }
-                        })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                    />
+                    <div className="relative">
+                        <input
+                            id="email"
+                            type="email"
+                            {...register('email', {
+                                required: 'Email is required',
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                    message: 'Invalid email address'
+                                }
+                            })}
+                            className="w-full px-4 py-3 pl-10 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] bg-white/90 placeholder-[#c9d5ef]"
+                            placeholder="your@email.com"
+                        />
+                        <div className="absolute top-0 left-0 w-10 h-full flex items-center justify-center text-[#938384]">
+                            <Mail size={20} />
+                        </div>
+                    </div>
                     {errors.email && (
                         <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
                     )}
                 </div>
 
                 <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="password" className="block text-sm font-medium text-[#938384] mb-1">
                         Password
                     </label>
-                    <input
-                        id="password"
-                        type="password"
-                        {...register('password', { required: 'Password is required' })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                    />
+                    <div className="relative">
+                        <input
+                            id="password"
+                            type="password"
+                            {...register('password', { required: 'Password is required' })}
+                            className="w-full px-4 py-3 pl-10 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] bg-white/90 placeholder-[#c9d5ef]"
+                            placeholder="••••••••"
+                        />
+                        <div className="absolute top-0 left-0 w-10 h-full flex items-center justify-center text-[#938384]">
+                            <Lock size={20} />
+                        </div>
+                    </div>
                     {errors.password && (
                         <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
                     )}
                 </div>
 
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                        <input
+                            id="remember-me"
+                            name="remember-me"
+                            type="checkbox"
+                            className="h-4 w-4 accent-[#4a5b91] focus:ring-[#e7b9ac] border-[#c9d5ef] rounded"
+                        />
+                        <label htmlFor="remember-me" className="ml-2 block text-sm text-[#938384]">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <div className="text-sm">
+                        <a href="#" className="font-medium text-[#e7b9ac] hover:text-[#938384] transition-colors">
+                            Forgot password?
+                        </a>
+                    </div>
+                </div>
+
                 <motion.button
                     type="submit"
                     disabled={isLoading}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full py-2 px-4 bg-black text-white rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-colors"
+                    whileHover={{
+                        backgroundColor: '#5b6ca6',
+                        transition: { duration: 0.18 }
+                    }}
+                    whileTap={{
+                        scale: 0.97,
+                        transition: { duration: 0.1 }
+                    }}
+                    transition={{
+                        duration: 0.3,
+                        ease: "easeOut"
+                    }}
+                    className="w-full py-3 px-4 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] shadow-md bg-[#4a5b91]"
                 >
-                    {isLoading ? (
-                        <svg className="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                    ) : (
-                        'Sign In'
-                    )}
+                    <div className="relative flex items-center justify-center">
+                        {isLoading ? (
+                            <Loader className="animate-spin h-5 w-5" />
+                        ) : (
+                            <>
+                                <span>Sign In</span>
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                            </>
+                        )}
+                    </div>
                 </motion.button>
             </form>
 
-            <div className="mt-6 text-center">
-                <p className="text-sm text-gray-600">
+            <div className="mt-8 text-center">
+                <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-[#c9d5ef]"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-white text-[#938384]">Or</span>
+                    </div>
+                </div>
+
+                <p className="mt-4 text-sm text-[#938384]">
                     Don't have an account?{' '}
                     <motion.button
                         onClick={switchToRegister}
-                        whileHover={{ scale: 1.05 }}
-                        className="text-black font-medium hover:underline focus:outline-none"
+                        whileHover={{ color: '#d99c8a' }}
+                        className="text-[#e7b9ac] font-medium transition-colors focus:outline-none"
                     >
-                        Sign Up
+                        Create Account
                     </motion.button>
                 </p>
             </div>
