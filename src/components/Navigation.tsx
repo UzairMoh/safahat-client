@@ -63,7 +63,7 @@ const Navigation = ({ username }: NavigationProps) => {
                 <div className="flex h-16">
                     {/* Left Side: Logo */}
                     <div className="flex-shrink-0 flex items-center w-1/4">
-                        <h1 className="text-2xl font-medium text-[#4a5b91] arabic-title">صفحات</h1>
+                        <h1 className="text-2xl font-medium text-[#4a5b91] tracking-tighter arabic-title">صفحات</h1>
                         <div className="h-6 w-0.5 bg-[#e7b9ac] mx-3"></div>
                         <span className="text-[#938384] tracking-wide">Inspired Storytelling</span>
                     </div>

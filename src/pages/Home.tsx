@@ -1,14 +1,14 @@
 ﻿import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { type User, UserRole } from '../types';
+import { PostResponse } from '../api/Client';
 import authService from '../services/auth.service';
-import userService from '../services/user.service';
+import postService from '../services/post.service';
 import { jwtDecode } from 'jwt-decode';
 import Navigation from '../components/Navigation';
 
 const Home = () => {
-    const [user, setUser] = useState<User | null>(null);
+    const [posts, setPosts] = useState<PostResponse[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -27,14 +27,14 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchPosts = async () => {
             try {
                 if (!authService.isAuthenticated()) {
                     navigate('/auth');
                     return;
                 }
 
-                // Get user ID from token
+                // Get user ID from token to fetch their posts
                 const userId = getUserIdFromToken();
 
                 if (!userId) {
@@ -42,15 +42,17 @@ const Home = () => {
                     return;
                 }
 
-                console.log('Fetching user with ID:', userId);
+                console.log('Fetching posts for author ID:', userId);
 
-                // Use userService instead of authService
-                const userData = await userService.getUserById(userId);
-                console.log('User data received:', userData);
-                setUser(userData);
+                // Use getPostsByAuthor instead of getFeaturedPosts
+                const postsData = await postService.getPostsByAuthor(userId);
+                console.log('Raw posts data received:', postsData);
+
+                // Handle null or undefined posts data
+                setPosts(Array.isArray(postsData) ? postsData : []);
             } catch (error: any) {
-                console.error('Failed to fetch user profile:', error);
-                setError(error?.message || 'Failed to load profile');
+                console.error('Failed to fetch posts:', error);
+                setError(error?.message || 'Failed to load posts');
 
                 // Only logout if it's an auth error (401)
                 if (error?.response?.status === 401) {
@@ -62,7 +64,7 @@ const Home = () => {
             }
         };
 
-        fetchUser();
+        fetchPosts();
     }, [navigate]);
 
     const handleLogout = () => {
@@ -87,7 +89,7 @@ const Home = () => {
         return (
             <div className="min-h-screen bg-gradient-to-br from-[#c9d5ef] to-[#f4e1c3] flex items-center justify-center relative">
                 <div className="bg-white/90 backdrop-blur-lg border border-[#c9d5ef] shadow-xl rounded-xl max-w-md w-full p-8 z-10">
-                    <h2 className="text-2xl font-medium text-[#4a5b91] mb-4">Error Loading Profile</h2>
+                    <h2 className="text-2xl font-medium text-[#4a5b91] mb-4">Error Loading Posts</h2>
                     <div className="w-24 h-1 bg-[#e7b9ac] rounded-full mb-4"></div>
                     <p className="mb-6 text-[#938384]">{error}</p>
                     <div className="flex space-x-4">
@@ -108,36 +110,14 @@ const Home = () => {
                             Logout
                         </motion.button>
                     </div>
-                    <div className="mt-6 p-4 bg-[#f6f8fd] rounded-lg text-sm border border-[#c9d5ef]">
-                        <p className="font-medium text-[#4a5b91]">Debug Info:</p>
-                        <p className="text-[#938384]">Token exists: {localStorage.getItem('token') ? 'Yes' : 'No'}</p>
-                    </div>
                 </div>
             </div>
         );
     }
 
-    if (!user) {
-        return null;
-    }
-
-    const getRoleName = (role: number) => {
-        switch (role) {
-            case UserRole.Reader:
-                return 'Reader';
-            case UserRole.Author:
-                return 'Author';
-            case UserRole.Admin:
-                return 'Administrator';
-            default:
-                return 'Unknown';
-        }
-    };
-
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#c9d5ef] to-[#f4e1c3] relative overflow-hidden">
-
-            <Navigation username={user.username} />
+            <Navigation username={posts[0]?.author?.username || 'User'} />
 
             <main className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <motion.div
@@ -146,100 +126,121 @@ const Home = () => {
                     transition={{ duration: 0.5 }}
                     className="text-center mb-10"
                 >
-                    <h1 className="text-4xl font-medium text-[#4a5b91] tracking-tight mb-4 arabic-title">
-                        ! أهلًا بك في صفحات
+                    <h1 className="text-4xl font-medium text-[#4a5b91] tracking-tight mb-4">
+                        Your Stories
                     </h1>
                     <div className="w-32 h-1 bg-[#e7b9ac] mx-auto rounded-full mb-4"></div>
                     <p className="max-w-xl mx-auto text-lg text-[#938384]">
-                        Welcome to your storytelling journey
+                        Manage and explore all your created content
                     </p>
                 </motion.div>
 
-                <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="bg-white/90 backdrop-blur-lg border border-[#c9d5ef] shadow-xl rounded-xl overflow-hidden mb-8"
-                >
-                    <div className="px-8 py-8">
-                        <div className="flex items-center justify-between mb-6">
-                            <div>
-                                <h2 className="text-2xl font-medium text-[#4a5b91]">User Profile</h2>
-                                <div className="w-16 h-0.5 bg-[#e7b9ac] mt-2"></div>
-                            </div>
-                            <span className="px-4 py-1.5 bg-[#f6f8fd] text-[#4a5b91] border border-[#c9d5ef] rounded-full text-sm font-medium">
-                                {getRoleName(user.role)}
-                            </span>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <p className="text-sm font-medium text-[#938384]">Username</p>
-                                <p className="mt-1 text-lg text-[#4a5b91]">{user.username}</p>
-                            </div>
-
-                            <div>
-                                <p className="text-sm font-medium text-[#938384]">Email</p>
-                                <p className="mt-1 text-lg text-[#4a5b91]">{user.email}</p>
-                            </div>
-
-                            <div>
-                                <p className="text-sm font-medium text-[#938384]">Full Name</p>
-                                <p className="mt-1 text-lg text-[#4a5b91]">{user.fullName}</p>
-                            </div>
-
-                            <div>
-                                <p className="text-sm font-medium text-[#938384]">Account Created</p>
-                                <p className="mt-1 text-lg text-[#4a5b91]">{new Date(user.createdAt).toLocaleDateString()}</p>
-                            </div>
-
-                            {user.bio && (
-                                <div className="col-span-2">
-                                    <p className="text-sm font-medium text-[#938384]">Bio</p>
-                                    <p className="mt-1 text-[#4a5b91]">{user.bio}</p>
-                                </div>
-                            )}
-
-                            {user.postCount !== undefined && user.commentCount !== undefined && (
-                                <div className="col-span-2 flex space-x-4 mt-2">
-                                    <div className="bg-[#f6f8fd] border border-[#c9d5ef] px-6 py-4 rounded-lg flex-1">
-                                        <p className="font-bold text-2xl text-[#4a5b91]">{user.postCount}</p>
-                                        <p className="text-sm text-[#938384]">Posts</p>
-                                    </div>
-                                    <div className="bg-[#f6f8fd] border border-[#c9d5ef] px-6 py-4 rounded-lg flex-1">
-                                        <p className="font-bold text-2xl text-[#4a5b91]">{user.commentCount}</p>
-                                        <p className="text-sm text-[#938384]">Comments</p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="mt-6 bg-white/90 backdrop-blur-lg border border-[#c9d5ef] p-6 rounded-xl shadow-lg"
-                >
-                    <div className="flex justify-between items-center mb-4">
-                        <div>
-                            <h3 className="font-medium text-[#4a5b91]">Debug Information</h3>
-                            <div className="w-12 h-0.5 bg-[#e7b9ac] mt-1"></div>
-                        </div>
-                        <motion.button
+                {posts.length === 0 ? (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="bg-white/90 backdrop-blur-lg border border-[#c9d5ef] shadow-xl rounded-xl p-8 text-center"
+                    >
+                        <h3 className="text-xl font-medium text-[#4a5b91] mb-2">No Posts Yet</h3>
+                        <p className="text-[#938384] mb-6">Start writing your first story today!</p>
+                        <motion.a
                             whileHover={{ backgroundColor: '#5b6ca6' }}
                             whileTap={{ scale: 0.97 }}
-                            onClick={handleLogout}
-                            className="px-4 py-2 bg-[#4a5b91] text-white text-sm rounded-lg"
+                            href="/posts/create"
+                            className="inline-block px-4 py-2 bg-[#4a5b91] text-white rounded-lg transition-colors"
                         >
-                            Sign Out
-                        </motion.button>
+                            Create New Post
+                        </motion.a>
+                    </motion.div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {posts.map((post, index) => (
+                            <motion.div
+                                key={post.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 + index * 0.1 }}
+                                className="bg-white/90 backdrop-blur-lg border border-[#c9d5ef] shadow-lg rounded-xl overflow-hidden"
+                            >
+                                {post.featuredImageUrl && (
+                                    <img
+                                        src={post.featuredImageUrl}
+                                        alt={post.title}
+                                        className="w-full h-48 object-cover"
+                                    />
+                                )}
+                                <div className="p-6">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h2 className="text-xl font-medium text-[#4a5b91] hover:text-[#5b6ca6] transition-colors">
+                                                <a href={`/posts/${post.slug}`}>{post.title}</a>
+                                            </h2>
+                                            <div className="w-16 h-0.5 bg-[#e7b9ac] mt-2"></div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            {post.isFeatured && (
+                                                <span className="bg-[#f9e8e0] text-[#d28e7f] text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                                    Featured
+                                                </span>
+                                            )}
+                                            <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
+                                                post.status === 0 ? 'bg-[#e0e7f9] text-[#4a5b91]' :
+                                                    post.status === 1 ? 'bg-[#e0f9e5] text-[#3d995e]' :
+                                                        'bg-[#f9e0e0] text-[#995e3d]'
+                                            }`}>
+                                                {post.status === 0 ? 'Draft' :
+                                                    post.status === 1 ? 'Published' :
+                                                        'Archived'}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-[#938384] mb-4 line-clamp-3">{post.summary}</p>
+
+                                    <div className="flex flex-wrap gap-2 mt-4">
+                                        {post.categories?.map(category => (
+                                            <span key={category.id} className="px-2 py-1 bg-[#f6f8fd] text-[#4a5b91] text-xs rounded-md border border-[#c9d5ef]">
+                                                {category.name}
+                                            </span>
+                                        ))}
+                                        {post.tags?.map(tag => (
+                                            <span key={tag.id} className="px-2 py-1 bg-[#f9f9f9] text-[#938384] text-xs rounded-md border border-[#eaeaea]">
+                                                #{tag.name}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="px-6 py-3 bg-[#f6f8fd] border-t border-[#c9d5ef] flex justify-between items-center">
+                                    <span className="text-xs text-[#938384]">
+                                        {post.publishedAt
+                                            ? `Published: ${new Date(post.publishedAt ?? new Date()).toLocaleDateString()}`
+                                            : `Created: ${new Date(post.createdAt ?? new Date()).toLocaleDateString()}`
+                                        }
+                                    </span>
+                                    <div className="flex gap-2">
+                                        <motion.a
+                                            whileHover={{ backgroundColor: '#f0f4fc' }}
+                                            whileTap={{ scale: 0.97 }}
+                                            href={`/posts/edit/${post.id}`}
+                                            className="px-3 py-1 bg-white border border-[#c9d5ef] text-[#4a5b91] text-xs rounded-lg"
+                                        >
+                                            Edit
+                                        </motion.a>
+                                        <motion.a
+                                            whileHover={{ backgroundColor: '#5b6ca6' }}
+                                            whileTap={{ scale: 0.97 }}
+                                            href={`/posts/${post.slug}`}
+                                            className="px-3 py-1 bg-[#4a5b91] text-white text-xs rounded-lg"
+                                        >
+                                            View
+                                        </motion.a>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
-                    <pre className="bg-[#f6f8fd] border border-[#c9d5ef] p-4 rounded-lg text-xs overflow-auto text-[#938384]">
-                        {JSON.stringify(user, null, 2)}
-                    </pre>
-                </motion.div>
+                )}
             </main>
         </div>
     );

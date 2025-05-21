@@ -1,46 +1,41 @@
-﻿import type {AxiosResponse} from 'axios';
-import api from './api';
-import type {
+﻿import apiClient from '../api/apiClient';
+import {
     LoginRequest,
     RegisterRequest,
-    AuthResponse,
-    User,
     UpdateUserProfileRequest,
-    ChangePasswordRequest
-} from '../types';
+    ChangePasswordRequest,
+    AuthResponse,
+    UserResponse
+} from '../api/Client';
 
 const authService = {
     login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-        const response: AxiosResponse<AuthResponse> = await api.post('/auth/login', credentials);
-        // Store token in localStorage
-        localStorage.setItem('token', response.data.token);
-        return response.data;
+        const response = await apiClient.login(credentials);
+        localStorage.setItem('token', response.token!);
+        return response;
     },
 
     register: async (userData: RegisterRequest): Promise<AuthResponse> => {
-        const response: AxiosResponse<AuthResponse> = await api.post('/auth/register', userData);
-        // Store token in localStorage
-        localStorage.setItem('token', response.data.token);
-        return response.data;
+        const response = await apiClient.register(userData);
+        localStorage.setItem('token', response.token!);
+        return response;
     },
 
     logout: (): void => {
         localStorage.removeItem('token');
     },
 
-    getProfile: async (): Promise<User> => {
-        const response: AxiosResponse<{ data: User }> = await api.get('/auth/profile');
-        return response.data.data;
+    getProfile: async (): Promise<UserResponse> => {
+        return await apiClient.profileGET();
     },
 
-    updateProfile: async (profileData: UpdateUserProfileRequest): Promise<User> => {
-        const response: AxiosResponse<{ data: User }> = await api.put('/auth/profile', profileData);
-        return response.data.data;
+    updateProfile: async (profileData: UpdateUserProfileRequest): Promise<UserResponse> => {
+        return await apiClient.profilePUT(profileData);
     },
 
     changePassword: async (passwordData: ChangePasswordRequest): Promise<boolean> => {
-        const response: AxiosResponse<{ success: boolean }> = await api.post('/auth/change-password', passwordData);
-        return response.data.success;
+        await apiClient.changePassword(passwordData);
+        return true;
     },
 
     isAuthenticated: (): boolean => {

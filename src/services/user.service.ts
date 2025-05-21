@@ -1,46 +1,39 @@
-﻿import type {AxiosResponse} from 'axios';
-import api from './api';
-import type {
-    User,
+﻿import apiClient from '../api/apiClient';
+import {
+    UserListItemResponse,
+    UserDetailResponse,
     UpdateUserRoleRequest,
     UpdateUserStatusRequest,
     UserStatisticsResponse
-} from '../types';
+} from '../api/Client';
 
 const userService = {
-    getAllUsers: async (): Promise<User[]> => {
-        const response: AxiosResponse<{ data: User[] }> = await api.get('/users');
-        return response.data.data;
+    getAllUsers: async (): Promise<UserListItemResponse[]> => {
+        return await apiClient.usersAll();
     },
 
-    getUserById: async (id: number): Promise<User> => {
-        const response: AxiosResponse<{ data: User }> = await api.get(`/users/${id}`);
-        return response.data.data;
+    getUserById: async (id: number): Promise<UserDetailResponse> => {
+        return await apiClient.usersGET(id);
     },
 
-    getUserByUsername: async (username: string): Promise<User> => {
-        const response: AxiosResponse<{ data: User }> = await api.get(`/users/username/${username}`);
-        return response.data.data;
+    getUserByUsername: async (username: string): Promise<UserDetailResponse> => {
+        return await apiClient.username(username);
     },
 
-    updateUserRole: async (id: number, roleRequest: UpdateUserRoleRequest): Promise<User> => {
-        const response: AxiosResponse<{ data: User }> = await api.put(`/users/${id}/role`, roleRequest);
-        return response.data.data;
+    updateUserRole: async (id: number, role: UpdateUserRoleRequest): Promise<UserDetailResponse> => {
+        return await apiClient.role(id, role);
     },
 
-    updateUserStatus: async (id: number, statusRequest: UpdateUserStatusRequest): Promise<User> => {
-        const response: AxiosResponse<{ data: User }> = await api.put(`/users/${id}/status`, statusRequest);
-        return response.data.data;
+    updateUserStatus: async (id: number, status: UpdateUserStatusRequest): Promise<UserDetailResponse> => {
+        return await apiClient.status(id, status);
     },
 
-    deleteUser: async (id: number): Promise<boolean> => {
-        const response: AxiosResponse<{ deleted: boolean }> = await api.delete(`/users/${id}`);
-        return response.data.deleted;
+    deleteUser: async (id: number): Promise<void> => {
+        return await apiClient.usersDELETE(id);
     },
 
     getUserStatistics: async (id: number): Promise<UserStatisticsResponse> => {
-        const response: AxiosResponse<{ data: UserStatisticsResponse }> = await api.get(`/users/${id}/statistics`);
-        return response.data.data;
+        return await apiClient.statistics(id);
     }
 };
 
