@@ -46,8 +46,6 @@ const RegisterForm = ({ onSuccess, switchToLogin }: RegisterFormProps) => {
             exit={{ opacity: 0, y: -20 }}
             className="w-full"
         >
-            <h2 className="text-3xl font-semibold text-center text-[#4a5b91] mb-6">Create Account</h2>
-
             {error && (
                 <motion.div
                     initial={{ opacity: 0, height: 0 }}
