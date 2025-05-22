@@ -1,8 +1,8 @@
 ﻿import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import type {RegisterRequest} from '../types';
-import authService from '../services/auth.service.ts';
+import type { RegisterRequest } from '../../api/Client';
+import authService from '../../services/auth.service.ts';
 
 interface RegisterFormProps {
     onSuccess: () => void;
@@ -13,24 +13,15 @@ const RegisterForm = ({ onSuccess, switchToLogin }: RegisterFormProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const { register, handleSubmit, formState: { errors }, watch } = useForm<RegisterRequest & { confirmPassword: string }>();
+    const { register, handleSubmit, formState: { errors }, watch } = useForm<RegisterRequest>();
     const password = watch('password', '');
 
-    const onSubmit = async (data: RegisterRequest & { confirmPassword: string }) => {
+    const onSubmit = async (data: RegisterRequest) => {
         setIsLoading(true);
         setError(null);
 
         try {
-            const registerData: RegisterRequest = {
-                username: data.username,
-                email: data.email,
-                password: data.password,
-                confirmPassword: data.confirmPassword,
-                firstName: data.firstName,
-                lastName: data.lastName,
-            };
-
-            await authService.register(registerData);
+            await authService.register(data);
             onSuccess();
         } catch (err: any) {
             setError(err.response?.data?.error || 'Failed to register. Please try again.');

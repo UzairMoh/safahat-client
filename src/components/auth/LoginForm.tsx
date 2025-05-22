@@ -2,8 +2,8 @@
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader } from 'lucide-react';
-import type { LoginRequest } from '../types';
-import authService from "../services/auth.service";
+import type { LoginRequest } from '../../api/Client';
+import authService from "../../services/auth.service";
 
 interface LoginFormProps {
     onSuccess: () => void;

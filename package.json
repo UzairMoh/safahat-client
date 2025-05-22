@@ -11,6 +11,7 @@
     "nswag": "nswag run nswag.json"
   },
   "dependencies": {
+    "@react-spring/web": "^10.0.1",
     "@tailwindcss/vite": "^4.1.7",
     "axios": "^1.9.0",
     "framer-motion": "^12.12.1",

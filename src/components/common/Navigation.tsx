@@ -2,7 +2,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { User, LogOut, Menu, X, BookOpen, Search, Home as HomeIcon, Info, ChevronDown } from 'lucide-react';
-import authService from '../services/auth.service';
+import authService from '../../services/auth.service';
 
 interface NavigationProps {
     username?: string;
@@ -61,14 +61,12 @@ const Navigation = ({ username }: NavigationProps) => {
         <header className="bg-white/90 backdrop-blur-md border-b border-[#c9d5ef] sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16">
-                    {/* Left Side: Logo */}
                     <div className="flex-shrink-0 flex items-center w-1/4">
                         <h1 className="text-2xl font-medium text-[#4a5b91] tracking-tighter arabic-title">صفحات</h1>
                         <div className="h-6 w-0.5 bg-[#e7b9ac] mx-3"></div>
                         <span className="text-[#938384] tracking-wide">Inspired Storytelling</span>
                     </div>
 
-                    {/* Center: Navigation Links */}
                     <div className="hidden md:flex flex-grow justify-center items-center w-2/4">
                         <nav className="flex space-x-8 items-center">
                             {navItems.map((item) => (
@@ -88,7 +86,6 @@ const Navigation = ({ username }: NavigationProps) => {
                         </nav>
                     </div>
 
-                    {/* Right Side: User Controls */}
                     <div className="hidden md:flex items-center justify-end w-1/4">
                         {username ? (
                             <div className="relative" ref={dropdownRef}>
@@ -147,7 +144,6 @@ const Navigation = ({ username }: NavigationProps) => {
                         )}
                     </div>
 
-                    {/* Mobile Menu Button */}
                     <div className="flex items-center justify-end md:hidden flex-grow">
                         <motion.button
                             whileTap={{ scale: 0.95 }}
@@ -164,78 +160,6 @@ const Navigation = ({ username }: NavigationProps) => {
                     </div>
                 </div>
             </div>
-
-            {/* Mobile Menu */}
-            <motion.div
-                className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: isMenuOpen ? 1 : 0, height: isMenuOpen ? 'auto' : 0 }}
-                transition={{ duration: 0.2 }}
-            >
-                <div className="pt-2 pb-3 space-y-1 border-b border-[#c9d5ef]">
-                    {navItems.map((item) => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`flex items-center pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                                isActive(item.path)
-                                    ? 'border-[#e7b9ac] text-[#4a5b91] bg-[#f6f8fd]'
-                                    : 'border-transparent text-[#938384] hover:text-[#4a5b91] hover:bg-[#f6f8fd] hover:border-[#c9d5ef]'
-                            }`}
-                            onClick={() => setIsMenuOpen(false)}
-                        >
-                            <span className="mr-2">{item.icon}</span>
-                            {item.name}
-                        </Link>
-                    ))}
-                </div>
-
-                {/* Mobile User Controls */}
-                <div className="pt-4 pb-3 border-t border-[#c9d5ef]">
-                    {username ? (
-                        <div className="space-y-1">
-                            <div className="flex items-center px-4 py-2">
-                                <div className="flex-shrink-0">
-                                    <div className="h-10 w-10 rounded-full bg-[#c9d5ef] flex items-center justify-center">
-                                        <User className="h-6 w-6 text-[#4a5b91]" />
-                                    </div>
-                                </div>
-                                <div className="ml-3">
-                                    <div className="text-base font-medium text-[#4a5b91]">{username}</div>
-                                </div>
-                            </div>
-
-                            <Link
-                                to="/profile"
-                                className="block pl-4 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#938384] hover:text-[#4a5b91] hover:bg-[#f6f8fd] hover:border-[#c9d5ef]"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Profile
-                            </Link>
-
-                            <button
-                                onClick={() => {
-                                    setIsMenuOpen(false);
-                                    handleLogout();
-                                }}
-                                className="w-full text-left block pl-4 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#938384] hover:text-[#4a5b91] hover:bg-[#f6f8fd] hover:border-[#c9d5ef]"
-                            >
-                                Log out
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="px-4 py-3">
-                            <Link
-                                to="/auth"
-                                className="block text-center px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white bg-[#4a5b91] hover:bg-[#5b6ca6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91]"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Sign In
-                            </Link>
-                        </div>
-                    )}
-                </div>
-            </motion.div>
         </header>
     );
 };
