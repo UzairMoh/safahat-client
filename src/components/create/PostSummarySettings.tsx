@@ -33,7 +33,7 @@ const PostSummarySettings = ({ control }: PostSummarySettingsProps) => {
                                 field.onChange(e);
                                 setCharCount(e.target.value.length);
                             }}
-                            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm resize-none transition-all ${
+                            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm resize-none transition-all cursor-text ${
                                 focused ? 'border-[#4a5b91]' : 'border-[#c9d5ef]'
                             } ${
                                 charCount > maxChars ? 'border-red-300 focus:ring-red-200' : ''
@@ -42,14 +42,14 @@ const PostSummarySettings = ({ control }: PostSummarySettingsProps) => {
                         />
 
                         <div className="flex justify-between items-center text-xs">
-                            <span className="text-[#938384]">
+                            <span className="text-[#938384] flex-1 min-w-0 truncate">
                                 Help readers understand what your post is about
                             </span>
                             <motion.span
                                 animate={{
                                     color: charCount > maxChars ? '#ef4444' : '#938384'
                                 }}
-                                className="font-medium"
+                                className="font-medium flex-shrink-0 ml-2"
                             >
                                 {charCount}/{maxChars}
                             </motion.span>
@@ -61,7 +61,7 @@ const PostSummarySettings = ({ control }: PostSummarySettingsProps) => {
                                 animate={{ opacity: 1, height: 'auto' }}
                                 className="text-xs text-red-500 flex items-center space-x-1"
                             >
-                                <span>⚠️</span>
+                                <span className="flex-shrink-0">⚠️</span>
                                 <span>Summary is getting quite long. Consider shortening it.</span>
                             </motion.p>
                         )}

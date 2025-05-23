@@ -19,15 +19,14 @@ const PostOptionsSettings = ({ control }: PostOptionsSettingsProps) => {
                     control={control}
                     render={({ field }) => (
                         <motion.label
-                            whileHover={{ x: 2 }}
                             className="flex items-center justify-between p-3 rounded-lg hover:bg-[#f6f8fd] transition-all cursor-pointer group"
                         >
-                            <div className="flex items-center space-x-3">
-                                <div className="flex items-center justify-center w-8 h-8 bg-[#4a5b91]/10 rounded-lg group-hover:bg-[#4a5b91]/20 transition-colors">
+                            <div className="flex items-center space-x-3 flex-1 min-w-0">
+                                <div className="flex items-center justify-center w-8 h-8 bg-[#4a5b91]/10 rounded-lg group-hover:bg-[#4a5b91]/20 transition-colors flex-shrink-0">
                                     <MessageSquare className="w-4 h-4 text-[#4a5b91]" />
                                 </div>
-                                <div>
-                                    <span className="text-sm font-medium text-[#4a5b91] group-hover:text-[#3a4a7a] transition-colors">
+                                <div className="min-w-0 flex-1">
+                                    <span className="text-sm font-medium text-[#4a5b91] group-hover:text-[#3a4a7a] transition-colors block">
                                         Allow Comments
                                     </span>
                                     <p className="text-xs text-[#938384] mt-0.5">
@@ -36,7 +35,7 @@ const PostOptionsSettings = ({ control }: PostOptionsSettingsProps) => {
                                 </div>
                             </div>
 
-                            <div className="relative">
+                            <div className="relative flex-shrink-0 ml-3">
                                 <input
                                     type="checkbox"
                                     checked={field.value}
@@ -53,7 +52,7 @@ const PostOptionsSettings = ({ control }: PostOptionsSettingsProps) => {
                                     <motion.div
                                         animate={{
                                             x: field.value ? 24 : 2,
-                                            backgroundColor: field.value ? '#ffffff' : '#ffffff',
+                                            backgroundColor: '#ffffff',
                                         }}
                                         transition={{ duration: 0.2, ease: "easeInOut" }}
                                         className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm"

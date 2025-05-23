@@ -44,7 +44,7 @@ const FeaturedImageSettings = ({ control, featuredImageUrl }: FeaturedImageSetti
                                     setImageError(false);
                                 }
                             }}
-                            className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm transition-all"
+                            className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm transition-all cursor-text"
                         />
 
                         <AnimatePresence>
@@ -96,7 +96,7 @@ const FeaturedImageSettings = ({ control, featuredImageUrl }: FeaturedImageSetti
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                             onClick={() => field.onChange('')}
-                                            className="absolute top-2 right-2 w-6 h-6 bg-white/90 backdrop-blur-sm border border-[#c9d5ef] rounded-full flex items-center justify-center text-[#938384] hover:text-red-500 hover:border-red-200 transition-colors"
+                                            className="absolute top-2 right-2 w-6 h-6 bg-white/90 backdrop-blur-sm border border-[#c9d5ef] rounded-full flex items-center justify-center text-[#938384] hover:text-red-500 hover:border-red-200 transition-colors cursor-pointer"
                                         >
                                             <X className="w-3 h-3" />
                                         </motion.button>

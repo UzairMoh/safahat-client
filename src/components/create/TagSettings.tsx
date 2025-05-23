@@ -52,7 +52,7 @@ const TagSettings = ({ control }: TagSettingsProps) => {
                                 animate={{
                                     borderColor: inputFocused ? '#4a5b91' : '#c9d5ef'
                                 }}
-                                className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm transition-all"
+                                className="flex-1 min-w-0 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm transition-all cursor-text"
                             />
                             <motion.button
                                 type="button"
@@ -60,7 +60,7 @@ const TagSettings = ({ control }: TagSettingsProps) => {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 disabled={!tagInput.trim()}
-                                className="px-3 py-2 bg-[#4a5b91] text-white rounded-lg text-sm flex items-center space-x-1 hover:bg-[#3a4a7a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex-shrink-0 px-3 py-2 bg-[#4a5b91] text-white rounded-lg text-sm flex items-center space-x-1 hover:bg-[#3a4a7a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                             >
                                 <Plus className="w-4 h-4" />
                                 <span>Add</span>
@@ -69,7 +69,7 @@ const TagSettings = ({ control }: TagSettingsProps) => {
 
                         <div className="flex justify-between text-xs text-[#938384]">
                             <span>Press Enter or click Add to create tags</span>
-                            <span>{tagInput.length}/20</span>
+                            <span className="flex-shrink-0">{tagInput.length}/20</span>
                         </div>
 
                         <AnimatePresence>
@@ -79,30 +79,32 @@ const TagSettings = ({ control }: TagSettingsProps) => {
                                     animate={{ opacity: 1, height: 'auto' }}
                                     exit={{ opacity: 0, height: 0 }}
                                     transition={{ duration: 0.3 }}
-                                    className="flex flex-wrap gap-2 pt-2 border-t border-[#c9d5ef]/30"
+                                    className="pt-2 border-t border-[#c9d5ef]/30"
                                 >
-                                    {field.value.map((tag: string, index: number) => (
-                                        <motion.span
-                                            key={tag}
-                                            initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                                            exit={{ opacity: 0, scale: 0.8, y: -10 }}
-                                            transition={{ delay: index * 0.05 }}
-                                            whileHover={{ scale: 1.05 }}
-                                            className="inline-flex items-center space-x-1 px-2 py-1 bg-[#f4e1c3] text-[#4a5b91] text-xs rounded-full border border-[#c9d5ef] group"
-                                        >
-                                            <span>#{tag}</span>
-                                            <motion.button
-                                                type="button"
-                                                onClick={() => removeTag(tag, field.value || [], field.onChange)}
-                                                whileHover={{ scale: 1.2 }}
-                                                whileTap={{ scale: 0.8 }}
-                                                className="text-[#938384] hover:text-red-500 transition-colors ml-1"
+                                    <div className="flex flex-wrap gap-2">
+                                        {field.value.map((tag: string, index: number) => (
+                                            <motion.span
+                                                key={tag}
+                                                initial={{ opacity: 0, scale: 0.8 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.8 }}
+                                                transition={{ delay: index * 0.05 }}
+                                                whileHover={{ scale: 1.05 }}
+                                                className="inline-flex items-center space-x-1 px-2 py-1 bg-[#f4e1c3] text-[#4a5b91] text-xs rounded-full border border-[#c9d5ef] group cursor-default max-w-full"
                                             >
-                                                <X className="w-3 h-3" />
-                                            </motion.button>
-                                        </motion.span>
-                                    ))}
+                                                <span className="truncate max-w-24">#{tag}</span>
+                                                <motion.button
+                                                    type="button"
+                                                    onClick={() => removeTag(tag, field.value || [], field.onChange)}
+                                                    whileHover={{ scale: 1.2 }}
+                                                    whileTap={{ scale: 0.8 }}
+                                                    className="text-[#938384] hover:text-red-500 transition-colors ml-1 cursor-pointer flex-shrink-0"
+                                                >
+                                                    <X className="w-3 h-3" />
+                                                </motion.button>
+                                            </motion.span>
+                                        ))}
+                                    </div>
                                 </motion.div>
                             )}
                         </AnimatePresence>

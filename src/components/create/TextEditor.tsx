@@ -149,7 +149,7 @@ Focus on your content - let your ideas flow freely.`;
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setSideBySide(!sideBySide)}
-                            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                            className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
                                 sideBySide
                                     ? 'bg-[#4a5b91] text-white'
                                     : 'bg-white border border-[#c9d5ef] text-[#4a5b91] hover:bg-[#f6f8fd]'
@@ -165,7 +165,7 @@ Focus on your content - let your ideas flow freely.`;
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setPreview(!preview)}
-                        className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                        className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
                             preview
                                 ? 'bg-[#4a5b91] text-white'
                                 : 'bg-white border border-[#c9d5ef] text-[#4a5b91] hover:bg-[#f6f8fd]'
@@ -208,7 +208,7 @@ Focus on your content - let your ideas flow freely.`;
                                     backgroundColor: '#f6f8fd'
                                 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="p-2 text-[#4a5b91] hover:bg-[#f6f8fd] rounded-lg transition-colors"
+                                className="p-2 text-[#4a5b91] hover:bg-[#f6f8fd] rounded-lg transition-colors cursor-pointer"
                                 title={title}
                             >
                                 <Icon className="w-4 h-4" />
@@ -231,7 +231,7 @@ Focus on your content - let your ideas flow freely.`;
                                 onFocus={() => setFocused(true)}
                                 onBlur={() => setFocused(false)}
                                 placeholder={placeholder || defaultPlaceholder}
-                                className={`w-full ${editorHeight} p-6 bg-transparent border-none outline-none resize-none font-mono text-sm leading-relaxed text-[#4a5b91] placeholder-[#938384]/60`}
+                                className={`w-full ${editorHeight} p-6 bg-transparent border-none outline-none resize-none font-mono text-sm leading-relaxed text-[#4a5b91] placeholder-[#938384]/60 cursor-text`}
                             />
                         </div>
                         <div className="w-1/2 bg-[#f6f8fd]/20">
@@ -263,7 +263,7 @@ Focus on your content - let your ideas flow freely.`;
                                     onFocus={() => setFocused(true)}
                                     onBlur={() => setFocused(false)}
                                     placeholder={placeholder || defaultPlaceholder}
-                                    className={`w-full ${editorHeight} p-6 bg-transparent border-none outline-none resize-none font-mono text-sm leading-relaxed text-[#4a5b91] placeholder-[#938384]/60`}
+                                    className={`w-full ${editorHeight} p-6 bg-transparent border-none outline-none resize-none font-mono text-sm leading-relaxed text-[#4a5b91] placeholder-[#938384]/60 cursor-text`}
                                 />
                             </motion.div>
                         ) : (
@@ -296,11 +296,11 @@ Focus on your content - let your ideas flow freely.`;
                     >
                         {error ? (
                             <motion.p
-                                initial={{ x: -10, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
                                 className="text-sm text-red-500 flex items-center space-x-2"
                             >
-                                <span>⚠️</span>
+                                <span className="flex-shrink-0">⚠️</span>
                                 <span>{error}</span>
                             </motion.p>
                         ) : (

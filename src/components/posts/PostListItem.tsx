@@ -29,9 +29,8 @@ const PostListItem = ({ post, index, onEdit, onDelete }: PostListItemProps) => {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.3 }}
-            whileHover={{ y: -2 }}
-            className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 group"
+            transition={{ delay: 0.4 + (index * 0.1), duration: 0.6 }}
+            className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 group cursor-default"
         >
             <div className="flex items-start justify-between mb-4">
                 <div className="flex-1 min-w-0">
@@ -76,7 +75,7 @@ const PostListItem = ({ post, index, onEdit, onDelete }: PostListItemProps) => {
                 </div>
 
                 {/* Status Badge */}
-                <span className={`px-3 py-1 text-xs font-medium rounded-full border ${statusInfo.className} ml-4`}>
+                <span className={`px-3 py-1 text-xs font-medium rounded-full border ${statusInfo.className} ml-4 flex-shrink-0`}>
                     {statusInfo.label}
                 </span>
             </div>
@@ -126,7 +125,7 @@ const PostListItem = ({ post, index, onEdit, onDelete }: PostListItemProps) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => onEdit(post)}
-                        className="flex items-center space-x-2 px-3 py-1.5 bg-[#f6f8fd] border border-[#c9d5ef] text-[#4a5b91] rounded-lg hover:bg-white hover:border-[#4a5b91] transition-colors text-sm"
+                        className="flex items-center space-x-2 px-3 py-1.5 bg-[#f6f8fd] border border-[#c9d5ef] text-[#4a5b91] rounded-lg hover:bg-white hover:border-[#4a5b91] transition-colors text-sm cursor-pointer"
                     >
                         <Edit className="w-3 h-3" />
                         <span>Edit</span>
@@ -136,7 +135,7 @@ const PostListItem = ({ post, index, onEdit, onDelete }: PostListItemProps) => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => onDelete(post)}
-                        className="flex items-center space-x-2 px-3 py-1.5 bg-white border border-[#e7b9ac] text-[#938384] rounded-lg hover:bg-red-50 hover:border-red-300 hover:text-red-600 transition-colors text-sm"
+                        className="flex items-center space-x-2 px-3 py-1.5 bg-white border border-[#e7b9ac] text-[#938384] rounded-lg hover:bg-red-50 hover:border-red-300 hover:text-red-600 transition-colors text-sm cursor-pointer"
                     >
                         <Trash2 className="w-3 h-3" />
                         <span>Delete</span>
@@ -151,7 +150,7 @@ const PostListItem = ({ post, index, onEdit, onDelete }: PostListItemProps) => {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex items-center space-x-1 text-[#938384] hover:text-[#4a5b91] transition-colors text-sm"
+                        className="flex items-center space-x-1 text-[#938384] hover:text-[#4a5b91] transition-colors text-sm cursor-pointer"
                     >
                         <Eye className="w-3 h-3" />
                         <span>View Live</span>

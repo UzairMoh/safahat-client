@@ -41,9 +41,9 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
             className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-sm mb-8"
         >
             {/* Search and Quick Filters */}
@@ -56,7 +56,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                         placeholder="Search your posts..."
                         value={filters.search}
                         onChange={(e) => updateFilter('search', e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm"
+                        className="w-full pl-10 pr-4 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm cursor-text"
                     />
                 </div>
 
@@ -66,7 +66,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                     <select
                         value={filters.status}
                         onChange={(e) => updateFilter('status', e.target.value)}
-                        className="px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm"
+                        className="px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm cursor-pointer"
                     >
                         <option value="all">All Posts</option>
                         <option value="draft">Drafts</option>
@@ -79,7 +79,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setShowAdvanced(!showAdvanced)}
-                        className={`flex items-center space-x-2 px-3 py-2 border rounded-lg text-sm transition-colors ${
+                        className={`flex items-center space-x-2 px-3 py-2 border rounded-lg text-sm transition-colors cursor-pointer ${
                             showAdvanced || hasActiveFilters
                                 ? 'bg-[#4a5b91] text-white border-[#4a5b91]'
                                 : 'bg-white text-[#4a5b91] border-[#c9d5ef] hover:bg-[#f6f8fd]'
@@ -97,7 +97,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={resetFilters}
-                            className="flex items-center space-x-1 px-2 py-2 text-[#938384] hover:text-red-600 transition-colors text-sm"
+                            className="flex items-center space-x-1 px-2 py-2 text-[#938384] hover:text-red-600 transition-colors text-sm cursor-pointer"
                         >
                             <X className="w-4 h-4" />
                             <span>Clear</span>
@@ -122,7 +122,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                             <select
                                 value={filters.sortBy}
                                 onChange={(e) => updateFilter('sortBy', e.target.value)}
-                                className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm"
+                                className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm cursor-pointer"
                             >
                                 <option value="date">Date</option>
                                 <option value="title">Title</option>
@@ -138,7 +138,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => updateFilter('sortOrder', 'desc')}
-                                    className={`flex-1 flex items-center justify-center space-x-1 px-3 py-2 border rounded-lg text-sm transition-colors ${
+                                    className={`flex-1 flex items-center justify-center space-x-1 px-3 py-2 border rounded-lg text-sm transition-colors cursor-pointer ${
                                         filters.sortOrder === 'desc'
                                             ? 'bg-[#4a5b91] text-white border-[#4a5b91]'
                                             : 'bg-white text-[#4a5b91] border-[#c9d5ef] hover:bg-[#f6f8fd]'
@@ -151,7 +151,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     onClick={() => updateFilter('sortOrder', 'asc')}
-                                    className={`flex-1 flex items-center justify-center space-x-1 px-3 py-2 border rounded-lg text-sm transition-colors ${
+                                    className={`flex-1 flex items-center justify-center space-x-1 px-3 py-2 border rounded-lg text-sm transition-colors cursor-pointer ${
                                         filters.sortOrder === 'asc'
                                             ? 'bg-[#4a5b91] text-white border-[#4a5b91]'
                                             : 'bg-white text-[#4a5b91] border-[#c9d5ef] hover:bg-[#f6f8fd]'
@@ -169,7 +169,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                             <select
                                 value={filters.featured}
                                 onChange={(e) => updateFilter('featured', e.target.value)}
-                                className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm"
+                                className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm cursor-pointer"
                             >
                                 <option value="all">All Posts</option>
                                 <option value="featured">Featured Only</option>

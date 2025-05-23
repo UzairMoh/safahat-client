@@ -30,13 +30,12 @@ const CategorySettings = ({ control, categories }: CategorySettingsProps) => {
                             return (
                                 <motion.label
                                     key={category.id}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
                                     transition={{ delay: index * 0.05, duration: 0.2 }}
-                                    whileHover={{ x: 2 }}
                                     className="flex items-center space-x-3 p-2 rounded-lg hover:bg-[#f6f8fd] transition-all cursor-pointer group"
                                 >
-                                    <div className="relative">
+                                    <div className="relative flex-shrink-0">
                                         <input
                                             type="checkbox"
                                             checked={isSelected}
@@ -74,7 +73,7 @@ const CategorySettings = ({ control, categories }: CategorySettingsProps) => {
                                             color: isSelected ? '#4a5b91' : '#938384',
                                             fontWeight: isSelected ? 500 : 400
                                         }}
-                                        className="text-sm group-hover:text-[#4a5b91] transition-colors"
+                                        className="text-sm group-hover:text-[#4a5b91] transition-colors flex-1 min-w-0 truncate"
                                     >
                                         {category.name}
                                     </motion.span>

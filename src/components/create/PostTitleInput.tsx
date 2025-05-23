@@ -32,17 +32,17 @@ const PostTitleInput = ({ control, errors }: PostTitleInputProps) => {
                         placeholder="Enter your post title..."
                         onFocus={() => setFocused(true)}
                         onBlur={() => setFocused(false)}
-                        className="w-full text-4xl font-light text-[#4a5b91] placeholder-[#938384]/50 bg-transparent border-none outline-none resize-none"
+                        className="w-full text-4xl font-light text-[#4a5b91] placeholder-[#938384]/50 bg-transparent border-none outline-none resize-none cursor-text"
                     />
                 )}
             />
             {errors.title && (
                 <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     className="mt-4 text-sm text-red-500 flex items-center space-x-1"
                 >
-                    <span>⚠️</span>
+                    <span className="flex-shrink-0">⚠️</span>
                     <span>{errors.title.message as string}</span>
                 </motion.p>
             )}

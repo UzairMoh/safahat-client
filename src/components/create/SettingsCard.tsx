@@ -1,5 +1,5 @@
 ﻿import { motion } from 'framer-motion';
-import type {ReactNode} from 'react';
+import { ReactNode } from 'react';
 
 interface SettingsCardProps {
     title?: string;
@@ -18,11 +18,13 @@ const SettingsCard = ({ title, icon, children, className = "" }: SettingsCardPro
         >
             {title && (
                 <div className="flex items-center space-x-2 mb-3">
-                    {icon && <div className="text-[#938384]">{icon}</div>}
-                    <h3 className="text-sm font-medium text-[#4a5b91]">{title}</h3>
+                    {icon && <div className="text-[#938384] flex-shrink-0">{icon}</div>}
+                    <h3 className="text-sm font-medium text-[#4a5b91] min-w-0">{title}</h3>
                 </div>
             )}
-            {children}
+            <div className="min-w-0">
+                {children}
+            </div>
         </motion.div>
     );
 };

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from "./pages/Home.tsx";
 import Library from "./pages/Library.tsx";
+import Explore from "./pages/Explore.tsx";
 import AuthPage from "../src/pages/AuthPage.tsx";
 import NotFound from "./components/common/NotFound.tsx";
 import authService from '../src/services/auth.service.ts';
@@ -33,6 +34,14 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <Library />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/explore"
+                            element={
+                                <ProtectedRoute>
+                                    <Explore />
                                 </ProtectedRoute>
                             }
                         />

@@ -7,12 +7,11 @@ import postService from '../services/post.service';
 import authService from '../services/auth.service';
 import Loading from '../components/common/Loading';
 import Error from '../components/common/Error';
-
-import FloatingBackButton from '../components/posts/FloatingBackButton';
-import FloatingActionButtons from '../components/posts/FloatingActionButtons';
-import EditorContainer from '../components/posts/EditorContainer';
-import SettingsPanel from '../components/posts/SettingsPanel';
-import SettingsPanelToggle from '../components/posts/SettingsPanelToggle';
+import SettingsPanelToggle from "../components/create/SettingsPanelToggle.tsx";
+import FloatingBackButton from "../components/create/FloatingBackButton.tsx";
+import FloatingActionButtons from "../components/create/FloatingActionButtons.tsx";
+import EditorContainer from "../components/create/EditorContainer.tsx";
+import SettingsPanel from "../components/create/SettingsPanel.tsx";
 
 interface CreatePostForm extends CreatePostRequest {
     newTag?: string;
@@ -224,20 +223,6 @@ const CreatePost = () => {
                     />
                 )}
             </div>
-
-            {/* Keyboard Shortcuts Hint */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 2, duration: 0.5 }}
-                className="fixed bottom-4 left-4 bg-white/90 backdrop-blur-sm border border-[#c9d5ef] rounded-lg p-3 text-xs text-[#938384] max-w-xs z-10"
-            >
-                <div className="space-y-1">
-                    <div><kbd className="px-1.5 py-0.5 bg-[#f6f8fd] rounded text-[10px]">⌘ + S</kbd> Save Draft</div>
-                    <div><kbd className="px-1.5 py-0.5 bg-[#f6f8fd] rounded text-[10px]">⌘ + ⇧ + Enter</kbd> Publish</div>
-                    <div><kbd className="px-1.5 py-0.5 bg-[#f6f8fd] rounded text-[10px]">⌘ + ,</kbd> Toggle Settings</div>
-                </div>
-            </motion.div>
         </motion.div>
     );
 };

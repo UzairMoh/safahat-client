@@ -195,7 +195,7 @@ const Library = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.6 }}
                     className="mb-8"
                 >
                     <div className="flex items-center space-x-3 mb-4">
@@ -214,7 +214,7 @@ const Library = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
+                        transition={{ delay: 0.2, duration: 0.6 }}
                         className="text-center py-16"
                     >
                         <div className="w-24 h-24 mx-auto mb-6 bg-[#f6f8fd] rounded-full flex items-center justify-center">
@@ -238,9 +238,9 @@ const Library = () => {
                         <AnimatePresence>
                             {filteredPosts.length === 0 ? (
                                 <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4, duration: 0.6 }}
                                     className="text-center py-12"
                                 >
                                     <div className="w-16 h-16 mx-auto mb-4 bg-[#f6f8fd] rounded-full flex items-center justify-center">
@@ -250,7 +250,12 @@ const Library = () => {
                                     <p className="text-[#938384]">Try adjusting your search or filter criteria</p>
                                 </motion.div>
                             ) : (
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4, duration: 0.6 }}
+                                    className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                                >
                                     {filteredPosts.map((post, index) => (
                                         <PostListItem
                                             key={post.id}
@@ -260,7 +265,7 @@ const Library = () => {
                                             onDelete={handleDeleteClick}
                                         />
                                     ))}
-                                </div>
+                                </motion.div>
                             )}
                         </AnimatePresence>
                     </>
@@ -277,7 +282,7 @@ const Library = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 cursor-pointer"
                         onClick={() => !deleting && setDeleteModalOpen(false)}
                     >
                         <motion.div
@@ -285,7 +290,7 @@ const Library = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+                            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl cursor-default"
                         >
                             <div className="flex items-center space-x-3 mb-4">
                                 <div className="flex items-center justify-center w-10 h-10 bg-red-100 rounded-full">
@@ -307,7 +312,7 @@ const Library = () => {
                                     whileTap={{ scale: 0.98 }}
                                     onClick={() => setDeleteModalOpen(false)}
                                     disabled={deleting}
-                                    className="flex-1 px-4 py-2 border border-[#c9d5ef] text-[#4a5b91] rounded-lg hover:bg-[#f6f8fd] transition-colors disabled:opacity-50"
+                                    className="flex-1 px-4 py-2 border border-[#c9d5ef] text-[#4a5b91] rounded-lg hover:bg-[#f6f8fd] transition-colors disabled:opacity-50 cursor-pointer"
                                 >
                                     Cancel
                                 </motion.button>
@@ -316,7 +321,7 @@ const Library = () => {
                                     whileTap={{ scale: 0.98 }}
                                     onClick={handleDeleteConfirm}
                                     disabled={deleting}
-                                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                                    className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 cursor-pointer"
                                 >
                                     {deleting ? (
                                         <motion.div

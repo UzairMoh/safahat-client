@@ -32,7 +32,7 @@ const FloatingActionButtons = ({
                         whileTap={{ scale: 0.9 }}
                         onClick={onSaveDraft}
                         disabled={loading}
-                        className="w-12 h-12 bg-white border border-[#c9d5ef] text-[#4a5b91] rounded-full shadow-lg flex items-center justify-center hover:bg-[#f6f8fd] hover:border-[#4a5b91] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-12 h-12 bg-white border border-[#c9d5ef] text-[#4a5b91] rounded-full shadow-lg flex items-center justify-center hover:bg-[#f6f8fd] hover:border-[#4a5b91] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                         title="Save Draft"
                     >
                         <Save className="w-5 h-5" />
@@ -43,7 +43,7 @@ const FloatingActionButtons = ({
                         whileTap={{ scale: 0.9 }}
                         onClick={onPublish}
                         disabled={loading}
-                        className="w-12 h-12 bg-[#4a5b91] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#3a4a7a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-12 h-12 bg-[#4a5b91] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#3a4a7a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                         title="Publish Post"
                     >
                         <Send className="w-5 h-5" />

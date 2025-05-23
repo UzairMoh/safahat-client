@@ -13,7 +13,7 @@ const EditorContainer = ({ control, errors, isSettingsPanelOpen }: EditorContain
     return (
         <motion.div
             animate={{
-                width: isSettingsPanelOpen ? 'calc(100% - 320px)' : '100%',
+                width: isSettingsPanelOpen ? 'calc(100% - 384px)' : '100%',
                 marginRight: isSettingsPanelOpen ? '0' : '0'
             }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
