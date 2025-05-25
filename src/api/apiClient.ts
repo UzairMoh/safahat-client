@@ -1,9 +1,5 @@
 ﻿import { ApiClient } from './Client';
 import axiosConfig from "./axiosConfig";
 
-const apiClient = new ApiClient(
-    "https://localhost:7118",
-    axiosConfig
-);
-
+const apiClient = new ApiClient(undefined, axiosConfig);
 export default apiClient;

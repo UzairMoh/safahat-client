@@ -19,7 +19,7 @@ export interface IApiClient {
     login(body: LoginRequest | undefined): Promise<AuthResponse>;
     /**
      * @param body (optional) 
-     * @return OK
+     * @return Created
      */
     register(body: RegisterRequest | undefined): Promise<AuthResponse>;
     /**
@@ -39,10 +39,87 @@ export interface IApiClient {
     /**
      * @return OK
      */
-    postsAll(): Promise<PostResponse[]>;
+    categoriesAll(): Promise<CategoryResponse[]>;
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    categoriesPOST(body: CreateCategoryRequest | undefined): Promise<CategoryResponse>;
+    /**
+     * @return OK
+     */
+    withPostCount(): Promise<CategoryResponse[]>;
+    /**
+     * @return OK
+     */
+    categoriesGET(id: string): Promise<CategoryResponse>;
     /**
      * @param body (optional) 
      * @return OK
+     */
+    categoriesPUT(id: string, body: UpdateCategoryRequest | undefined): Promise<CategoryResponse>;
+    /**
+     * @return OK
+     */
+    categoriesDELETE(id: string): Promise<void>;
+    /**
+     * @return OK
+     */
+    slug(slug: string): Promise<CategoryResponse>;
+    /**
+     * @return OK
+     */
+    commentsAll(): Promise<CommentResponse[]>;
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    commentsPOST(body: CreateCommentRequest | undefined): Promise<CommentResponse>;
+    /**
+     * @return OK
+     */
+    commentsGET(id: string): Promise<CommentResponse>;
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    commentsPUT(id: string, body: UpdateCommentRequest | undefined): Promise<CommentResponse>;
+    /**
+     * @return OK
+     */
+    commentsDELETE(id: string): Promise<void>;
+    /**
+     * @return OK
+     */
+    post(postId: string): Promise<CommentResponse[]>;
+    /**
+     * @return OK
+     */
+    user(userId: string): Promise<CommentResponse[]>;
+    /**
+     * @return OK
+     */
+    pending(): Promise<CommentResponse[]>;
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    reply(parentCommentId: string, body: CreateCommentRequest | undefined): Promise<CommentResponse>;
+    /**
+     * @return OK
+     */
+    approve(id: string): Promise<void>;
+    /**
+     * @return OK
+     */
+    reject(id: string): Promise<void>;
+    /**
+     * @return OK
+     */
+    postsAll(): Promise<PostResponse[]>;
+    /**
+     * @param body (optional) 
+     * @return Created
      */
     postsPOST(body: CreatePostRequest | undefined): Promise<PostResponse>;
     /**
@@ -54,26 +131,26 @@ export interface IApiClient {
     /**
      * @return OK
      */
-    postsGET(id: number): Promise<PostResponse>;
+    postsGET(id: string): Promise<PostResponse>;
     /**
      * @param body (optional) 
      * @return OK
      */
-    postsPUT(id: number, body: UpdatePostRequest | undefined): Promise<PostResponse>;
+    postsPUT(id: string, body: UpdatePostRequest | undefined): Promise<PostResponse>;
     /**
      * @return OK
      */
-    postsDELETE(id: number): Promise<void>;
+    postsDELETE(id: string): Promise<void>;
     /**
      * @return OK
      */
-    slug(slug: string): Promise<PostResponse>;
+    slug2(slug: string): Promise<PostResponse>;
     /**
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
      */
-    author(authorId: number, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
+    author(authorId: string, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
     /**
      * @param query (optional) 
      * @param pageNumber (optional) 
@@ -86,13 +163,13 @@ export interface IApiClient {
      * @param pageSize (optional) 
      * @return OK
      */
-    category(categoryId: number, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
+    category(categoryId: string, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
     /**
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
      */
-    tag(tagId: number, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
+    tag(tagId: string, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
     /**
      * @return OK
      */
@@ -100,19 +177,54 @@ export interface IApiClient {
     /**
      * @return OK
      */
-    publish(id: number): Promise<void>;
+    publish(id: string): Promise<void>;
     /**
      * @return OK
      */
-    unpublish(id: number): Promise<void>;
+    unpublish(id: string): Promise<void>;
     /**
      * @return OK
      */
-    feature(id: number): Promise<void>;
+    feature(id: string): Promise<void>;
     /**
      * @return OK
      */
-    unfeature(id: number): Promise<void>;
+    unfeature(id: string): Promise<void>;
+    /**
+     * @return OK
+     */
+    tagsAll(): Promise<TagResponse[]>;
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    tagsPOST(body: CreateTagRequest | undefined): Promise<TagResponse>;
+    /**
+     * @return OK
+     */
+    withPostCount2(): Promise<TagResponse[]>;
+    /**
+     * @param count (optional) 
+     * @return OK
+     */
+    popular(count: number | undefined): Promise<TagResponse[]>;
+    /**
+     * @return OK
+     */
+    tagsGET(id: string): Promise<TagResponse>;
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    tagsPUT(id: string, body: UpdateTagRequest | undefined): Promise<TagResponse>;
+    /**
+     * @return OK
+     */
+    tagsDELETE(id: string): Promise<void>;
+    /**
+     * @return OK
+     */
+    slug3(slug: string): Promise<TagResponse>;
     /**
      * @return OK
      */
@@ -120,11 +232,11 @@ export interface IApiClient {
     /**
      * @return OK
      */
-    usersGET(id: number): Promise<UserDetailResponse>;
+    usersGET(id: string): Promise<UserDetailResponse>;
     /**
      * @return OK
      */
-    usersDELETE(id: number): Promise<void>;
+    usersDELETE(id: string): Promise<void>;
     /**
      * @return OK
      */
@@ -133,16 +245,16 @@ export interface IApiClient {
      * @param body (optional) 
      * @return OK
      */
-    role(id: number, body: UpdateUserRoleRequest | undefined): Promise<UserDetailResponse>;
+    role(id: string, body: UpdateUserRoleRequest | undefined): Promise<UserDetailResponse>;
     /**
      * @param body (optional) 
      * @return OK
      */
-    status(id: number, body: UpdateUserStatusRequest | undefined): Promise<UserDetailResponse>;
+    status(id: string, body: UpdateUserStatusRequest | undefined): Promise<UserDetailResponse>;
     /**
      * @return OK
      */
-    statistics(id: number): Promise<UserStatisticsResponse>;
+    statistics(id: string): Promise<UserStatisticsResponse>;
 }
 
 export class ApiClient implements IApiClient {
@@ -207,6 +319,13 @@ export class ApiClient implements IApiClient {
             result200 = AuthResponse.fromJS(resultData200);
             return Promise.resolve<AuthResponse>(result200);
 
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -216,7 +335,7 @@ export class ApiClient implements IApiClient {
 
     /**
      * @param body (optional) 
-     * @return OK
+     * @return Created
      */
     register(body: RegisterRequest | undefined, cancelToken?: CancelToken): Promise<AuthResponse> {
         let url_ = this.baseUrl + "/api/Auth/register";
@@ -256,12 +375,19 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 201) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = AuthResponse.fromJS(resultData200);
-            return Promise.resolve<AuthResponse>(result200);
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = AuthResponse.fromJS(resultData201);
+            return Promise.resolve<AuthResponse>(result201);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -315,6 +441,20 @@ export class ApiClient implements IApiClient {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -365,6 +505,20 @@ export class ApiClient implements IApiClient {
             let resultData200  = _responseText;
             result200 = UserResponse.fromJS(resultData200);
             return Promise.resolve<UserResponse>(result200);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -422,11 +576,1282 @@ export class ApiClient implements IApiClient {
             result200 = UserResponse.fromJS(resultData200);
             return Promise.resolve<UserResponse>(result200);
 
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<UserResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    categoriesAll( cancelToken?: CancelToken): Promise<CategoryResponse[]> {
+        let url_ = this.baseUrl + "/api/Categories";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCategoriesAll(_response);
+        });
+    }
+
+    protected processCategoriesAll(response: AxiosResponse): Promise<CategoryResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CategoryResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<CategoryResponse[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CategoryResponse[]>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    categoriesPOST(body: CreateCategoryRequest | undefined, cancelToken?: CancelToken): Promise<CategoryResponse> {
+        let url_ = this.baseUrl + "/api/Categories";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCategoriesPOST(_response);
+        });
+    }
+
+    protected processCategoriesPOST(response: AxiosResponse): Promise<CategoryResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = CategoryResponse.fromJS(resultData201);
+            return Promise.resolve<CategoryResponse>(result201);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CategoryResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    withPostCount( cancelToken?: CancelToken): Promise<CategoryResponse[]> {
+        let url_ = this.baseUrl + "/api/Categories/with-post-count";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processWithPostCount(_response);
+        });
+    }
+
+    protected processWithPostCount(response: AxiosResponse): Promise<CategoryResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CategoryResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<CategoryResponse[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CategoryResponse[]>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    categoriesGET(id: string, cancelToken?: CancelToken): Promise<CategoryResponse> {
+        let url_ = this.baseUrl + "/api/Categories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCategoriesGET(_response);
+        });
+    }
+
+    protected processCategoriesGET(response: AxiosResponse): Promise<CategoryResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = CategoryResponse.fromJS(resultData200);
+            return Promise.resolve<CategoryResponse>(result200);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CategoryResponse>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    categoriesPUT(id: string, body: UpdateCategoryRequest | undefined, cancelToken?: CancelToken): Promise<CategoryResponse> {
+        let url_ = this.baseUrl + "/api/Categories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCategoriesPUT(_response);
+        });
+    }
+
+    protected processCategoriesPUT(response: AxiosResponse): Promise<CategoryResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = CategoryResponse.fromJS(resultData200);
+            return Promise.resolve<CategoryResponse>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CategoryResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    categoriesDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/Categories/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCategoriesDELETE(_response);
+        });
+    }
+
+    protected processCategoriesDELETE(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    slug(slug: string, cancelToken?: CancelToken): Promise<CategoryResponse> {
+        let url_ = this.baseUrl + "/api/Categories/slug/{slug}";
+        if (slug === undefined || slug === null)
+            throw new Error("The parameter 'slug' must be defined.");
+        url_ = url_.replace("{slug}", encodeURIComponent("" + slug));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processSlug(_response);
+        });
+    }
+
+    protected processSlug(response: AxiosResponse): Promise<CategoryResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = CategoryResponse.fromJS(resultData200);
+            return Promise.resolve<CategoryResponse>(result200);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CategoryResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    commentsAll( cancelToken?: CancelToken): Promise<CommentResponse[]> {
+        let url_ = this.baseUrl + "/api/Comments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCommentsAll(_response);
+        });
+    }
+
+    protected processCommentsAll(response: AxiosResponse): Promise<CommentResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CommentResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<CommentResponse[]>(result200);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CommentResponse[]>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    commentsPOST(body: CreateCommentRequest | undefined, cancelToken?: CancelToken): Promise<CommentResponse> {
+        let url_ = this.baseUrl + "/api/Comments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCommentsPOST(_response);
+        });
+    }
+
+    protected processCommentsPOST(response: AxiosResponse): Promise<CommentResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = CommentResponse.fromJS(resultData201);
+            return Promise.resolve<CommentResponse>(result201);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CommentResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    commentsGET(id: string, cancelToken?: CancelToken): Promise<CommentResponse> {
+        let url_ = this.baseUrl + "/api/Comments/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCommentsGET(_response);
+        });
+    }
+
+    protected processCommentsGET(response: AxiosResponse): Promise<CommentResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = CommentResponse.fromJS(resultData200);
+            return Promise.resolve<CommentResponse>(result200);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CommentResponse>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    commentsPUT(id: string, body: UpdateCommentRequest | undefined, cancelToken?: CancelToken): Promise<CommentResponse> {
+        let url_ = this.baseUrl + "/api/Comments/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCommentsPUT(_response);
+        });
+    }
+
+    protected processCommentsPUT(response: AxiosResponse): Promise<CommentResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = CommentResponse.fromJS(resultData200);
+            return Promise.resolve<CommentResponse>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CommentResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    commentsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/Comments/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCommentsDELETE(_response);
+        });
+    }
+
+    protected processCommentsDELETE(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    post(postId: string, cancelToken?: CancelToken): Promise<CommentResponse[]> {
+        let url_ = this.baseUrl + "/api/Comments/post/{postId}";
+        if (postId === undefined || postId === null)
+            throw new Error("The parameter 'postId' must be defined.");
+        url_ = url_.replace("{postId}", encodeURIComponent("" + postId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processPost(_response);
+        });
+    }
+
+    protected processPost(response: AxiosResponse): Promise<CommentResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CommentResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<CommentResponse[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CommentResponse[]>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    user(userId: string, cancelToken?: CancelToken): Promise<CommentResponse[]> {
+        let url_ = this.baseUrl + "/api/Comments/user/{userId}";
+        if (userId === undefined || userId === null)
+            throw new Error("The parameter 'userId' must be defined.");
+        url_ = url_.replace("{userId}", encodeURIComponent("" + userId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUser(_response);
+        });
+    }
+
+    protected processUser(response: AxiosResponse): Promise<CommentResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CommentResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<CommentResponse[]>(result200);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CommentResponse[]>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    pending( cancelToken?: CancelToken): Promise<CommentResponse[]> {
+        let url_ = this.baseUrl + "/api/Comments/pending";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processPending(_response);
+        });
+    }
+
+    protected processPending(response: AxiosResponse): Promise<CommentResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CommentResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<CommentResponse[]>(result200);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CommentResponse[]>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    reply(parentCommentId: string, body: CreateCommentRequest | undefined, cancelToken?: CancelToken): Promise<CommentResponse> {
+        let url_ = this.baseUrl + "/api/Comments/{parentCommentId}/reply";
+        if (parentCommentId === undefined || parentCommentId === null)
+            throw new Error("The parameter 'parentCommentId' must be defined.");
+        url_ = url_.replace("{parentCommentId}", encodeURIComponent("" + parentCommentId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processReply(_response);
+        });
+    }
+
+    protected processReply(response: AxiosResponse): Promise<CommentResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = CommentResponse.fromJS(resultData201);
+            return Promise.resolve<CommentResponse>(result201);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<CommentResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    approve(id: string, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/Comments/{id}/approve";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "PUT",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processApprove(_response);
+        });
+    }
+
+    protected processApprove(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    reject(id: string, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/Comments/{id}/reject";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "PUT",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processReject(_response);
+        });
+    }
+
+    protected processReject(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -489,7 +1914,7 @@ export class ApiClient implements IApiClient {
 
     /**
      * @param body (optional) 
-     * @return OK
+     * @return Created
      */
     postsPOST(body: CreatePostRequest | undefined, cancelToken?: CancelToken): Promise<PostResponse> {
         let url_ = this.baseUrl + "/api/Posts";
@@ -529,12 +1954,26 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 201) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = PostResponse.fromJS(resultData200);
-            return Promise.resolve<PostResponse>(result200);
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = PostResponse.fromJS(resultData201);
+            return Promise.resolve<PostResponse>(result201);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -614,7 +2053,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    postsGET(id: number, cancelToken?: CancelToken): Promise<PostResponse> {
+    postsGET(id: string, cancelToken?: CancelToken): Promise<PostResponse> {
         let url_ = this.baseUrl + "/api/Posts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -669,7 +2108,7 @@ export class ApiClient implements IApiClient {
      * @param body (optional) 
      * @return OK
      */
-    postsPUT(id: number, body: UpdatePostRequest | undefined, cancelToken?: CancelToken): Promise<PostResponse> {
+    postsPUT(id: string, body: UpdatePostRequest | undefined, cancelToken?: CancelToken): Promise<PostResponse> {
         let url_ = this.baseUrl + "/api/Posts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -727,7 +2166,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    postsDELETE(id: number, cancelToken?: CancelToken): Promise<void> {
+    postsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -777,7 +2216,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    slug(slug: string, cancelToken?: CancelToken): Promise<PostResponse> {
+    slug2(slug: string, cancelToken?: CancelToken): Promise<PostResponse> {
         let url_ = this.baseUrl + "/api/Posts/slug/{slug}";
         if (slug === undefined || slug === null)
             throw new Error("The parameter 'slug' must be defined.");
@@ -800,11 +2239,11 @@ export class ApiClient implements IApiClient {
                 throw _error;
             }
         }).then((_response: AxiosResponse) => {
-            return this.processSlug(_response);
+            return this.processSlug2(_response);
         });
     }
 
-    protected processSlug(response: AxiosResponse): Promise<PostResponse> {
+    protected processSlug2(response: AxiosResponse): Promise<PostResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -833,7 +2272,7 @@ export class ApiClient implements IApiClient {
      * @param pageSize (optional) 
      * @return OK
      */
-    author(authorId: number, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<PostResponse[]> {
+    author(authorId: string, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<PostResponse[]> {
         let url_ = this.baseUrl + "/api/Posts/author/{authorId}?";
         if (authorId === undefined || authorId === null)
             throw new Error("The parameter 'authorId' must be defined.");
@@ -977,7 +2416,7 @@ export class ApiClient implements IApiClient {
      * @param pageSize (optional) 
      * @return OK
      */
-    category(categoryId: number, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<PostResponse[]> {
+    category(categoryId: string, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<PostResponse[]> {
         let url_ = this.baseUrl + "/api/Posts/category/{categoryId}?";
         if (categoryId === undefined || categoryId === null)
             throw new Error("The parameter 'categoryId' must be defined.");
@@ -1048,7 +2487,7 @@ export class ApiClient implements IApiClient {
      * @param pageSize (optional) 
      * @return OK
      */
-    tag(tagId: number, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<PostResponse[]> {
+    tag(tagId: string, pageNumber: number | undefined, pageSize: number | undefined, cancelToken?: CancelToken): Promise<PostResponse[]> {
         let url_ = this.baseUrl + "/api/Posts/tag/{tagId}?";
         if (tagId === undefined || tagId === null)
             throw new Error("The parameter 'tagId' must be defined.");
@@ -1175,7 +2614,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    publish(id: number, cancelToken?: CancelToken): Promise<void> {
+    publish(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}/publish";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1225,7 +2664,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    unpublish(id: number, cancelToken?: CancelToken): Promise<void> {
+    unpublish(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}/unpublish";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1275,7 +2714,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    feature(id: number, cancelToken?: CancelToken): Promise<void> {
+    feature(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}/feature";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1325,7 +2764,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    unfeature(id: number, cancelToken?: CancelToken): Promise<void> {
+    unfeature(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}/unfeature";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1370,6 +2809,542 @@ export class ApiClient implements IApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    tagsAll( cancelToken?: CancelToken): Promise<TagResponse[]> {
+        let url_ = this.baseUrl + "/api/Tags";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processTagsAll(_response);
+        });
+    }
+
+    protected processTagsAll(response: AxiosResponse): Promise<TagResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TagResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<TagResponse[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<TagResponse[]>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Created
+     */
+    tagsPOST(body: CreateTagRequest | undefined, cancelToken?: CancelToken): Promise<TagResponse> {
+        let url_ = this.baseUrl + "/api/Tags";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processTagsPOST(_response);
+        });
+    }
+
+    protected processTagsPOST(response: AxiosResponse): Promise<TagResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 201) {
+            const _responseText = response.data;
+            let result201: any = null;
+            let resultData201  = _responseText;
+            result201 = TagResponse.fromJS(resultData201);
+            return Promise.resolve<TagResponse>(result201);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<TagResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    withPostCount2( cancelToken?: CancelToken): Promise<TagResponse[]> {
+        let url_ = this.baseUrl + "/api/Tags/with-post-count";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processWithPostCount2(_response);
+        });
+    }
+
+    protected processWithPostCount2(response: AxiosResponse): Promise<TagResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TagResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<TagResponse[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<TagResponse[]>(null as any);
+    }
+
+    /**
+     * @param count (optional) 
+     * @return OK
+     */
+    popular(count: number | undefined, cancelToken?: CancelToken): Promise<TagResponse[]> {
+        let url_ = this.baseUrl + "/api/Tags/popular?";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processPopular(_response);
+        });
+    }
+
+    protected processPopular(response: AxiosResponse): Promise<TagResponse[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TagResponse.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<TagResponse[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<TagResponse[]>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    tagsGET(id: string, cancelToken?: CancelToken): Promise<TagResponse> {
+        let url_ = this.baseUrl + "/api/Tags/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processTagsGET(_response);
+        });
+    }
+
+    protected processTagsGET(response: AxiosResponse): Promise<TagResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = TagResponse.fromJS(resultData200);
+            return Promise.resolve<TagResponse>(result200);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<TagResponse>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    tagsPUT(id: string, body: UpdateTagRequest | undefined, cancelToken?: CancelToken): Promise<TagResponse> {
+        let url_ = this.baseUrl + "/api/Tags/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processTagsPUT(_response);
+        });
+    }
+
+    protected processTagsPUT(response: AxiosResponse): Promise<TagResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = TagResponse.fromJS(resultData200);
+            return Promise.resolve<TagResponse>(result200);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<TagResponse>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    tagsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/Tags/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processTagsDELETE(_response);
+        });
+    }
+
+    protected processTagsDELETE(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    slug3(slug: string, cancelToken?: CancelToken): Promise<TagResponse> {
+        let url_ = this.baseUrl + "/api/Tags/slug/{slug}";
+        if (slug === undefined || slug === null)
+            throw new Error("The parameter 'slug' must be defined.");
+        url_ = url_.replace("{slug}", encodeURIComponent("" + slug));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "text/plain"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processSlug3(_response);
+        });
+    }
+
+    protected processSlug3(response: AxiosResponse): Promise<TagResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = TagResponse.fromJS(resultData200);
+            return Promise.resolve<TagResponse>(result200);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<TagResponse>(null as any);
     }
 
     /**
@@ -1423,6 +3398,20 @@ export class ApiClient implements IApiClient {
             }
             return Promise.resolve<UserListItemResponse[]>(result200);
 
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1433,7 +3422,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    usersGET(id: number, cancelToken?: CancelToken): Promise<UserDetailResponse> {
+    usersGET(id: string, cancelToken?: CancelToken): Promise<UserDetailResponse> {
         let url_ = this.baseUrl + "/api/Users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1477,6 +3466,27 @@ export class ApiClient implements IApiClient {
             result200 = UserDetailResponse.fromJS(resultData200);
             return Promise.resolve<UserDetailResponse>(result200);
 
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1487,7 +3497,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    usersDELETE(id: number, cancelToken?: CancelToken): Promise<void> {
+    usersDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1526,6 +3536,34 @@ export class ApiClient implements IApiClient {
         if (status === 200) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
+
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1581,6 +3619,27 @@ export class ApiClient implements IApiClient {
             result200 = UserDetailResponse.fromJS(resultData200);
             return Promise.resolve<UserDetailResponse>(result200);
 
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1592,7 +3651,7 @@ export class ApiClient implements IApiClient {
      * @param body (optional) 
      * @return OK
      */
-    role(id: number, body: UpdateUserRoleRequest | undefined, cancelToken?: CancelToken): Promise<UserDetailResponse> {
+    role(id: string, body: UpdateUserRoleRequest | undefined, cancelToken?: CancelToken): Promise<UserDetailResponse> {
         let url_ = this.baseUrl + "/api/Users/{id}/role";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1640,6 +3699,34 @@ export class ApiClient implements IApiClient {
             result200 = UserDetailResponse.fromJS(resultData200);
             return Promise.resolve<UserDetailResponse>(result200);
 
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1651,7 +3738,7 @@ export class ApiClient implements IApiClient {
      * @param body (optional) 
      * @return OK
      */
-    status(id: number, body: UpdateUserStatusRequest | undefined, cancelToken?: CancelToken): Promise<UserDetailResponse> {
+    status(id: string, body: UpdateUserStatusRequest | undefined, cancelToken?: CancelToken): Promise<UserDetailResponse> {
         let url_ = this.baseUrl + "/api/Users/{id}/status";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1699,6 +3786,34 @@ export class ApiClient implements IApiClient {
             result200 = UserDetailResponse.fromJS(resultData200);
             return Promise.resolve<UserDetailResponse>(result200);
 
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1709,7 +3824,7 @@ export class ApiClient implements IApiClient {
     /**
      * @return OK
      */
-    statistics(id: number, cancelToken?: CancelToken): Promise<UserStatisticsResponse> {
+    statistics(id: string, cancelToken?: CancelToken): Promise<UserStatisticsResponse> {
         let url_ = this.baseUrl + "/api/Users/{id}/statistics";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1752,6 +3867,27 @@ export class ApiClient implements IApiClient {
             let resultData200  = _responseText;
             result200 = UserStatisticsResponse.fromJS(resultData200);
             return Promise.resolve<UserStatisticsResponse>(result200);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1806,7 +3942,7 @@ export interface IAuthResponse {
 }
 
 export class CategoryResponse implements ICategoryResponse {
-    id?: number;
+    id?: string;
     name?: string | undefined;
     slug?: string | undefined;
     description?: string | undefined;
@@ -1850,7 +3986,7 @@ export class CategoryResponse implements ICategoryResponse {
 }
 
 export interface ICategoryResponse {
-    id?: number;
+    id?: string;
     name?: string | undefined;
     slug?: string | undefined;
     description?: string | undefined;
@@ -1901,6 +4037,174 @@ export interface IChangePasswordRequest {
     confirmNewPassword?: string | undefined;
 }
 
+export class CommentResponse implements ICommentResponse {
+    id?: string;
+    content?: string | undefined;
+    isApproved?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date | undefined;
+    postId?: string;
+    postTitle?: string | undefined;
+    user?: UserResponse;
+    parentCommentId?: string | undefined;
+    replies?: CommentResponse[] | undefined;
+
+    constructor(data?: ICommentResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.content = _data["content"];
+            this.isApproved = _data["isApproved"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.postId = _data["postId"];
+            this.postTitle = _data["postTitle"];
+            this.user = _data["user"] ? UserResponse.fromJS(_data["user"]) : <any>undefined;
+            this.parentCommentId = _data["parentCommentId"];
+            if (Array.isArray(_data["replies"])) {
+                this.replies = [] as any;
+                for (let item of _data["replies"])
+                    this.replies!.push(CommentResponse.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CommentResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new CommentResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["content"] = this.content;
+        data["isApproved"] = this.isApproved;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["postId"] = this.postId;
+        data["postTitle"] = this.postTitle;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["parentCommentId"] = this.parentCommentId;
+        if (Array.isArray(this.replies)) {
+            data["replies"] = [];
+            for (let item of this.replies)
+                data["replies"].push(item ? item.toJSON() : <any>undefined);
+        }
+        return data;
+    }
+}
+
+export interface ICommentResponse {
+    id?: string;
+    content?: string | undefined;
+    isApproved?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date | undefined;
+    postId?: string;
+    postTitle?: string | undefined;
+    user?: UserResponse;
+    parentCommentId?: string | undefined;
+    replies?: CommentResponse[] | undefined;
+}
+
+export class CreateCategoryRequest implements ICreateCategoryRequest {
+    name?: string | undefined;
+    slug?: string | undefined;
+    description?: string | undefined;
+
+    constructor(data?: ICreateCategoryRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.slug = _data["slug"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): CreateCategoryRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateCategoryRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["slug"] = this.slug;
+        data["description"] = this.description;
+        return data;
+    }
+}
+
+export interface ICreateCategoryRequest {
+    name?: string | undefined;
+    slug?: string | undefined;
+    description?: string | undefined;
+}
+
+export class CreateCommentRequest implements ICreateCommentRequest {
+    postId?: string;
+    parentCommentId?: string | undefined;
+    content?: string | undefined;
+
+    constructor(data?: ICreateCommentRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.postId = _data["postId"];
+            this.parentCommentId = _data["parentCommentId"];
+            this.content = _data["content"];
+        }
+    }
+
+    static fromJS(data: any): CreateCommentRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateCommentRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["postId"] = this.postId;
+        data["parentCommentId"] = this.parentCommentId;
+        data["content"] = this.content;
+        return data;
+    }
+}
+
+export interface ICreateCommentRequest {
+    postId?: string;
+    parentCommentId?: string | undefined;
+    content?: string | undefined;
+}
+
 export class CreatePostRequest implements ICreatePostRequest {
     title?: string | undefined;
     content?: string | undefined;
@@ -1908,7 +4212,7 @@ export class CreatePostRequest implements ICreatePostRequest {
     featuredImageUrl?: string | undefined;
     allowComments?: boolean;
     isDraft?: boolean;
-    categoryIds?: number[] | undefined;
+    categoryIds?: string[] | undefined;
     tags?: string[] | undefined;
 
     constructor(data?: ICreatePostRequest) {
@@ -1977,8 +4281,48 @@ export interface ICreatePostRequest {
     featuredImageUrl?: string | undefined;
     allowComments?: boolean;
     isDraft?: boolean;
-    categoryIds?: number[] | undefined;
+    categoryIds?: string[] | undefined;
     tags?: string[] | undefined;
+}
+
+export class CreateTagRequest implements ICreateTagRequest {
+    name?: string | undefined;
+    slug?: string | undefined;
+
+    constructor(data?: ICreateTagRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.slug = _data["slug"];
+        }
+    }
+
+    static fromJS(data: any): CreateTagRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateTagRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["slug"] = this.slug;
+        return data;
+    }
+}
+
+export interface ICreateTagRequest {
+    name?: string | undefined;
+    slug?: string | undefined;
 }
 
 export class LoginRequest implements ILoginRequest {
@@ -2022,7 +4366,7 @@ export interface ILoginRequest {
 }
 
 export class PostResponse implements IPostResponse {
-    id?: number;
+    id?: string;
     title?: string | undefined;
     slug?: string | undefined;
     content?: string | undefined;
@@ -2118,7 +4462,7 @@ export class PostResponse implements IPostResponse {
 }
 
 export interface IPostResponse {
-    id?: number;
+    id?: string;
     title?: string | undefined;
     slug?: string | undefined;
     content?: string | undefined;
@@ -2141,6 +4485,70 @@ export enum PostStatus {
     _0 = 0,
     _1 = 1,
     _2 = 2,
+}
+
+export class ProblemDetails implements IProblemDetails {
+    type?: string | undefined;
+    title?: string | undefined;
+    status?: number | undefined;
+    detail?: string | undefined;
+    instance?: string | undefined;
+
+    [key: string]: any;
+
+    constructor(data?: IProblemDetails) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.type = _data["type"];
+            this.title = _data["title"];
+            this.status = _data["status"];
+            this.detail = _data["detail"];
+            this.instance = _data["instance"];
+        }
+    }
+
+    static fromJS(data: any): ProblemDetails {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProblemDetails();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["type"] = this.type;
+        data["title"] = this.title;
+        data["status"] = this.status;
+        data["detail"] = this.detail;
+        data["instance"] = this.instance;
+        return data;
+    }
+}
+
+export interface IProblemDetails {
+    type?: string | undefined;
+    title?: string | undefined;
+    status?: number | undefined;
+    detail?: string | undefined;
+    instance?: string | undefined;
+
+    [key: string]: any;
 }
 
 export class RegisterRequest implements IRegisterRequest {
@@ -2200,7 +4608,7 @@ export interface IRegisterRequest {
 }
 
 export class TagResponse implements ITagResponse {
-    id?: number;
+    id?: string;
     name?: string | undefined;
     slug?: string | undefined;
     postCount?: number;
@@ -2241,10 +4649,90 @@ export class TagResponse implements ITagResponse {
 }
 
 export interface ITagResponse {
-    id?: number;
+    id?: string;
     name?: string | undefined;
     slug?: string | undefined;
     postCount?: number;
+}
+
+export class UpdateCategoryRequest implements IUpdateCategoryRequest {
+    name?: string | undefined;
+    slug?: string | undefined;
+    description?: string | undefined;
+
+    constructor(data?: IUpdateCategoryRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.slug = _data["slug"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): UpdateCategoryRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateCategoryRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["slug"] = this.slug;
+        data["description"] = this.description;
+        return data;
+    }
+}
+
+export interface IUpdateCategoryRequest {
+    name?: string | undefined;
+    slug?: string | undefined;
+    description?: string | undefined;
+}
+
+export class UpdateCommentRequest implements IUpdateCommentRequest {
+    content?: string | undefined;
+
+    constructor(data?: IUpdateCommentRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.content = _data["content"];
+        }
+    }
+
+    static fromJS(data: any): UpdateCommentRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateCommentRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["content"] = this.content;
+        return data;
+    }
+}
+
+export interface IUpdateCommentRequest {
+    content?: string | undefined;
 }
 
 export class UpdatePostRequest implements IUpdatePostRequest {
@@ -2253,7 +4741,7 @@ export class UpdatePostRequest implements IUpdatePostRequest {
     summary?: string | undefined;
     featuredImageUrl?: string | undefined;
     allowComments?: boolean;
-    categoryIds?: number[] | undefined;
+    categoryIds?: string[] | undefined;
     tags?: string[] | undefined;
 
     constructor(data?: IUpdatePostRequest) {
@@ -2319,8 +4807,48 @@ export interface IUpdatePostRequest {
     summary?: string | undefined;
     featuredImageUrl?: string | undefined;
     allowComments?: boolean;
-    categoryIds?: number[] | undefined;
+    categoryIds?: string[] | undefined;
     tags?: string[] | undefined;
+}
+
+export class UpdateTagRequest implements IUpdateTagRequest {
+    name?: string | undefined;
+    slug?: string | undefined;
+
+    constructor(data?: IUpdateTagRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.slug = _data["slug"];
+        }
+    }
+
+    static fromJS(data: any): UpdateTagRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateTagRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["slug"] = this.slug;
+        return data;
+    }
+}
+
+export interface IUpdateTagRequest {
+    name?: string | undefined;
+    slug?: string | undefined;
 }
 
 export class UpdateUserProfileRequest implements IUpdateUserProfileRequest {
@@ -2444,7 +4972,7 @@ export interface IUpdateUserStatusRequest {
 }
 
 export class UserDetailResponse implements IUserDetailResponse {
-    id?: number;
+    id?: string;
     username?: string | undefined;
     email?: string | undefined;
     firstName?: string | undefined;
@@ -2518,7 +5046,7 @@ export class UserDetailResponse implements IUserDetailResponse {
 }
 
 export interface IUserDetailResponse {
-    id?: number;
+    id?: string;
     username?: string | undefined;
     email?: string | undefined;
     firstName?: string | undefined;
@@ -2536,7 +5064,7 @@ export interface IUserDetailResponse {
 }
 
 export class UserListItemResponse implements IUserListItemResponse {
-    id?: number;
+    id?: string;
     username?: string | undefined;
     email?: string | undefined;
     fullName?: string | undefined;
@@ -2589,7 +5117,7 @@ export class UserListItemResponse implements IUserListItemResponse {
 }
 
 export interface IUserListItemResponse {
-    id?: number;
+    id?: string;
     username?: string | undefined;
     email?: string | undefined;
     fullName?: string | undefined;
@@ -2600,7 +5128,7 @@ export interface IUserListItemResponse {
 }
 
 export class UserResponse implements IUserResponse {
-    id?: number;
+    id?: string;
     username?: string | undefined;
     email?: string | undefined;
     firstName?: string | undefined;
@@ -2662,7 +5190,7 @@ export class UserResponse implements IUserResponse {
 }
 
 export interface IUserResponse {
-    id?: number;
+    id?: string;
     username?: string | undefined;
     email?: string | undefined;
     firstName?: string | undefined;

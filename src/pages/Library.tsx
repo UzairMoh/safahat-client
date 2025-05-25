@@ -30,13 +30,15 @@ const Library = () => {
         featured: 'all'
     });
 
-    const getUserIdFromToken = (): number | null => {
+    const getUserIdFromToken = (): string | null => {
         try {
             const token = localStorage.getItem('token');
             if (!token) return null;
 
             const decoded = jwtDecode(token) as any;
-            return decoded.i || decoded.sub || parseInt(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
+            const id = decoded.i || decoded.sub || decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+            return id ? String(id) : null;
         } catch (err) {
             console.error('Failed to decode token:', err);
             return null;
@@ -74,11 +76,9 @@ const Library = () => {
         }
     };
 
-    // Filter and sort posts
     const filteredPosts = useMemo(() => {
         let filtered = [...posts];
 
-        // Search filter
         if (filters.search) {
             const searchLower = filters.search.toLowerCase();
             filtered = filtered.filter(post =>
@@ -88,20 +88,17 @@ const Library = () => {
             );
         }
 
-        // Status filter
         if (filters.status !== 'all') {
             const statusMap = { draft: 0, published: 1, archived: 2 };
             filtered = filtered.filter(post => post.status === statusMap[filters.status as keyof typeof statusMap]);
         }
 
-        // Featured filter
         if (filters.featured !== 'all') {
             filtered = filtered.filter(post =>
                 filters.featured === 'featured' ? post.isFeatured : !post.isFeatured
             );
         }
 
-        // Sort
         filtered.sort((a, b) => {
             let aValue, bValue;
 
@@ -145,17 +142,16 @@ const Library = () => {
     };
 
     const handleDeleteConfirm = async () => {
-        if (!postToDelete) return;
+        if (!postToDelete?.id) return;
 
         try {
             setDeleting(true);
-            await postService.deletePost(postToDelete.id!);
+            await postService.deletePost(postToDelete.id);
             setPosts(posts.filter(p => p.id !== postToDelete.id));
             setDeleteModalOpen(false);
             setPostToDelete(null);
         } catch (error: any) {
             console.error('Failed to delete post:', error);
-            // Could add a toast notification here
         } finally {
             setDeleting(false);
         }
@@ -191,7 +187,6 @@ const Library = () => {
             <Navigation username={posts[0]?.author?.username || 'User'} />
 
             <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -210,7 +205,6 @@ const Library = () => {
                 </motion.div>
 
                 {posts.length === 0 ? (
-                    /* Empty State */
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -227,14 +221,12 @@ const Library = () => {
                     </motion.div>
                 ) : (
                     <>
-                        {/* Filters */}
                         <LibraryFilters
                             filters={filters}
                             onFiltersChange={setFilters}
                             postCount={filteredPosts.length}
                         />
 
-                        {/* Posts Grid */}
                         <AnimatePresence>
                             {filteredPosts.length === 0 ? (
                                 <motion.div
@@ -271,11 +263,9 @@ const Library = () => {
                     </>
                 )}
 
-                {/* Floating Create Button */}
                 <FloatingCreateButton hasContent={posts.length > 0} />
             </main>
 
-            {/* Delete Confirmation Modal */}
             <AnimatePresence>
                 {deleteModalOpen && (
                     <motion.div

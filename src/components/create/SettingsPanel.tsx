@@ -1,23 +1,19 @@
 ﻿import { motion, AnimatePresence } from 'framer-motion';
 import { X, Save, Send } from 'lucide-react';
 import { Control } from 'react-hook-form';
+import { CategoryResponse } from '../api/Client';
 import FeaturedImageSettings from './FeaturedImageSettings';
 import PostSummarySettings from './PostSummarySettings';
 import CategorySettings from './CategorySettings';
 import TagSettings from './TagSettings';
 import PostOptionsSettings from './PostOptionsSettings';
 
-interface Category {
-    id: number;
-    name: string;
-}
-
 interface SettingsPanelProps {
     isOpen: boolean;
     onClose: () => void;
     control: Control<any>;
     watchedFields: any;
-    categories: Category[];
+    categories: CategoryResponse[];
     onSaveDraft: () => void;
     onPublish: () => void;
     loading?: boolean;
@@ -37,7 +33,6 @@ const SettingsPanel = ({
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -46,7 +41,6 @@ const SettingsPanel = ({
                         className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 lg:hidden cursor-pointer"
                     />
 
-                    {/* Panel */}
                     <motion.div
                         initial={{ x: "100%" }}
                         animate={{ x: 0 }}
@@ -54,7 +48,6 @@ const SettingsPanel = ({
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="fixed top-0 right-0 h-full w-96 bg-white border-l border-[#c9d5ef] z-40 flex flex-col shadow-2xl"
                     >
-                        {/* Header - Fixed */}
                         <div className="flex items-center justify-between p-4 border-b border-[#c9d5ef]/30 bg-[#f6f8fd]/50 flex-shrink-0">
                             <h2 className="text-lg font-semibold text-[#4a5b91]">Post Settings</h2>
                             <motion.button
@@ -67,7 +60,6 @@ const SettingsPanel = ({
                             </motion.button>
                         </div>
 
-                        {/* Content - Scrollable */}
                         <div className="flex-1 overflow-y-auto p-4">
                             <div className="space-y-4">
                                 <motion.div
@@ -120,7 +112,6 @@ const SettingsPanel = ({
                             </div>
                         </div>
 
-                        {/* Footer Actions - Fixed */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}

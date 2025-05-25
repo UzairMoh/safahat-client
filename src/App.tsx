@@ -7,6 +7,7 @@ import NotFound from "./components/common/NotFound.tsx";
 import authService from '../src/services/auth.service.ts';
 import type {JSX} from "react";
 import CreatePost from "./pages/CreatePosts.tsx";
+import BlogPost from "./pages/BlogPosts.tsx";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     if (!authService.isAuthenticated()) {
@@ -50,6 +51,14 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <CreatePost />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/posts/:slug"
+                            element={
+                                <ProtectedRoute>
+                                    <BlogPost />
                                 </ProtectedRoute>
                             }
                         />

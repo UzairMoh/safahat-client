@@ -2,9 +2,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { CreatePostRequest, PostResponse } from '../api/Client';
+import { CreatePostRequest, PostResponse, CategoryResponse } from '../api/Client';
 import postService from '../services/post.service';
-import authService from '../services/auth.service';
+import categoryService from '../services/category.service';
 import Loading from '../components/common/Loading';
 import Error from '../components/common/Error';
 import SettingsPanelToggle from "../components/create/SettingsPanelToggle.tsx";
@@ -23,14 +23,8 @@ const CreatePost = () => {
     const [error, setError] = useState<string | null>(null);
     const [saving, setSaving] = useState(false);
     const [settingsPanelOpen, setSettingsPanelOpen] = useState(false);
-
-    const [availableCategories] = useState([
-        { id: 1, name: 'Technology' },
-        { id: 2, name: 'Design' },
-        { id: 3, name: 'Business' },
-        { id: 4, name: 'Lifestyle' },
-        { id: 5, name: 'Travel' }
-    ]);
+    const [availableCategories, setAvailableCategories] = useState<CategoryResponse[]>([]);
+    const [categoriesLoading, setCategoriesLoading] = useState(true);
 
     const {
         control,
@@ -54,7 +48,23 @@ const CreatePost = () => {
 
     const watchedFields = watch();
 
-    // Auto-save functionality (simplified without indicator)
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                setCategoriesLoading(true);
+                const categories = await categoryService.getAllCategories();
+                setAvailableCategories(categories);
+            } catch (error) {
+                console.error('Failed to fetch categories:', error);
+                setError('Failed to load categories');
+            } finally {
+                setCategoriesLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
     const autoSave = useCallback(async () => {
         if (!isDirty || saving) return;
 
@@ -92,10 +102,8 @@ const CreatePost = () => {
             setLoading(true);
             setError(null);
 
-            if (!authService.isAuthenticated()) {
-                navigate('/auth');
-                return;
-            }
+            console.log('🚀 Starting post creation...');
+            console.log('📝 Form data:', data);
 
             const postData = new CreatePostRequest({
                 title: data.title,
@@ -108,15 +116,23 @@ const CreatePost = () => {
                 tags: data.tags
             });
 
+            console.log('📦 Post data being sent:', postData);
+
             const response: PostResponse = await postService.createPost(postData);
+            console.log('✅ Success response received:', response);
+            console.log('🔗 Response slug:', response.slug);
 
             if (data.isDraft) {
+                console.log('📁 Navigating to library...');
                 navigate('/library');
             } else {
+                console.log('📄 Navigating to post:', `/posts/${response.slug}`);
                 navigate(`/posts/${response.slug}`);
             }
         } catch (error: any) {
-            console.error('Failed to create post:', error);
+            console.error('❌ Error in onSubmit:', error);
+            console.error('❌ Error message:', error?.message);
+            console.error('❌ Full error object:', error);
             setError(error?.message || 'Failed to create post');
         } finally {
             setLoading(false);
@@ -133,7 +149,6 @@ const CreatePost = () => {
         handleSubmit(onSubmit)();
     };
 
-    // Handle keyboard shortcuts
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.metaKey || e.ctrlKey) {
@@ -160,8 +175,8 @@ const CreatePost = () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [settingsPanelOpen]);
 
-    if (loading) {
-        return <Loading message="Creating your post..." />;
+    if (loading || categoriesLoading) {
+        return <Loading message={categoriesLoading ? "Loading categories..." : "Creating your post..."} />;
     }
 
     if (error) {
@@ -182,10 +197,8 @@ const CreatePost = () => {
             transition={{ duration: 0.5 }}
             className="min-h-screen bg-white relative overflow-hidden"
         >
-            {/* Floating Back Button */}
             <FloatingBackButton />
 
-            {/* Floating Action Buttons */}
             <FloatingActionButtons
                 onSaveDraft={saveDraft}
                 onPublish={publishPost}
@@ -193,9 +206,7 @@ const CreatePost = () => {
                 isSettingsPanelOpen={settingsPanelOpen}
             />
 
-            {/* Main Content */}
             <div className="flex h-screen">
-                {/* Editor Container */}
                 <form onSubmit={handleSubmit(onSubmit)} className="flex-1">
                     <EditorContainer
                         control={control}
@@ -204,7 +215,6 @@ const CreatePost = () => {
                     />
                 </form>
 
-                {/* Settings Panel */}
                 <SettingsPanel
                     isOpen={settingsPanelOpen}
                     onClose={() => setSettingsPanelOpen(false)}
@@ -216,7 +226,6 @@ const CreatePost = () => {
                     loading={loading}
                 />
 
-                {/* Settings Panel Toggle */}
                 {!settingsPanelOpen && (
                     <SettingsPanelToggle
                         onClick={() => setSettingsPanelOpen(true)}
