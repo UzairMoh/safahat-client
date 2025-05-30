@@ -1,7 +1,6 @@
-﻿import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+﻿import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { PostResponse, CommentResponse } from '../api/Client';
+import { useQuery } from '@tanstack/react-query';
 import postService from '../services/post.service';
 import Loading from '../components/common/Loading';
 import Error from '../components/common/Error';
@@ -9,101 +8,46 @@ import FloatingBackButton from '../components/create/FloatingBackButton';
 import PostHeader from '../components/blog/PostHeader';
 import PostContent from '../components/blog/PostContent';
 import CommentSection from '../components/blog/CommentSection';
-import commentService from "../services/comments.service.ts";
+import { POST_QUERY_KEYS } from '../constants/queryKeys/posts';
+import { useCommentsByPost } from '../hooks/comments/useComments.ts';
 
 const BlogPost = () => {
     const { slug } = useParams<{ slug: string }>();
     const navigate = useNavigate();
-    const [post, setPost] = useState<PostResponse | null>(null);
-    const [comments, setComments] = useState<CommentResponse[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [commentsLoading, setCommentsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchPost = async () => {
-            if (!slug) {
-                setError('Post ID not provided');
-                setLoading(false);
-                return;
-            }
+    const {
+        data: post,
+        isLoading: postLoading,
+        error: postError,
+    } = useQuery({
+        queryKey: POST_QUERY_KEYS.postBySlug(slug || ''),
+        queryFn: () => postService.getPostBySlug(slug!),
+        enabled: !!slug,
+        staleTime: 5 * 60 * 1000,
+        retry: 1,
+    });
 
-            try {
-                setLoading(true);
-                console.log('🔍 Fetching post with ID:', slug);
-                const postData = await postService.getPostBySlug(slug);
-                console.log('✅ Post fetched successfully:', postData);
-                setPost(postData);
-            } catch (error: any) {
-                console.error('❌ Error fetching post:', error);
-                setError(error?.message || 'Failed to load post');
-            } finally {
-                setLoading(false);
-            }
-        };
+    const {
+        data: comments = [],
+        isLoading: commentsLoading,
+        refetch: refetchComments
+    } = useCommentsByPost(post?.id || null);
 
-        fetchPost();
-    }, [slug]);
+    const handleCommentAdded = () => {};
+    const handleCommentUpdated = () => {};
+    const handleCommentDeleted = () => {};
+    const refreshComments = () => refetchComments();
 
-    useEffect(() => {
-        const fetchComments = async () => {
-            if (!slug) return;
-
-            try {
-                setCommentsLoading(true);
-                console.log('💬 Fetching comments for post:', slug);
-                const commentsData = await commentService.getCommentsByPost(slug);
-                console.log('✅ Comments fetched successfully:', commentsData);
-                setComments(commentsData);
-            } catch (error: any) {
-                console.error('❌ Error fetching comments:', error);
-                // Don't show error for comments, just log it
-            } finally {
-                setCommentsLoading(false);
-            }
-        };
-
-        if (post) {
-            fetchComments();
-        }
-    }, [slug, post]);
-
-    const handleCommentAdded = (newComment: CommentResponse) => {
-        setComments(prev => [newComment, ...prev]);
-    };
-
-    const handleCommentUpdated = (updatedComment: CommentResponse) => {
-        setComments(prev =>
-            prev.map(comment =>
-                comment.id === updatedComment.id ? updatedComment : comment
-            )
-        );
-    };
-
-    const handleCommentDeleted = (commentId: string) => {
-        setComments(prev => prev.filter(comment => comment.id !== commentId));
-    };
-
-    const refreshComments = async () => {
-        if (!slug) return;
-
-        try {
-            const commentsData = await commentService.getCommentsByPost(slug);
-            setComments(commentsData);
-        } catch (error) {
-            console.error('Error refreshing comments:', error);
-        }
-    };
-
-    if (loading) {
+    if (postLoading) {
         return <Loading message="Loading post..." />;
     }
 
-    if (error || !post) {
+    if (postError || !post) {
+        const errorMessage = postError?.message || "The post you're looking for doesn't exist.";
         return (
             <Error
                 title="Post Not Found"
-                message={error || "The post you're looking for doesn't exist."}
+                message={errorMessage}
                 onRetry={() => navigate('/library')}
                 showLogout={false}
             />

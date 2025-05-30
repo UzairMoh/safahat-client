@@ -2,7 +2,6 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-    Clock,
     Users,
     Eye,
     Star,
@@ -11,100 +10,14 @@ import {
     PenTool,
 } from 'lucide-react';
 import authService from '../services/auth.service';
+import postService from '../services/post.service';
 import { jwtDecode } from 'jwt-decode';
 import Navigation from '../components/common/Navigation';
 import Loading from '../components/common/Loading';
+import {IPostResponse} from "../api/Client.ts";
+import {useCategoriesWithPostCount} from "../hooks/categories/useCategory.ts";
 
-const mockFeaturedPosts = [
-    {
-        id: 1,
-        title: "The Future of AI in Content Creation",
-        summary: "Exploring how artificial intelligence is revolutionizing the way we create and consume content in the digital age.",
-        author: "Sarah Chen",
-        readTime: "8 min read",
-        image: "https://images.unsplash.com/photo-1525338078858-d762b5e32f2c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        category: "Technology",
-        publishedAt: "2024-01-15",
-        views: 2847,
-        featured: true
-    },
-    {
-        id: 2,
-        title: "Building Sustainable Remote Work Culture",
-        summary: "A comprehensive guide to creating lasting remote work practices that benefit both employees and organizations.",
-        author: "Marcus Johnson",
-        readTime: "12 min read",
-        image: "https://images.unsplash.com/photo-1532960546490-72765f9494c9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        category: "Business",
-        publishedAt: "2024-01-12",
-        views: 1923,
-        featured: true
-    },
-    {
-        id: 3,
-        title: "Minimalist Design Principles for 2024",
-        summary: "Discover the key principles of minimalist design and how to apply them to create stunning, functional interfaces.",
-        author: "Elena Rodriguez",
-        readTime: "6 min read",
-        image: "https://images.unsplash.com/photo-1476357471311-43c0db9fb2b4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        category: "Design",
-        publishedAt: "2024-01-10",
-        views: 3241,
-        featured: true
-    }
-];
-
-const mockRecentPosts = [
-    {
-        id: 4,
-        title: "Getting Started with TypeScript",
-        summary: "A beginner-friendly introduction to TypeScript and its benefits for modern web development.",
-        author: "David Kim",
-        readTime: "5 min read",
-        category: "Technology",
-        publishedAt: "2024-01-08",
-        views: 892
-    },
-    {
-        id: 5,
-        title: "The Art of Visual Storytelling",
-        summary: "How to use visual elements to enhance your content and create more engaging narratives.",
-        author: "Anna Foster",
-        readTime: "7 min read",
-        category: "Design",
-        publishedAt: "2024-01-06",
-        views: 1456
-    },
-    {
-        id: 6,
-        title: "Productivity Hacks for Writers",
-        summary: "Proven strategies to boost your writing productivity and overcome creative blocks.",
-        author: "James Wright",
-        readTime: "9 min read",
-        category: "Lifestyle",
-        publishedAt: "2024-01-04",
-        views: 1123
-    },
-    {
-        id: 7,
-        title: "Understanding User Experience Design",
-        summary: "Core principles of UX design that every designer should know to create better user experiences.",
-        author: "Lisa Park",
-        readTime: "11 min read",
-        category: "Design",
-        publishedAt: "2024-01-02",
-        views: 2034
-    }
-];
-
-const mockCategories = [
-    { name: "Technology", count: 24, color: "bg-blue-100 text-blue-700" },
-    { name: "Design", count: 18, color: "bg-purple-100 text-purple-700" },
-    { name: "Business", count: 15, color: "bg-green-100 text-green-700" },
-    { name: "Lifestyle", count: 12, color: "bg-orange-100 text-orange-700" },
-    { name: "Travel", count: 8, color: "bg-pink-100 text-pink-700" }
-];
-
+// Keep mock stats since no API endpoint exists
 const mockStats = [
     { label: "Total Posts", value: "1,247", icon: BookOpen },
     { label: "Active Writers", value: "89", icon: Users },
@@ -115,7 +28,12 @@ const mockStats = [
 const Home = () => {
     const [loading, setLoading] = useState(true);
     const [username, setUsername] = useState('User');
+    const [featuredPosts, setFeaturedPosts] = useState<IPostResponse[]>([]);
+    const [recentPosts, setRecentPosts] = useState<IPostResponse[]>([]);
     const navigate = useNavigate();
+
+    // Use category hook for categories with post count
+    const { data: categories, isLoading: categoriesLoading } = useCategoriesWithPostCount();
 
     const getUsernameFromToken = (): string => {
         try {
@@ -136,8 +54,26 @@ const Home = () => {
             return;
         }
 
-        setUsername(getUsernameFromToken());
-        setLoading(false);
+        const loadData = async () => {
+            try {
+                setUsername(getUsernameFromToken());
+
+                // Load featured posts
+                const featuredData = await postService.getFeaturedPosts();
+                setFeaturedPosts(featuredData);
+
+                // Load recent posts (first 4 published posts)
+                const recentData = await postService.getPublishedPosts(1, 4);
+                setRecentPosts(recentData);
+
+            } catch (error) {
+                console.error('Failed to load data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadData();
     }, [navigate]);
 
     if (loading) {
@@ -232,7 +168,7 @@ const Home = () => {
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {mockFeaturedPosts.map((post, index) => (
+                        {featuredPosts.slice(0, 3).map((post, index) => (
                             <motion.article
                                 key={post.id}
                                 initial={{ opacity: 0, y: 20 }}
@@ -241,34 +177,29 @@ const Home = () => {
                                 whileHover={{ y: -5 }}
                                 className="bg-white border border-[#c9d5ef]/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
                             >
-                                <img
-                                    src={post.image}
-                                    alt={post.title}
-                                    className="w-full h-48 object-cover"
-                                />
+                                {post.featuredImageUrl && (
+                                    <img
+                                        src={post.featuredImageUrl}
+                                        alt={post.title}
+                                        className="w-full h-48 object-cover"
+                                    />
+                                )}
                                 <div className="p-6">
                                     <div className="flex items-center justify-between mb-3">
                                         <span className="px-3 py-1 bg-[#f6f8fd] text-[#4a5b91] text-xs font-medium rounded-full">
-                                            {post.category}
+                                            {post.categories?.[0]?.name || 'General'}
                                         </span>
                                         <div className="flex items-center space-x-1 text-[#938384] text-xs">
                                             <Eye className="w-3 h-3" />
-                                            <span>{post.views}</span>
+                                            <span>{post.viewCount || 0}</span>
                                         </div>
                                     </div>
                                     <h3 className="text-lg font-semibold text-[#4a5b91] mb-2 line-clamp-2">
                                         {post.title}
                                     </h3>
                                     <p className="text-[#938384] text-sm mb-4 line-clamp-2">
-                                        {post.summary}
+                                        {post.summary || post.content?.substring(0, 120) + '...'}
                                     </p>
-                                    <div className="flex items-center justify-between text-xs text-[#938384]">
-                                        <span>By {post.author}</span>
-                                        <div className="flex items-center space-x-1">
-                                            <Clock className="w-3 h-3" />
-                                            <span>{post.readTime}</span>
-                                        </div>
-                                    </div>
                                 </div>
                             </motion.article>
                         ))}
@@ -296,7 +227,7 @@ const Home = () => {
                         </div>
 
                         <div className="space-y-4">
-                            {mockRecentPosts.map((post, index) => (
+                            {recentPosts.map((post, index) => (
                                 <motion.article
                                     key={post.id}
                                     initial={{ opacity: 0, x: -20 }}
@@ -308,26 +239,19 @@ const Home = () => {
                                         <div className="flex-1">
                                             <div className="flex items-center space-x-2 mb-2">
                                                 <span className="px-2 py-1 bg-[#f6f8fd] text-[#4a5b91] text-xs font-medium rounded">
-                                                    {post.category}
+                                                    {post.categories?.[0]?.name || 'General'}
                                                 </span>
                                                 <div className="flex items-center space-x-1 text-[#938384] text-xs">
                                                     <Eye className="w-3 h-3" />
-                                                    <span>{post.views}</span>
+                                                    <span>{post.viewCount || 0}</span>
                                                 </div>
                                             </div>
                                             <h3 className="font-semibold text-[#4a5b91] mb-1 line-clamp-1">
                                                 {post.title}
                                             </h3>
                                             <p className="text-[#938384] text-sm mb-2 line-clamp-2">
-                                                {post.summary}
+                                                {post.summary || post.content?.substring(0, 120) + '...'}
                                             </p>
-                                            <div className="flex items-center justify-between text-xs text-[#938384]">
-                                                <span>By {post.author}</span>
-                                                <div className="flex items-center space-x-1">
-                                                    <Clock className="w-3 h-3" />
-                                                    <span>{post.readTime}</span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </motion.article>
@@ -345,20 +269,24 @@ const Home = () => {
                         {/* Categories */}
                         <div className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6">
                             <h3 className="text-lg font-semibold text-[#4a5b91] mb-4">Popular Categories</h3>
-                            <div className="space-y-3">
-                                {mockCategories.map((category, index) => (
-                                    <motion.div
-                                        key={category.name}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.1 * index }}
-                                        className="flex items-center justify-between cursor-pointer hover:bg-[#f6f8fd] p-2 rounded-lg transition-colors"
-                                    >
-                                        <span className="text-[#4a5b91] font-medium">{category.name}</span>
-                                        <span className="text-[#938384] text-sm">{category.count} posts</span>
-                                    </motion.div>
-                                ))}
-                            </div>
+                            {categoriesLoading ? (
+                                <div className="text-[#938384] text-sm">Loading categories...</div>
+                            ) : (
+                                <div className="space-y-3">
+                                    {(categories || []).slice(0, 5).map((category, index) => (
+                                        <motion.div
+                                            key={category.id}
+                                            initial={{ opacity: 0, x: 20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.1 * index }}
+                                            className="flex items-center justify-between cursor-pointer hover:bg-[#f6f8fd] p-2 rounded-lg transition-colors"
+                                        >
+                                            <span className="text-[#4a5b91] font-medium">{category.name}</span>
+                                            <span className="text-[#938384] text-sm">{category.postCount || 0} posts</span>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
                         {/* Newsletter Demo */}

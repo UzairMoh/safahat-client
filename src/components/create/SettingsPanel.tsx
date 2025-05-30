@@ -1,7 +1,7 @@
 ﻿import { motion, AnimatePresence } from 'framer-motion';
 import { X, Save, Send } from 'lucide-react';
 import { Control } from 'react-hook-form';
-import { CategoryResponse } from '../api/Client';
+import { CategoryResponse } from '../../api/Client.ts';
 import FeaturedImageSettings from './FeaturedImageSettings';
 import PostSummarySettings from './PostSummarySettings';
 import CategorySettings from './CategorySettings';

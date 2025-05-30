@@ -8,7 +8,7 @@
     POSTS: {
         CREATE: '/posts/create',
         EDIT: (id: string) => `/posts/edit/${id}`,
-        VIEW: (id: string) => `/posts/${id}`,
+        VIEW: (slug: string) => `/posts/${slug}`,
     },
     PROFILE: '/profile',
     SETTINGS: '/settings',
