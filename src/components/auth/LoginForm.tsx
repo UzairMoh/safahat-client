@@ -153,7 +153,7 @@ const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
                         <div className="w-full border-t border-[#c9d5ef]"></div>
                     </div>
                     <div className="relative flex justify-center text-sm">
-                        <span className="px-2 bg-white/80 text-[#938384]">Or</span>
+                        <span className="px-2 bg-[#fbfbfb] text-[#938384]">Or</span>
                     </div>
                 </div>
 
