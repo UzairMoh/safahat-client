@@ -1,6 +1,6 @@
 ﻿import { motion, AnimatePresence } from 'framer-motion';
 import { Save, Send } from 'lucide-react';
-import { useScrollVisibility } from '../../hooks/useScrollVisibility';
+import { useScrollVisibility } from '../../hooks/posts/useScrollVisibility.ts';
 
 interface FloatingActionButtonsProps {
     onSaveDraft: () => void;

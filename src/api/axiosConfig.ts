@@ -7,10 +7,9 @@ const axiosConfig = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    timeout: 10000, // 10 second timeout
+    timeout: 10000,
 });
 
-// Request interceptor to add auth token
 axiosConfig.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');

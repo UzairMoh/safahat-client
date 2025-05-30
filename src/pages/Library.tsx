@@ -1,172 +1,67 @@
-﻿import { useEffect, useState, useMemo } from 'react';
+﻿import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Trash2, AlertTriangle } from 'lucide-react';
 import { PostResponse } from '../api/Client';
 import authService from '../services/auth.service';
-import postService from '../services/post.service';
-import { jwtDecode } from 'jwt-decode';
+import { getUserIdFromToken } from '../utils/auth.utils';
 import Navigation from '../components/common/Navigation';
 import PostListItem from '../components/posts/PostListItem';
-import LibraryFilters, { FilterOptions } from '../components/posts/LibraryFilters';
+import LibraryFilters from '../components/posts/LibraryFilters';
 import FloatingCreateButton from '../components/posts/FloatingCreateButton';
 import Loading from '../components/common/Loading';
 import Error from '../components/common/Error';
+import { useUserPosts } from '../hooks/posts/usePosts';
+import { usePostFilters } from '../hooks/posts/usePostFilters';
+import { useDeleteModal } from '../hooks/posts/useDeleteModal';
+import { ROUTES } from '../constants/routes/routes';
 
 const Library = () => {
-    const [posts, setPosts] = useState<PostResponse[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [postToDelete, setPostToDelete] = useState<PostResponse | null>(null);
-    const [deleting, setDeleting] = useState(false);
     const navigate = useNavigate();
+    const userId = getUserIdFromToken();
 
-    const [filters, setFilters] = useState<FilterOptions>({
-        search: '',
-        status: 'all',
-        sortBy: 'date',
-        sortOrder: 'desc',
-        featured: 'all'
-    });
+    const { data: posts = [], isLoading, error, refetch } = useUserPosts(userId);
+    const { filters, setFilters, filteredPosts } = usePostFilters(posts);
+    const {
+        isOpen: deleteModalOpen,
+        postToDelete,
+        isDeleting,
+        openModal: openDeleteModal,
+        closeModal: closeDeleteModal,
+        confirmDelete
+    } = useDeleteModal();
 
-    const getUserIdFromToken = (): string | null => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) return null;
-
-            const decoded = jwtDecode(token) as any;
-            const id = decoded.i || decoded.sub || decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-
-            return id ? String(id) : null;
-        } catch (err) {
-            console.error('Failed to decode token:', err);
-            return null;
-        }
-    };
-
-    const fetchPosts = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            if (!authService.isAuthenticated()) {
-                navigate('/auth');
-                return;
-            }
-
-            const userId = getUserIdFromToken();
-            if (!userId) {
-                setError('Could not determine user ID from token');
-                return;
-            }
-
-            const postsData = await postService.getPostsByAuthor(userId);
-            setPosts(Array.isArray(postsData) ? postsData : []);
-        } catch (error: any) {
-            console.error('Failed to fetch posts:', error);
-            setError(error?.message || 'Failed to load posts');
-
-            if (error?.response?.status === 401) {
-                authService.logout();
-                navigate('/auth');
-            }
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const filteredPosts = useMemo(() => {
-        let filtered = [...posts];
-
-        if (filters.search) {
-            const searchLower = filters.search.toLowerCase();
-            filtered = filtered.filter(post =>
-                post.title?.toLowerCase().includes(searchLower) ||
-                post.summary?.toLowerCase().includes(searchLower) ||
-                post.tags?.some(tag => tag.name?.toLowerCase().includes(searchLower))
-            );
-        }
-
-        if (filters.status !== 'all') {
-            const statusMap = { draft: 0, published: 1, archived: 2 };
-            filtered = filtered.filter(post => post.status === statusMap[filters.status as keyof typeof statusMap]);
-        }
-
-        if (filters.featured !== 'all') {
-            filtered = filtered.filter(post =>
-                filters.featured === 'featured' ? post.isFeatured : !post.isFeatured
-            );
-        }
-
-        filtered.sort((a, b) => {
-            let aValue, bValue;
-
-            switch (filters.sortBy) {
-                case 'title':
-                    aValue = a.title?.toLowerCase() || '';
-                    bValue = b.title?.toLowerCase() || '';
-                    break;
-                case 'views':
-                    aValue = a.viewCount || 0;
-                    bValue = b.viewCount || 0;
-                    break;
-                case 'date':
-                default:
-                    aValue = new Date(a.publishedAt || a.createdAt || 0).getTime();
-                    bValue = new Date(b.publishedAt || b.createdAt || 0).getTime();
-                    break;
-            }
-
-            if (filters.sortOrder === 'asc') {
-                return aValue > bValue ? 1 : -1;
-            } else {
-                return aValue < bValue ? 1 : -1;
-            }
-        });
-
-        return filtered;
-    }, [posts, filters]);
-
-    useEffect(() => {
-        fetchPosts();
+    const handleEdit = useCallback((post: PostResponse) => {
+        navigate(ROUTES.POSTS.EDIT(post.id!));
     }, [navigate]);
 
-    const handleEdit = (post: PostResponse) => {
-        navigate(`/posts/edit/${post.id}`);
-    };
+    const handleRetry = useCallback(() => {
+        refetch();
+    }, [refetch]);
 
-    const handleDeleteClick = (post: PostResponse) => {
-        setPostToDelete(post);
-        setDeleteModalOpen(true);
-    };
-
-    const handleDeleteConfirm = async () => {
-        if (!postToDelete?.id) return;
-
-        try {
-            setDeleting(true);
-            await postService.deletePost(postToDelete.id);
-            setPosts(posts.filter(p => p.id !== postToDelete.id));
-            setDeleteModalOpen(false);
-            setPostToDelete(null);
-        } catch (error: any) {
-            console.error('Failed to delete post:', error);
-        } finally {
-            setDeleting(false);
-        }
-    };
-
-    const handleRetry = () => {
-        fetchPosts();
-    };
-
-    const handleLogout = () => {
+    const handleLogout = useCallback(() => {
         authService.logout();
-        navigate('/auth');
-    };
+        navigate(ROUTES.AUTH);
+    }, [navigate]);
 
-    if (loading) {
+    if (!authService.isAuthenticated()) {
+        navigate(ROUTES.AUTH);
+        return null;
+    }
+
+    if (!userId) {
+        return (
+            <Error
+                title="Authentication Error"
+                message="Could not determine user ID from token"
+                onRetry={handleRetry}
+                onLogout={handleLogout}
+                showLogout={true}
+            />
+        );
+    }
+
+    if (isLoading) {
         return <Loading message="Loading your library..." />;
     }
 
@@ -174,7 +69,7 @@ const Library = () => {
         return (
             <Error
                 title="Error Loading Library"
-                message={error}
+                message={error?.message || 'Failed to load posts'}
                 onRetry={handleRetry}
                 onLogout={handleLogout}
                 showLogout={true}
@@ -254,7 +149,7 @@ const Library = () => {
                                             post={post}
                                             index={index}
                                             onEdit={handleEdit}
-                                            onDelete={handleDeleteClick}
+                                            onDelete={openDeleteModal}
                                         />
                                     ))}
                                 </motion.div>
@@ -266,6 +161,7 @@ const Library = () => {
                 <FloatingCreateButton hasContent={posts.length > 0} />
             </main>
 
+            {/* Delete Modal */}
             <AnimatePresence>
                 {deleteModalOpen && (
                     <motion.div
@@ -273,7 +169,7 @@ const Library = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 cursor-pointer"
-                        onClick={() => !deleting && setDeleteModalOpen(false)}
+                        onClick={() => !isDeleting && closeDeleteModal()}
                     >
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -293,15 +189,16 @@ const Library = () => {
                             </div>
 
                             <p className="text-[#938384] mb-6">
-                                Are you sure you want to delete "<span className="font-medium text-[#4a5b91]">{postToDelete?.title}</span>"?
+                                Are you sure you want to delete "
+                                <span className="font-medium text-[#4a5b91]">{postToDelete?.title}</span>"?
                             </p>
 
                             <div className="flex space-x-3">
                                 <motion.button
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
-                                    onClick={() => setDeleteModalOpen(false)}
-                                    disabled={deleting}
+                                    onClick={closeDeleteModal}
+                                    disabled={isDeleting}
                                     className="flex-1 px-4 py-2 border border-[#c9d5ef] text-[#4a5b91] rounded-lg hover:bg-[#f6f8fd] transition-colors disabled:opacity-50 cursor-pointer"
                                 >
                                     Cancel
@@ -309,11 +206,11 @@ const Library = () => {
                                 <motion.button
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
-                                    onClick={handleDeleteConfirm}
-                                    disabled={deleting}
+                                    onClick={confirmDelete}
+                                    disabled={isDeleting}
                                     className="flex-1 flex items-center justify-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 cursor-pointer"
                                 >
-                                    {deleting ? (
+                                    {isDeleting ? (
                                         <motion.div
                                             animate={{ rotate: 360 }}
                                             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
