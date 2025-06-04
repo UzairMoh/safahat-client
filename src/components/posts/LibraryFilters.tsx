@@ -44,7 +44,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-sm mb-8"
+            className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-lg mb-8"
         >
             {/* Search and Quick Filters */}
             <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">

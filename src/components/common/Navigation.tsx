@@ -131,35 +131,49 @@ const Navigation = () => {
 
                                 <AnimatePresence>
                                     {isDropdownOpen && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            transition={{ duration: 0.15 }}
-                                            className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white border border-[#c9d5ef] ring-1 ring-[#c9d5ef] ring-opacity-5 focus:outline-none z-50"
-                                        >
-                                            <div className="py-1">
-                                                <div className="px-4 py-2 border-b border-[#c9d5ef]">
+                                        <>
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                                                transition={{ duration: 0.15 }}
+                                                className="absolute right-0 mt-2 w-48 bg-white border border-[#c9d5ef]/50 rounded-xl shadow-xl py-2 z-50"
+                                            >
+                                                <div className="px-4 py-2 border-b border-[#c9d5ef]/30 mb-1">
                                                     <p className="text-sm font-medium text-[#4a5b91]">{displayName}</p>
                                                     <p className="text-xs text-[#938384]">{user.email}</p>
+                                                    {roleDisplayName && (
+                                                        <p className="text-xs text-[#938384] capitalize mt-0.5">
+                                                            {roleDisplayName}
+                                                        </p>
+                                                    )}
                                                 </div>
+
                                                 <Link
                                                     to="/profile"
-                                                    className="flex items-center px-4 py-2 text-sm text-[#938384] hover:bg-[#f6f8fd] hover:text-[#4a5b91]"
+                                                    className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-[#4a5b91] hover:bg-[#f6f8fd] transition-colors"
                                                     onClick={() => setIsDropdownOpen(false)}
                                                 >
-                                                    <User size={16} className="mr-2" />
-                                                    Profile
+                                                    <User className="w-4 h-4" />
+                                                    <span>Profile</span>
                                                 </Link>
+
+                                                <div className="border-t border-[#c9d5ef]/30 my-1"></div>
+
                                                 <button
                                                     onClick={handleLogout}
-                                                    className="flex items-center w-full text-left px-4 py-2 text-sm text-[#938384] hover:bg-[#f6f8fd] hover:text-[#4a5b91]"
+                                                    className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                                                 >
-                                                    <LogOut size={16} className="mr-2" />
-                                                    Log out
+                                                    <LogOut className="w-4 h-4" />
+                                                    <span>Log out</span>
                                                 </button>
-                                            </div>
-                                        </motion.div>
+                                            </motion.div>
+
+                                            <div
+                                                className="fixed inset-0 z-40"
+                                                onClick={() => setIsDropdownOpen(false)}
+                                            />
+                                        </>
                                     )}
                                 </AnimatePresence>
                             </div>

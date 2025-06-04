@@ -213,7 +213,7 @@ const RegisterForm = ({ onSuccess, switchToLogin }: RegisterFormProps) => {
                             scale: isLoading ? 1 : 0.97,
                             transition: { duration: 0.1 }
                         }}
-                        className={`w-full py-3 px-4 bg-[#4a5b91] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] transition-colors shadow-md flex items-center justify-center ${
+                        className={`w-full py-3 px-4 bg-[#4a5b91] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] transition-colors shadow-lg flex items-center justify-center ${
                             isLoading ? 'opacity-75 cursor-not-allowed' : ''
                         }`}
                     >

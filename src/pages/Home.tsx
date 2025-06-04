@@ -118,7 +118,7 @@ const Home = () => {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.1 * index }}
-                                className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow"
+                                className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
                             >
                                 <div className="flex items-center justify-center w-12 h-12 bg-[#f6f8fd] rounded-xl mx-auto mb-4">
                                     <stat.icon className="w-6 h-6 text-[#4a5b91]" />
@@ -217,7 +217,7 @@ const Home = () => {
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.1 * index }}
-                                    className="bg-white border border-[#c9d5ef]/30 rounded-xl p-4 hover:shadow-md transition-shadow cursor-pointer"
+                                    className="bg-white border border-[#c9d5ef]/30 rounded-xl p-4 hover:shadow-lg transition-shadow cursor-pointer"
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex-1">

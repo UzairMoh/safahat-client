@@ -1,6 +1,7 @@
 ﻿import { motion } from 'framer-motion';
 import { Calendar, User, Eye, MessageSquare, Tag } from 'lucide-react';
 import { PostResponse } from '../../api/Client';
+import { BadgeCheck, File, Star } from 'lucide-react';
 
 interface PostHeaderProps {
     post: PostResponse;
@@ -60,13 +61,16 @@ const PostHeader = ({ post }: PostHeaderProps) => {
 
             {/* Post Status & Featured Badge */}
             <div className="flex items-center gap-3 mb-6">
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(post.status!)}`}>
+                <span className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(post.status!)}`}>
+                    {post.status === 1 && <BadgeCheck className="w-3 h-3" />}
+                    {post.status === 0 && <File className="w-3 h-3" />}
                     {getStatusText(post.status!)}
                 </span>
                 {post.isFeatured && (
-                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
-                        ⭐ Featured
-                    </span>
+                    <span className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                    <Star className="w-3 h-3" />
+                    Featured
+                </span>
                 )}
             </div>
 

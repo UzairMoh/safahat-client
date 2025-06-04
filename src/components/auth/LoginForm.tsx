@@ -149,7 +149,7 @@ const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
                         duration: 0.3,
                         ease: "easeOut"
                     }}
-                    className={`w-full py-3 px-4 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] shadow-md bg-[#4a5b91] ${
+                    className={`w-full py-3 px-4 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] shadow-lg bg-[#4a5b91] ${
                         isLoading ? 'opacity-75 cursor-not-allowed' : ''
                     }`}
                 >

@@ -53,7 +53,7 @@ const SearchResultCard = ({ post, query }: SearchResultCardProps) => {
     return (
         <article
             onClick={isClickable ? handleClick : undefined}
-            className={`bg-white border border-[#c9d5ef]/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 ${
+            className={`bg-white border border-[#c9d5ef]/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ${
                 isClickable ? 'cursor-pointer' : 'cursor-default'
             }`}
         >

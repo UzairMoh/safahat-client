@@ -6,6 +6,8 @@
 
 /* tslint:disable */
 /* eslint-disable */
+
+// @ts-nocheck
 // ReSharper disable InconsistentNaming
 
 import axios, { AxiosError } from 'axios';
@@ -24,7 +26,7 @@ export interface IApiClient {
     register(body: RegisterRequest | undefined): Promise<AuthResponse>;
     /**
      * @param body (optional) 
-     * @return OK
+     * @return No Content
      */
     changePassword(body: ChangePasswordRequest | undefined): Promise<void>;
     /**
@@ -59,7 +61,7 @@ export interface IApiClient {
      */
     categoriesPUT(id: string, body: UpdateCategoryRequest | undefined): Promise<CategoryResponse>;
     /**
-     * @return OK
+     * @return No Content
      */
     categoriesDELETE(id: string): Promise<void>;
     /**
@@ -85,7 +87,7 @@ export interface IApiClient {
      */
     commentsPUT(id: string, body: UpdateCommentRequest | undefined): Promise<CommentResponse>;
     /**
-     * @return OK
+     * @return No Content
      */
     commentsDELETE(id: string): Promise<void>;
     /**
@@ -106,11 +108,11 @@ export interface IApiClient {
      */
     reply(parentCommentId: string, body: CreateCommentRequest | undefined): Promise<CommentResponse>;
     /**
-     * @return OK
+     * @return No Content
      */
     approve(id: string): Promise<void>;
     /**
-     * @return OK
+     * @return No Content
      */
     reject(id: string): Promise<void>;
     /**
@@ -138,7 +140,7 @@ export interface IApiClient {
      */
     postsPUT(id: string, body: UpdatePostRequest | undefined): Promise<PostResponse>;
     /**
-     * @return OK
+     * @return No Content
      */
     postsDELETE(id: string): Promise<void>;
     /**
@@ -175,19 +177,19 @@ export interface IApiClient {
      */
     featured(): Promise<PostResponse[]>;
     /**
-     * @return OK
+     * @return No Content
      */
     publish(id: string): Promise<void>;
     /**
-     * @return OK
+     * @return No Content
      */
     unpublish(id: string): Promise<void>;
     /**
-     * @return OK
+     * @return No Content
      */
     feature(id: string): Promise<void>;
     /**
-     * @return OK
+     * @return No Content
      */
     unfeature(id: string): Promise<void>;
     /**
@@ -218,7 +220,7 @@ export interface IApiClient {
      */
     tagsPUT(id: string, body: UpdateTagRequest | undefined): Promise<TagResponse>;
     /**
-     * @return OK
+     * @return No Content
      */
     tagsDELETE(id: string): Promise<void>;
     /**
@@ -234,7 +236,7 @@ export interface IApiClient {
      */
     usersGET(id: string): Promise<UserDetailResponse>;
     /**
-     * @return OK
+     * @return No Content
      */
     usersDELETE(id: string): Promise<void>;
     /**
@@ -286,7 +288,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -349,7 +351,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -398,7 +400,7 @@ export class ApiClient implements IApiClient {
 
     /**
      * @param body (optional) 
-     * @return OK
+     * @return No Content
      */
     changePassword(body: ChangePasswordRequest | undefined, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Auth/change-password";
@@ -437,7 +439,7 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
@@ -473,7 +475,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -543,7 +545,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -608,7 +610,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -671,7 +673,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -743,7 +745,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -804,7 +806,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -870,7 +872,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -939,7 +941,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     categoriesDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Categories/{id}";
@@ -977,7 +979,7 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
@@ -1023,7 +1025,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1081,7 +1083,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1158,7 +1160,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1226,7 +1228,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1292,7 +1294,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1361,7 +1363,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     commentsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Comments/{id}";
@@ -1399,7 +1401,7 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
@@ -1445,7 +1447,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1506,7 +1508,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1578,7 +1580,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1658,7 +1660,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1713,7 +1715,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     approve(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Comments/{id}/approve";
@@ -1751,7 +1753,7 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
@@ -1784,7 +1786,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     reject(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Comments/{id}/reject";
@@ -1822,7 +1824,7 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
@@ -1865,7 +1867,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1905,6 +1907,20 @@ export class ApiClient implements IApiClient {
             }
             return Promise.resolve<PostResponse[]>(result200);
 
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -1928,7 +1944,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2003,7 +2019,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2064,7 +2080,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2097,6 +2113,13 @@ export class ApiClient implements IApiClient {
             result200 = PostResponse.fromJS(resultData200);
             return Promise.resolve<PostResponse>(result200);
 
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2123,7 +2146,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2156,6 +2179,34 @@ export class ApiClient implements IApiClient {
             result200 = PostResponse.fromJS(resultData200);
             return Promise.resolve<PostResponse>(result200);
 
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2164,7 +2215,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     postsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}";
@@ -2202,9 +2253,30 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2227,7 +2299,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2260,6 +2332,13 @@ export class ApiClient implements IApiClient {
             result200 = PostResponse.fromJS(resultData200);
             return Promise.resolve<PostResponse>(result200);
 
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2291,7 +2370,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2364,7 +2443,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2404,6 +2483,13 @@ export class ApiClient implements IApiClient {
             }
             return Promise.resolve<PostResponse[]>(result200);
 
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400  = _responseText;
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2435,7 +2521,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2506,7 +2592,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2564,7 +2650,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2612,7 +2698,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     publish(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}/publish";
@@ -2650,9 +2736,30 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2662,7 +2769,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     unpublish(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}/unpublish";
@@ -2700,9 +2807,30 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2712,7 +2840,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     feature(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}/feature";
@@ -2750,9 +2878,30 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2762,7 +2911,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     unfeature(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Posts/{id}/unfeature";
@@ -2800,9 +2949,30 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
+
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401  = _responseText;
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403  = _responseText;
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2822,7 +2992,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2885,7 +3055,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -2957,7 +3127,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3020,7 +3190,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3081,7 +3251,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3147,7 +3317,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3216,7 +3386,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     tagsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Tags/{id}";
@@ -3254,7 +3424,7 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
@@ -3300,7 +3470,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3358,7 +3528,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3433,7 +3603,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3495,7 +3665,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @return OK
+     * @return No Content
      */
     usersDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/Users/{id}";
@@ -3533,7 +3703,7 @@ export class ApiClient implements IApiClient {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
 
@@ -3586,7 +3756,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3666,7 +3836,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3753,7 +3923,7 @@ export class ApiClient implements IApiClient {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -3835,7 +4005,7 @@ export class ApiClient implements IApiClient {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "text/plain"
+                "Accept": "application/json"
             },
             cancelToken
         };

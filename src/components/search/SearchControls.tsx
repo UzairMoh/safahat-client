@@ -65,7 +65,7 @@ const SearchControls = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-sm mb-8"
+            className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-lg mb-8"
         >
             {/* Search Section */}
             <form onSubmit={handleSearch} className="flex gap-4 items-start">
