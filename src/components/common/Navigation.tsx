@@ -1,19 +1,35 @@
 ﻿import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { User, LogOut, Menu, X, BookOpen, Search, Home as HomeIcon, Info, ChevronDown } from 'lucide-react';
-import authService from '../../services/auth.service';
+import { Link, useLocation } from 'react-router-dom';
+import { User, LogOut, Menu, X, BookOpen, Search, Home as HomeIcon, ChevronDown } from 'lucide-react';
+import { useAuthStore } from '../../stores/authStore';
+import { UserRole } from '../../api/Client';
 
-interface NavigationProps {
-    username?: string;
-}
-
-const Navigation = ({ username }: NavigationProps) => {
+const Navigation = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const location = useLocation();
-    const navigate = useNavigate();
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Get user data and actions from auth store
+    const { user, isAuthenticated, logout } = useAuthStore();
+
+    // Helper function to get role display name
+    const getRoleDisplayName = (role: UserRole | undefined): string | null => {
+        if (role === undefined) return null;
+        switch (role) {
+            case UserRole._0: return 'Reader';
+            case UserRole._1: return 'Writer';
+            case UserRole._2: return 'Admin';
+            default: return null;
+        }
+    };
+
+    // Get display name with fallback priority
+    const displayName = user?.fullName || user?.username || 'User';
+    const userRole = user?.role;
+    const profilePicture = user?.profilePictureUrl;
+    const roleDisplayName = getRoleDisplayName(userRole);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -23,13 +39,10 @@ const Navigation = ({ username }: NavigationProps) => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const handleLogout = async () => {
-        try {
-            await authService.logout();
-            navigate('/auth');
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
+    const handleLogout = () => {
+        logout();
+        setIsDropdownOpen(false);
+        // Navigation will happen automatically via ProtectedRoute
     };
 
     const isActive = (path: string) => {
@@ -40,7 +53,7 @@ const Navigation = ({ username }: NavigationProps) => {
         { name: 'Home', path: '/', icon: <HomeIcon size={16} /> },
         { name: 'Explore', path: '/explore', icon: <Search size={16} /> },
         { name: 'Library', path: '/library', icon: <BookOpen size={16} /> },
-        { name: 'About', path: '/about', icon: <Info size={16} /> },
+        { name: 'Profile', path: '/profile', icon: <User size={16} /> },
     ];
 
     // Close dropdown when clicking outside
@@ -87,17 +100,32 @@ const Navigation = ({ username }: NavigationProps) => {
                     </div>
 
                     <div className="hidden md:flex items-center justify-end w-1/4">
-                        {username ? (
+                        {isAuthenticated && user ? (
                             <div className="relative" ref={dropdownRef}>
                                 <motion.button
                                     whileTap={{ scale: 0.97 }}
                                     onClick={toggleDropdown}
                                     className="flex items-center space-x-1 px-3 py-1.5 rounded-md text-[#4a5b91] hover:bg-[#f6f8fd] focus:outline-none focus:ring-2 focus:ring-[#c9d5ef]"
                                 >
-                                    <div className="h-8 w-8 rounded-full bg-[#c9d5ef] flex items-center justify-center">
-                                        <User size={16} className="text-[#4a5b91]" />
+                                    <div className="h-8 w-8 rounded-full bg-[#c9d5ef] flex items-center justify-center overflow-hidden">
+                                        {profilePicture ? (
+                                            <img
+                                                src={profilePicture}
+                                                alt={displayName}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <User size={16} className="text-[#4a5b91]" />
+                                        )}
                                     </div>
-                                    <span className="text-sm font-medium">{username}</span>
+                                    <div className="flex flex-col items-start">
+                                        <span className="text-sm font-medium">{displayName}</span>
+                                        {roleDisplayName && (
+                                            <span className="text-xs text-[#938384] capitalize">
+                                                {roleDisplayName}
+                                            </span>
+                                        )}
+                                    </div>
                                     <ChevronDown size={16} className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                                 </motion.button>
 
@@ -111,6 +139,10 @@ const Navigation = ({ username }: NavigationProps) => {
                                             className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white border border-[#c9d5ef] ring-1 ring-[#c9d5ef] ring-opacity-5 focus:outline-none z-50"
                                         >
                                             <div className="py-1">
+                                                <div className="px-4 py-2 border-b border-[#c9d5ef]">
+                                                    <p className="text-sm font-medium text-[#4a5b91]">{displayName}</p>
+                                                    <p className="text-xs text-[#938384]">{user.email}</p>
+                                                </div>
                                                 <Link
                                                     to="/profile"
                                                     className="flex items-center px-4 py-2 text-sm text-[#938384] hover:bg-[#f6f8fd] hover:text-[#4a5b91]"
@@ -120,10 +152,7 @@ const Navigation = ({ username }: NavigationProps) => {
                                                     Profile
                                                 </Link>
                                                 <button
-                                                    onClick={() => {
-                                                        setIsDropdownOpen(false);
-                                                        handleLogout();
-                                                    }}
+                                                    onClick={handleLogout}
                                                     className="flex items-center w-full text-left px-4 py-2 text-sm text-[#938384] hover:bg-[#f6f8fd] hover:text-[#4a5b91]"
                                                 >
                                                     <LogOut size={16} className="mr-2" />

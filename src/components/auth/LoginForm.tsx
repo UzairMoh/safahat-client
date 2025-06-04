@@ -3,31 +3,43 @@ import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, Loader } from 'lucide-react';
 import type { LoginRequest } from '../../api/Client';
-import authService from "../../services/auth.service";
+import { useAuthStore } from '../../stores/authStore';
 
 interface LoginFormProps {
     onSuccess: () => void;
     switchToRegister: () => void;
 }
 
+// Extended login data to include remember me
+interface LoginFormData extends LoginRequest {
+    rememberMe: boolean;
+}
+
 const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginRequest>();
+    // Get login action and loading state from auth store
+    const { login, isLoading } = useAuthStore();
 
-    const onSubmit = async (data: LoginRequest) => {
-        setIsLoading(true);
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<LoginFormData>({
+        defaultValues: {
+            rememberMe: false
+        }
+    });
+
+    // Watch the remember me checkbox value
+    const rememberMe = watch('rememberMe');
+
+    const onSubmit = async (data: LoginFormData) => {
         setError(null);
 
         try {
-            await authService.login(data);
+            // Pass the remember me preference to the login function
+            await login(data, data.rememberMe);
             onSuccess();
         } catch (err: unknown) {
             const error = err as { response?: { data?: { error?: string } } };
             setError(error.response?.data?.error || 'Failed to login. Please try again.');
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -101,12 +113,17 @@ const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
                     <div className="flex items-center">
                         <input
                             id="remember-me"
-                            name="remember-me"
                             type="checkbox"
+                            {...register('rememberMe')}
                             className="h-4 w-4 accent-[#4a5b91] focus:ring-[#e7b9ac] border-[#c9d5ef] rounded"
                         />
                         <label htmlFor="remember-me" className="ml-2 block text-sm text-[#938384]">
                             Remember me
+                            {rememberMe && (
+                                <span className="text-xs text-[#4a5b91] block">
+                                    Stay signed in for 30 days
+                                </span>
+                            )}
                         </label>
                     </div>
 
@@ -121,18 +138,20 @@ const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
                     type="submit"
                     disabled={isLoading}
                     whileHover={{
-                        backgroundColor: '#5b6ca6',
+                        backgroundColor: isLoading ? '#4a5b91' : '#5b6ca6',
                         transition: { duration: 0.18 }
                     }}
                     whileTap={{
-                        scale: 0.97,
+                        scale: isLoading ? 1 : 0.97,
                         transition: { duration: 0.1 }
                     }}
                     transition={{
                         duration: 0.3,
                         ease: "easeOut"
                     }}
-                    className="w-full py-3 px-4 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] shadow-md bg-[#4a5b91]"
+                    className={`w-full py-3 px-4 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] shadow-md bg-[#4a5b91] ${
+                        isLoading ? 'opacity-75 cursor-not-allowed' : ''
+                    }`}
                 >
                     <div className="relative flex items-center justify-center">
                         {isLoading ? (

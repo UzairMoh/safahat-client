@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import type { RegisterRequest } from '../../api/Client';
-import authService from '../../services/auth.service.ts';
+import { useAuthStore } from '../../stores/authStore';
 
 interface RegisterFormProps {
     onSuccess: () => void;
@@ -10,23 +10,22 @@ interface RegisterFormProps {
 }
 
 const RegisterForm = ({ onSuccess, switchToLogin }: RegisterFormProps) => {
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // Get register action and loading state from auth store
+    const { register: registerUser, isLoading } = useAuthStore();
 
     const { register, handleSubmit, formState: { errors }, watch } = useForm<RegisterRequest>();
     const password = watch('password', '');
 
     const onSubmit = async (data: RegisterRequest) => {
-        setIsLoading(true);
         setError(null);
 
         try {
-            await authService.register(data);
+            await registerUser(data);
             onSuccess();
         } catch (err: any) {
             setError(err.response?.data?.error || 'Failed to register. Please try again.');
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -206,8 +205,17 @@ const RegisterForm = ({ onSuccess, switchToLogin }: RegisterFormProps) => {
                     <motion.button
                         type="submit"
                         disabled={isLoading}
-                        whileHover={{ backgroundColor: '#5b6ca6' }}
-                        className="w-full py-3 px-4 bg-[#4a5b91] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] transition-colors shadow-md flex items-center justify-center"
+                        whileHover={{
+                            backgroundColor: isLoading ? '#4a5b91' : '#5b6ca6',
+                            transition: { duration: 0.18 }
+                        }}
+                        whileTap={{
+                            scale: isLoading ? 1 : 0.97,
+                            transition: { duration: 0.1 }
+                        }}
+                        className={`w-full py-3 px-4 bg-[#4a5b91] text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4a5b91] transition-colors shadow-md flex items-center justify-center ${
+                            isLoading ? 'opacity-75 cursor-not-allowed' : ''
+                        }`}
                     >
                         {isLoading ? (
                             <svg className="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

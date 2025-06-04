@@ -1,22 +1,43 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from "./pages/Home.tsx";
 import Library from "./pages/Library.tsx";
 import Explore from "./pages/Explore.tsx";
 import AuthPage from "../src/pages/AuthPage.tsx";
+import Profile from "./pages/Profile.tsx";
 import NotFound from "./components/common/NotFound.tsx";
-import authService from '../src/services/auth.service.ts';
+import Loading from "./components/common/Loading.tsx";
+import { useAuthStore } from './stores/authStore';
 import type {JSX} from "react";
 import CreatePost from "./pages/CreatePosts.tsx";
 import BlogPost from "./pages/BlogPosts.tsx";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-    if (!authService.isAuthenticated()) {
+    const { isAuthenticated, isLoading, isInitialized } = useAuthStore();
+
+    // Show loading while checking auth
+    if (isLoading || !isInitialized) {
+        return <Loading message="Checking authentication..." />;
+    }
+
+    // Redirect to auth if not authenticated
+    if (!isAuthenticated) {
         return <Navigate to="/auth" replace />;
     }
+
     return children;
 };
 
 function App() {
+    const { initializeAuth, isInitialized } = useAuthStore();
+
+    // Initialize auth on app start
+    useEffect(() => {
+        if (!isInitialized) {
+            initializeAuth();
+        }
+    }, [initializeAuth, isInitialized]);
+
     return (
         <Router>
             <div>
@@ -43,6 +64,14 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <Explore />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/profile"
+                            element={
+                                <ProtectedRoute>
+                                    <Profile />
                                 </ProtectedRoute>
                             }
                         />

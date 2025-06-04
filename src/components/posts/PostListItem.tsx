@@ -9,7 +9,7 @@ interface PostListItemProps {
     onDelete: (post: PostResponse) => void;
 }
 
-const PostListItem = ({ post, index, onEdit, onDelete }: PostListItemProps) => {
+const PostListItem = ({ post, onEdit, onDelete }: PostListItemProps) => {
     const getStatusInfo = (status: number) => {
         switch (status) {
             case 0:
@@ -26,12 +26,7 @@ const PostListItem = ({ post, index, onEdit, onDelete }: PostListItemProps) => {
     const statusInfo = getStatusInfo(post.status || 0);
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 + (index * 0.1), duration: 0.6 }}
-            className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 group cursor-default"
-        >
+        <div className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 group cursor-default">
             <div className="flex items-start justify-between mb-4">
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-3 mb-2">
@@ -157,7 +152,7 @@ const PostListItem = ({ post, index, onEdit, onDelete }: PostListItemProps) => {
                     </motion.a>
                 )}
             </div>
-        </motion.div>
+        </div>
     );
 };
 

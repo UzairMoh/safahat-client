@@ -22,6 +22,8 @@ const authService = {
     },
 
     logout: (): void => {
+        console.log('🚨 LOGOUT CALLED!');
+        console.trace('Logout stack trace:');
         localStorage.removeItem('token');
     },
 

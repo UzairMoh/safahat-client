@@ -79,7 +79,7 @@ const Library = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            <Navigation username={posts[0]?.author?.username || 'User'} />
+            <Navigation/>
 
             <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <motion.div

@@ -9,9 +9,8 @@ import {
     BookOpen,
     PenTool,
 } from 'lucide-react';
-import authService from '../services/auth.service';
+import { useAuthStore } from '../stores/authStore';
 import postService from '../services/post.service';
-import { jwtDecode } from 'jwt-decode';
 import Navigation from '../components/common/Navigation';
 import Loading from '../components/common/Loading';
 import {IPostResponse} from "../api/Client.ts";
@@ -27,37 +26,22 @@ const mockStats = [
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
-    const [username, setUsername] = useState('User');
     const [featuredPosts, setFeaturedPosts] = useState<IPostResponse[]>([]);
     const [recentPosts, setRecentPosts] = useState<IPostResponse[]>([]);
     const navigate = useNavigate();
 
+    // Get user data and auth state from store
+    const { user, isAuthenticated, loadUserFromToken } = useAuthStore();
+    const username = user?.fullName || user?.username || 'User';
+
     // Use category hook for categories with post count
     const { data: categories, isLoading: categoriesLoading } = useCategoriesWithPostCount();
 
-    const getUsernameFromToken = (): string => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) return 'User';
-
-            const decoded = jwtDecode(token) as any;
-            return decoded.username || decoded.name || 'User';
-        } catch (err) {
-            console.error('Failed to decode token:', err);
-            return 'User';
-        }
-    };
-
     useEffect(() => {
-        if (!authService.isAuthenticated()) {
-            navigate('/auth');
-            return;
-        }
+        loadUserFromToken();
 
         const loadData = async () => {
             try {
-                setUsername(getUsernameFromToken());
-
                 // Load featured posts
                 const featuredData = await postService.getFeaturedPosts();
                 setFeaturedPosts(featuredData);
@@ -74,7 +58,7 @@ const Home = () => {
         };
 
         loadData();
-    }, [navigate]);
+    }, [navigate, isAuthenticated, loadUserFromToken]);
 
     if (loading) {
         return <Loading message="Loading dashboard..." />;
@@ -82,7 +66,7 @@ const Home = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            <Navigation username={username} />
+            <Navigation />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Hero Section */}

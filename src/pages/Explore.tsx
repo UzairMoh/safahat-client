@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { PostResponse } from '../api/Client';
-import authService from '../services/auth.service';
 import postService from '../services/post.service';
-import { jwtDecode } from 'jwt-decode';
+import { useAuthStore } from '../stores/authStore';
 import Navigation from '../components/common/Navigation';
 import SearchResults from '../components/search/SearchResults';
 import SearchControls from '../components/search/SearchControls';
@@ -25,8 +24,10 @@ const Explore = () => {
     const [searchResults, setSearchResults] = useState<PostResponse[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
     const [currentQuery, setCurrentQuery] = useState('');
-    const [username, setUsername] = useState('User');
     const navigate = useNavigate();
+
+    // Get auth state from store
+    const { isAuthenticated, isLoading: authLoading, isInitialized, user, logout } = useAuthStore();
 
     const [filters, setFilters] = useState<SearchFiltersState>({
         category: 'all',
@@ -35,27 +36,22 @@ const Explore = () => {
         sortBy: 'relevance'
     });
 
-    const getUsernameFromToken = (): string => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) return 'User';
-
-            const decoded = jwtDecode(token) as any;
-            return decoded.username || decoded.name || 'User';
-        } catch (err) {
-            console.error('Failed to decode token:', err);
-            return 'User';
-        }
-    };
-
+    // Check authentication and redirect if needed
     useEffect(() => {
-        if (!authService.isAuthenticated()) {
+        if (isInitialized && !isAuthenticated) {
             navigate('/auth');
-            return;
         }
+    }, [isAuthenticated, isInitialized, navigate]);
 
-        setUsername(getUsernameFromToken());
-    }, [navigate]);
+    // Show loading while checking auth
+    if (authLoading || !isInitialized) {
+        return <Loading message="Loading..." />;
+    }
+
+    // Don't render if not authenticated
+    if (!isAuthenticated) {
+        return null;
+    }
 
     const handleSearch = async (query: string) => {
         if (!query.trim()) return;
@@ -127,9 +123,9 @@ const Explore = () => {
         filtered.sort((a, b) => {
             switch (filters.sortBy) {
                 case 'date':
-                    const dateA = new Date(a.publishedAt || a.createdAt || 0).getTime();
+                { const dateA = new Date(a.publishedAt || a.createdAt || 0).getTime();
                     const dateB = new Date(b.publishedAt || b.createdAt || 0).getTime();
-                    return dateB - dateA;
+                    return dateB - dateA; }
                 case 'views':
                     return (b.viewCount || 0) - (a.viewCount || 0);
                 case 'title':
@@ -162,13 +158,18 @@ const Explore = () => {
         }
     };
 
+    const handleLogout = () => {
+        logout();
+        navigate('/auth');
+    };
+
     if (loading && !hasSearched) {
         return <Loading message="Loading search..." />;
     }
 
     return (
         <div className="min-h-screen bg-white">
-            <Navigation username={username} />
+            <Navigation/>
 
             <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
@@ -184,7 +185,14 @@ const Explore = () => {
                         </div>
                         <div>
                             <h1 className="text-3xl font-semibold text-[#4a5b91]">Search Posts</h1>
-                            <p className="text-[#938384]">Find posts by keywords, topics, or authors</p>
+                            <p className="text-[#938384]">
+                                Find posts by keywords, topics, or authors
+                                {user?.username && (
+                                    <span className="text-[#4a5b91] font-medium ml-2">
+                                        Welcome, {user.username}!
+                                    </span>
+                                )}
+                            </p>
                         </div>
                     </div>
                 </motion.div>
@@ -207,14 +215,20 @@ const Explore = () => {
                             title="Search Error"
                             message={error}
                             onRetry={handleRetry}
-                            showLogout={false}
+                            onLogout={handleLogout}
+                            showLogout={true}
                         />
                     </div>
                 )}
 
                 {/* Empty State - No Search Performed */}
                 {!hasSearched && !loading && !error && (
-                    <div className="text-center py-16">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 0.6 }}
+                        className="text-center py-16"
+                    >
                         <div className="w-24 h-24 mx-auto mb-6 bg-[#f6f8fd] rounded-full flex items-center justify-center">
                             <Search className="w-12 h-12 text-[#938384]" />
                         </div>
@@ -222,7 +236,7 @@ const Explore = () => {
                         <p className="text-[#938384] max-w-md mx-auto">
                             Use the search bar above to find posts that interest you.
                         </p>
-                    </div>
+                    </motion.div>
                 )}
 
                 {/* Search Results */}

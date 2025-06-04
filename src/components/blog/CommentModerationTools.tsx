@@ -20,11 +20,12 @@ const CommentModerationTools = ({ comment, onCommentUpdated }: CommentModeration
 
             await commentService.approveComment(comment.id!);
 
-            // Update the comment status locally
-            const updatedComment = {
+            // ✅ Create a proper CommentResponse instance
+            const updatedComment = new CommentResponse();
+            updatedComment.init({
                 ...comment,
                 isApproved: true
-            };
+            });
 
             onCommentUpdated(updatedComment);
         } catch (error: any) {
@@ -47,11 +48,12 @@ const CommentModerationTools = ({ comment, onCommentUpdated }: CommentModeration
 
             await commentService.rejectComment(comment.id!);
 
-            // Update the comment status locally (or remove it from the list)
-            const updatedComment = {
+            // ✅ Create a proper CommentResponse instance
+            const updatedComment = new CommentResponse();
+            updatedComment.init({
                 ...comment,
                 isApproved: false
-            };
+            });
 
             onCommentUpdated(updatedComment);
         } catch (error: any) {
