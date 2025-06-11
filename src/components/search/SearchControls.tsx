@@ -120,13 +120,32 @@ const SearchControls = ({
             )}
 
             {/* Filters */}
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
                 {hasSearched && showFilters && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
+                        initial={{
+                            opacity: 0,
+                            maxHeight: 0,
+                            marginTop: 0,
+                            paddingTop: 0
+                        }}
+                        animate={{
+                            opacity: 1,
+                            maxHeight: 300,
+                            marginTop: 24,
+                            paddingTop: 24
+                        }}
+                        exit={{
+                            opacity: 0,
+                            maxHeight: 0,
+                            marginTop: 0,
+                            paddingTop: 0
+                        }}
+                        transition={{
+                            duration: 0.3,
+                            ease: "easeInOut",
+                            opacity: { duration: 0.2 }
+                        }}
                         className="mt-4 pt-4 border-t border-[#c9d5ef]/30"
                     >
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

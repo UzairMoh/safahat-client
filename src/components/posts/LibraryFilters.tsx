@@ -1,4 +1,4 @@
-﻿import { motion } from 'framer-motion';
+﻿import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, SortAsc, SortDesc, X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -107,78 +107,105 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
             </div>
 
             {/* Advanced Filters */}
-            {showAdvanced && (
-                <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-6 pt-6 border-t border-[#c9d5ef]/30"
-                >
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {/* Sort By */}
-                        <div>
-                            <label className="block text-sm font-medium text-[#4a5b91] mb-2">Sort By</label>
-                            <select
-                                value={filters.sortBy}
-                                onChange={(e) => updateFilter('sortBy', e.target.value)}
-                                className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm cursor-pointer"
-                            >
-                                <option value="date">Date</option>
-                                <option value="title">Title</option>
-                                <option value="views">Views</option>
-                            </select>
-                        </div>
-
-                        {/* Sort Order */}
-                        <div>
-                            <label className="block text-sm font-medium text-[#4a5b91] mb-2">Order</label>
-                            <div className="flex space-x-2">
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => updateFilter('sortOrder', 'desc')}
-                                    className={`flex-1 flex items-center justify-center space-x-1 px-3 py-2 border rounded-lg text-sm transition-colors cursor-pointer ${
-                                        filters.sortOrder === 'desc'
-                                            ? 'bg-[#4a5b91] text-white border-[#4a5b91]'
-                                            : 'bg-white text-[#4a5b91] border-[#c9d5ef] hover:bg-[#f6f8fd]'
-                                    }`}
+            <AnimatePresence mode="wait">
+                {showAdvanced && (
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            maxHeight: 0,
+                            marginTop: 0,
+                            paddingTop: 0
+                        }}
+                        animate={{
+                            opacity: 1,
+                            maxHeight: 300,
+                            marginTop: 24,
+                            paddingTop: 24
+                        }}
+                        exit={{
+                            opacity: 0,
+                            maxHeight: 0,
+                            marginTop: 0,
+                            paddingTop: 0
+                        }}
+                        transition={{
+                            duration: 0.3,
+                            ease: "easeInOut",
+                            opacity: { duration: 0.2 }
+                        }}
+                        className="border-t border-[#c9d5ef]/30 overflow-hidden"
+                    >
+                        <motion.div
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            transition={{ delay: 0.1, duration: 0.2 }}
+                            className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                        >
+                            {/* Sort By */}
+                            <div>
+                                <label className="block text-sm font-medium text-[#4a5b91] mb-2">Sort By</label>
+                                <select
+                                    value={filters.sortBy}
+                                    onChange={(e) => updateFilter('sortBy', e.target.value)}
+                                    className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm cursor-pointer"
                                 >
-                                    <SortDesc className="w-4 h-4" />
-                                    <span>Desc</span>
-                                </motion.button>
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => updateFilter('sortOrder', 'asc')}
-                                    className={`flex-1 flex items-center justify-center space-x-1 px-3 py-2 border rounded-lg text-sm transition-colors cursor-pointer ${
-                                        filters.sortOrder === 'asc'
-                                            ? 'bg-[#4a5b91] text-white border-[#4a5b91]'
-                                            : 'bg-white text-[#4a5b91] border-[#c9d5ef] hover:bg-[#f6f8fd]'
-                                    }`}
-                                >
-                                    <SortAsc className="w-4 h-4" />
-                                    <span>Asc</span>
-                                </motion.button>
+                                    <option value="date">Date</option>
+                                    <option value="title">Title</option>
+                                    <option value="views">Views</option>
+                                </select>
                             </div>
-                        </div>
 
-                        {/* Featured Filter */}
-                        <div>
-                            <label className="block text-sm font-medium text-[#4a5b91] mb-2">Featured</label>
-                            <select
-                                value={filters.featured}
-                                onChange={(e) => updateFilter('featured', e.target.value)}
-                                className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm cursor-pointer"
-                            >
-                                <option value="all">All Posts</option>
-                                <option value="featured">Featured Only</option>
-                                <option value="regular">Regular Only</option>
-                            </select>
-                        </div>
-                    </div>
-                </motion.div>
-            )}
+                            {/* Sort Order */}
+                            <div>
+                                <label className="block text-sm font-medium text-[#4a5b91] mb-2">Order</label>
+                                <div className="flex space-x-2">
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => updateFilter('sortOrder', 'desc')}
+                                        className={`flex-1 flex items-center justify-center space-x-1 px-3 py-2 border rounded-lg text-sm transition-colors cursor-pointer ${
+                                            filters.sortOrder === 'desc'
+                                                ? 'bg-[#4a5b91] text-white border-[#4a5b91]'
+                                                : 'bg-white text-[#4a5b91] border-[#c9d5ef] hover:bg-[#f6f8fd]'
+                                        }`}
+                                    >
+                                        <SortDesc className="w-4 h-4" />
+                                        <span>Desc</span>
+                                    </motion.button>
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => updateFilter('sortOrder', 'asc')}
+                                        className={`flex-1 flex items-center justify-center space-x-1 px-3 py-2 border rounded-lg text-sm transition-colors cursor-pointer ${
+                                            filters.sortOrder === 'asc'
+                                                ? 'bg-[#4a5b91] text-white border-[#4a5b91]'
+                                                : 'bg-white text-[#4a5b91] border-[#c9d5ef] hover:bg-[#f6f8fd]'
+                                        }`}
+                                    >
+                                        <SortAsc className="w-4 h-4" />
+                                        <span>Asc</span>
+                                    </motion.button>
+                                </div>
+                            </div>
+
+                            {/* Featured Filter */}
+                            <div>
+                                <label className="block text-sm font-medium text-[#4a5b91] mb-2">Featured</label>
+                                <select
+                                    value={filters.featured}
+                                    onChange={(e) => updateFilter('featured', e.target.value)}
+                                    className="w-full px-3 py-2 border border-[#c9d5ef] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a5b91] focus:border-transparent bg-white text-sm cursor-pointer"
+                                >
+                                    <option value="all">All Posts</option>
+                                    <option value="featured">Featured Only</option>
+                                    <option value="regular">Regular Only</option>
+                                </select>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Results Count */}
             <div className="mt-4 pt-4 border-t border-[#c9d5ef]/30">
