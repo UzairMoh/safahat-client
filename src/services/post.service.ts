@@ -44,15 +44,9 @@ const postService = {
 
     createPost: async (post: CreatePostRequest): Promise<PostResponse> => {
         try {
-            console.log('🔵 About to call apiClient.postsPOST with:', post);
-            const response = await apiClient.postsPOST(post);
-            console.log('🟢 API call successful, response:', response);
-            return response;
-        } catch (error: any) {
-            console.error('🔴 API call failed:', error);
-            console.error('🔴 Error status:', error?.status);
-            console.error('🔴 Error response:', error?.response);
-            console.error('🔴 Error message:', error?.message);
+            return await apiClient.postsPOST(post);
+        } catch (error) {
+            console.error(`Error creating post ${post}:`, error);
             throw error;
         }
     },

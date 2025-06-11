@@ -141,13 +141,14 @@ const Library = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.4, duration: 0.6 }}
-                                    className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+                                    className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
                                 >
                                     {filteredPosts.map((post, index) => (
                                         <PostListItem
                                             key={post.id}
                                             post={post}
                                             index={index}
+                                            query={filters.search}
                                             onEdit={handleEdit}
                                             onDelete={openDeleteModal}
                                         />

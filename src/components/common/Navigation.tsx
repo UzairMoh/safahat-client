@@ -71,7 +71,7 @@ const Navigation = () => {
     }, []);
 
     return (
-        <header className="bg-white/90 backdrop-blur-md border-b border-[#c9d5ef] sticky top-0 z-50">
+        <header className="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16">
                     <div className="flex-shrink-0 flex items-center w-1/4">
@@ -120,11 +120,6 @@ const Navigation = () => {
                                     </div>
                                     <div className="flex flex-col items-start">
                                         <span className="text-sm font-medium">{displayName}</span>
-                                        {roleDisplayName && (
-                                            <span className="text-xs text-[#938384] capitalize">
-                                                {roleDisplayName}
-                                            </span>
-                                        )}
                                     </div>
                                     <ChevronDown size={16} className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                                 </motion.button>
