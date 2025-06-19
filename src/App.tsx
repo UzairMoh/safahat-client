@@ -40,64 +40,62 @@ function App() {
 
     return (
         <Router>
-            <div>
-                <main>
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <ProtectedRoute>
-                                    <Home />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/library"
-                            element={
-                                <ProtectedRoute>
-                                    <Library />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/explore"
-                            element={
-                                <ProtectedRoute>
-                                    <Explore />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/profile"
-                            element={
-                                <ProtectedRoute>
-                                    <Profile />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/posts/create"
-                            element={
-                                <ProtectedRoute>
-                                    <CreatePost />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="/posts/:slug"
-                            element={
-                                <ProtectedRoute>
-                                    <BlogPost />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route path="/auth" element={<AuthPage />} />
-                        <Route path="/login" element={<Navigate to="/auth" replace />} />
-                        <Route path="/register" element={<Navigate to="/auth" replace />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </main>
-            </div>
+            <main>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute>
+                                <Home />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/library"
+                        element={
+                            <ProtectedRoute>
+                                <Library />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/explore"
+                        element={
+                            <ProtectedRoute>
+                                <Explore />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <ProtectedRoute>
+                                <Profile />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/posts/create"
+                        element={
+                            <ProtectedRoute>
+                                <CreatePost />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/posts/:slug"
+                        element={
+                            <ProtectedRoute>
+                                <BlogPost />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="/auth" element={<AuthPage />} />
+                    <Route path="/login" element={<Navigate to="/auth" replace />} />
+                    <Route path="/register" element={<Navigate to="/auth" replace />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </main>
         </Router>
     );
 }

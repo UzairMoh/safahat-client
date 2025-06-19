@@ -14,7 +14,7 @@ const AuthPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center py-12 px-6 relative overflow-hidden">
+        <div className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden bg-gradient-to-b from-[#e7b9ac] to-[#f4e1c3]">
             <LiquidBackground />
 
             <div className="text-center z-10">
@@ -46,8 +46,14 @@ const AuthPage = () => {
                             )}
                         </AnimatePresence>
                     </h1>
-                    <div className="mt-2 w-32 h-1 bg-[#e7b9ac] mx-auto rounded-full"></div>
-                    <p className="mt-2 text-[#938384] font-light tracking-wide">Inspired Storytelling</p>
+                    <div className="mt-4 flex justify-center space-x-1.5">
+                        <div className="w-1.5 h-1.5 bg-[#4a5b91]/60 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-[#4a5b91]/60 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-[#4a5b91]/60 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-[#4a5b91]/60 rounded-full"></div>
+                        <div className="w-1.5 h-1.5 bg-[#4a5b91]/60 rounded-full"></div>
+                    </div>
+                    <p className="mt-4 text-[#4a5b91]/70 font-medium text-sm uppercase tracking-[0.15em] leading-relaxed">Inspired Storytelling</p>
                 </div>
             </div>
 
