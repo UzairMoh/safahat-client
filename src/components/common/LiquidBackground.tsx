@@ -13,6 +13,7 @@ const LiquidBackground = () => {
             maxCursorMove={120}
             xGap={12}
             yGap={36}
+            style={{ filter: 'blur(2px)' }}
         />
     );
 };
