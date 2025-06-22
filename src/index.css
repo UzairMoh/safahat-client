@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'HidayatullahDemo';
-    src: url('public/fonts/HidayatullahDemo-mLp39.ttf') format('truetype');
+    src: url('./assets/fonts/HidayatullahDemo-mLp39.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
     font-family: 'TitrBold';
-    src: url('public/fonts/0 Titr Bold Bold.ttf') format('truetype');
+    src: url('./assets/fonts/0 Titr Bold Bold.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -18,7 +18,7 @@
 
 @font-face {
     font-family: 'Yalad';
-    src: url('public/fonts/Mj_Yalda-Bold.ttf') format('truetype');
+    src: url('./assets/fonts/Mj_Yalda-Bold.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -26,12 +26,11 @@
 
 @font-face {
     font-family: 'Cooper';
-    src: url('public/fonts/CooperArabic.ttf') format('truetype');
+    src: url('./assets/fonts/CooperArabic.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
-
 
 .arabic-title {
     font-family: 'Cooper', sans-serif;
