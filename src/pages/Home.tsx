@@ -14,7 +14,6 @@ import postService from '../services/post.service';
 import Navigation from '../components/common/Navigation';
 import Loading from '../components/common/Loading';
 import {IPostResponse} from "../api/Client.ts";
-import {useCategoriesWithPostCount} from "../hooks/categories/useCategory.ts";
 
 // Keep mock stats since no API endpoint exists
 const mockStats = [
@@ -30,12 +29,8 @@ const Home = () => {
     const [recentPosts, setRecentPosts] = useState<IPostResponse[]>([]);
     const navigate = useNavigate();
 
-    // Get user data and auth state from store
     const { user, isAuthenticated, loadUserFromToken } = useAuthStore();
     const username = user?.fullName || user?.username || 'User';
-
-    // Use category hook for categories with post count
-    const { data: categories, isLoading: categoriesLoading } = useCategoriesWithPostCount();
 
     useEffect(() => {
         loadUserFromToken();
@@ -60,6 +55,12 @@ const Home = () => {
         loadData();
     }, [navigate, isAuthenticated, loadUserFromToken]);
 
+    const handlePostClick = (post: IPostResponse) => {
+        if (post.slug && post.status === 1) {
+            navigate(`/posts/${post.slug}`);
+        }
+    };
+
     if (loading) {
         return <Loading message="Loading dashboard..." />;
     }
@@ -69,7 +70,6 @@ const Home = () => {
             <Navigation />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Hero Section */}
                 <motion.section
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -104,7 +104,6 @@ const Home = () => {
                     </div>
                 </motion.section>
 
-                {/* Platform Stats */}
                 <motion.section
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -130,7 +129,6 @@ const Home = () => {
                     </div>
                 </motion.section>
 
-                {/* Featured Posts */}
                 <motion.section
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -144,6 +142,7 @@ const Home = () => {
                         </div>
                         <motion.button
                             whileHover={{ x: 5 }}
+                            onClick={() => navigate('/posts?featured=true')}
                             className="flex items-center space-x-2 text-[#4a5b91] hover:text-[#3a4a7a] transition-colors"
                         >
                             <span>View all</span>
@@ -159,6 +158,7 @@ const Home = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.1 * index }}
                                 whileHover={{ y: -5 }}
+                                onClick={() => handlePostClick(post)}
                                 className="bg-white border border-[#c9d5ef]/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
                             >
                                 {post.featuredImageUrl && (
@@ -178,7 +178,7 @@ const Home = () => {
                                             <span>{post.viewCount || 0}</span>
                                         </div>
                                     </div>
-                                    <h3 className="text-lg font-semibold text-[#4a5b91] mb-2 line-clamp-2">
+                                    <h3 className="text-lg font-semibold text-[#4a5b91] mb-2 line-clamp-2 hover:text-[#3a4a7a] transition-colors">
                                         {post.title}
                                     </h3>
                                     <p className="text-[#938384] text-sm mb-4 line-clamp-2">
@@ -190,9 +190,7 @@ const Home = () => {
                     </div>
                 </motion.section>
 
-                {/* Recent Posts & Categories */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-                    {/* Recent Posts */}
                     <motion.section
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -203,6 +201,7 @@ const Home = () => {
                             <h2 className="text-2xl font-bold text-[#4a5b91]">Recent Posts</h2>
                             <motion.button
                                 whileHover={{ x: 5 }}
+                                onClick={() => navigate('/posts')}
                                 className="flex items-center space-x-2 text-[#4a5b91] hover:text-[#3a4a7a] transition-colors text-sm"
                             >
                                 <span>View all</span>
@@ -217,6 +216,7 @@ const Home = () => {
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.1 * index }}
+                                    onClick={() => handlePostClick(post)}
                                     className="bg-white border border-[#c9d5ef]/30 rounded-xl p-4 hover:shadow-lg transition-shadow cursor-pointer"
                                 >
                                     <div className="flex items-start justify-between">
@@ -230,7 +230,7 @@ const Home = () => {
                                                     <span>{post.viewCount || 0}</span>
                                                 </div>
                                             </div>
-                                            <h3 className="font-semibold text-[#4a5b91] mb-1 line-clamp-1">
+                                            <h3 className="font-semibold text-[#4a5b91] mb-1 line-clamp-1 hover:text-[#3a4a7a] transition-colors">
                                                 {post.title}
                                             </h3>
                                             <p className="text-[#938384] text-sm mb-2 line-clamp-2">
@@ -243,37 +243,17 @@ const Home = () => {
                         </div>
                     </motion.section>
 
-                    {/* Categories & Newsletter */}
                     <motion.aside
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.8, duration: 0.6 }}
                         className="space-y-8"
                     >
-                        {/* Categories */}
                         <div className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6">
-                            <h3 className="text-lg font-semibold text-[#4a5b91] mb-4">Popular Categories</h3>
-                            {categoriesLoading ? (
-                                <div className="text-[#938384] text-sm">Loading categories...</div>
-                            ) : (
-                                <div className="space-y-3">
-                                    {(categories || []).slice(0, 5).map((category, index) => (
-                                        <motion.div
-                                            key={category.id}
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: 0.1 * index }}
-                                            className="flex items-center justify-between cursor-pointer hover:bg-[#f6f8fd] p-2 rounded-lg transition-colors"
-                                        >
-                                            <span className="text-[#4a5b91] font-medium">{category.name}</span>
-                                            <span className="text-[#938384] text-sm">{category.postCount || 0} posts</span>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            )}
+                            <h3 className="text-lg font-semibold text-[#4a5b91] mb-4">Coming Soon</h3>
+                            <p className="text-[#938384] text-sm">Category browsing will be available soon!</p>
                         </div>
 
-                        {/* Newsletter Demo */}
                         <div className="bg-gradient-to-br from-[#4a5b91] to-[#3a4a7a] rounded-2xl p-6 text-white">
                             <h3 className="text-lg font-semibold mb-2">Stay Updated</h3>
                             <p className="text-white/80 text-sm mb-4">
