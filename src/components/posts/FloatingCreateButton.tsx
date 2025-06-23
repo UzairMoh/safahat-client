@@ -13,7 +13,7 @@ const FloatingCreateButton = ({ hasContent = true }: FloatingCreateButtonProps) 
         <motion.button
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
+            transition={{ delay: 0.7, duration: 0.6, type: "spring", stiffness: 200 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/posts/create')}
