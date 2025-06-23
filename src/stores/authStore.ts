@@ -3,15 +3,15 @@ import { persist } from 'zustand/middleware';
 import { jwtDecode } from 'jwt-decode';
 import authService from '../services/auth.service';
 import userService from '../services/user.service';
-import type { LoginRequest, RegisterRequest, UserDetailResponse } from '../api/Client';
+import {LoginRequest, RegisterRequest, UpdateUserProfileRequest, UserDetailResponse} from '../api/Client';
 
 interface AuthState {
     user: UserDetailResponse | null;
     isAuthenticated: boolean;
     isLoading: boolean;
     isInitialized: boolean;
-    rememberMe: boolean; // Track remember me preference
-    loginTime: number | null; // Track when user logged in
+    rememberMe: boolean;
+    loginTime: number | null;
 }
 
 interface AuthActions {
@@ -21,7 +21,8 @@ interface AuthActions {
     loadUserFromToken: () => Promise<void>;
     setLoading: (loading: boolean) => void;
     initializeAuth: () => Promise<void>;
-    checkSessionExpiry: () => void; // Check if session should expire
+    checkSessionExpiry: () => void;
+    updateProfile: (profileData: UpdateUserProfileRequest) => Promise<void>;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -130,6 +131,27 @@ export const useAuthStore = create<AuthStore>()(
             // Set loading state
             setLoading: (loading: boolean) => {
                 set({ isLoading: loading });
+            },
+
+            // Update user profile action
+            updateProfile: async (profileData: UpdateUserProfileRequest) => {
+                set({ isLoading: true });
+                try {
+                    // Call the API to update profile
+                    const updatedUser = await authService.updateProfile(profileData);
+
+                    // Update the user in the store
+                    set({
+                        user: updatedUser,
+                        isLoading: false
+                    });
+
+                    console.log('Profile updated successfully');
+                } catch (error) {
+                    set({ isLoading: false });
+                    console.error('Failed to update profile:', error);
+                    throw error;
+                }
             },
 
             // Login action with remember me support
