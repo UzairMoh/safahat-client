@@ -11,6 +11,7 @@ import { useAuthStore } from './stores/authStore';
 import type {JSX} from "react";
 import CreatePost from "./pages/CreatePosts.tsx";
 import BlogPost from "./pages/BlogPosts.tsx";
+import EditPost from './pages/EditPosts.tsx';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     const { isAuthenticated, isLoading, isInitialized } = useAuthStore();
@@ -79,6 +80,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <CreatePost />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/posts/edit/:id"
+                        element={
+                            <ProtectedRoute>
+                                <EditPost />
                             </ProtectedRoute>
                         }
                     />

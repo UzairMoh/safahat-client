@@ -64,3 +64,12 @@ export const useUpdatePost = () => {
         },
     });
 };
+
+export const usePost = (postId: string) => {
+    return useQuery({
+        queryKey: POST_QUERY_KEYS.postById(postId),
+        queryFn: () => postService.getPostById(postId),
+        enabled: !!postId,
+        staleTime: 5 * 60 * 1000,
+    });
+};
