@@ -11,6 +11,7 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Authenticates user and returns JWT token",
         "requestBody": {
           "content": {
             "application/json": {
@@ -59,6 +60,7 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Registers a new user account",
         "requestBody": {
           "content": {
             "application/json": {
@@ -107,6 +109,7 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Changes the authenticated user's password",
         "requestBody": {
           "content": {
             "application/json": {
@@ -158,6 +161,7 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Retrieves the authenticated user's profile",
         "responses": {
           "200": {
             "description": "OK",
@@ -195,6 +199,7 @@
         "tags": [
           "Auth"
         ],
+        "summary": "Updates the authenticated user's profile",
         "requestBody": {
           "content": {
             "application/json": {
@@ -253,6 +258,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Retrieves all categories",
         "responses": {
           "200": {
             "description": "OK",
@@ -273,6 +279,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Creates a new category (Admin only)",
         "requestBody": {
           "content": {
             "application/json": {
@@ -341,6 +348,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Retrieves categories with post counts",
         "responses": {
           "200": {
             "description": "OK",
@@ -363,6 +371,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Retrieves a specific category by ID",
         "parameters": [
           {
             "name": "id",
@@ -401,6 +410,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Updates an existing category (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -488,6 +498,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Deletes a category (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -541,6 +552,7 @@
         "tags": [
           "Categories"
         ],
+        "summary": "Retrieves a specific category by slug",
         "parameters": [
           {
             "name": "slug",
@@ -580,6 +592,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Retrieves all comments (Admin only)",
         "responses": {
           "200": {
             "description": "OK",
@@ -620,6 +633,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Creates a new comment",
         "requestBody": {
           "content": {
             "application/json": {
@@ -678,6 +692,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Retrieves a specific comment by ID",
         "parameters": [
           {
             "name": "id",
@@ -716,6 +731,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Updates an existing comment",
         "parameters": [
           {
             "name": "id",
@@ -803,6 +819,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Deletes a comment",
         "parameters": [
           {
             "name": "id",
@@ -856,6 +873,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Retrieves all comments for a specific post",
         "parameters": [
           {
             "name": "postId",
@@ -889,6 +907,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Retrieves comments by user",
         "parameters": [
           {
             "name": "userId",
@@ -942,6 +961,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Retrieves pending comments for moderation (Admin only)",
         "responses": {
           "200": {
             "description": "OK",
@@ -984,6 +1004,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Creates a reply to an existing comment",
         "parameters": [
           {
             "name": "parentCommentId",
@@ -1053,6 +1074,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Approves a pending comment (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -1106,6 +1128,7 @@
         "tags": [
           "Comments"
         ],
+        "summary": "Rejects a pending comment (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -1159,6 +1182,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Retrieves all posts (Admin only)",
         "responses": {
           "200": {
             "description": "OK",
@@ -1199,6 +1223,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Creates a new post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1257,6 +1282,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Retrieves published posts with pagination",
         "parameters": [
           {
             "name": "pageNumber",
@@ -1299,6 +1325,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Retrieves a specific post by ID",
         "parameters": [
           {
             "name": "id",
@@ -1337,6 +1364,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Updates an existing post",
         "parameters": [
           {
             "name": "id",
@@ -1424,6 +1452,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Deletes a post",
         "parameters": [
           {
             "name": "id",
@@ -1477,6 +1506,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Retrieves a specific post by slug",
         "parameters": [
           {
             "name": "slug",
@@ -1516,6 +1546,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Retrieves posts by author with pagination",
         "parameters": [
           {
             "name": "authorId",
@@ -1567,6 +1598,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Searches posts by query with pagination",
         "parameters": [
           {
             "name": "query",
@@ -1626,6 +1658,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Retrieves posts by category with pagination",
         "parameters": [
           {
             "name": "categoryId",
@@ -1677,6 +1710,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Retrieves posts by tag with pagination",
         "parameters": [
           {
             "name": "tagId",
@@ -1728,6 +1762,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Get featured posts",
         "responses": {
           "200": {
             "description": "OK",
@@ -1750,6 +1785,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Publishes a draft post",
         "parameters": [
           {
             "name": "id",
@@ -1803,6 +1839,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Unpublishes a published post",
         "parameters": [
           {
             "name": "id",
@@ -1856,6 +1893,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Features a post (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -1909,6 +1947,7 @@
         "tags": [
           "Posts"
         ],
+        "summary": "Unfeatures a post (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -1962,6 +2001,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Retrieves all tags",
         "responses": {
           "200": {
             "description": "OK",
@@ -1982,6 +2022,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Creates a new tag (Admin only)",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2050,6 +2091,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Retrieves tags with post counts",
         "responses": {
           "200": {
             "description": "OK",
@@ -2072,6 +2114,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Retrieves popular tags by usage count",
         "parameters": [
           {
             "name": "count",
@@ -2105,6 +2148,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Retrieves a specific tag by ID",
         "parameters": [
           {
             "name": "id",
@@ -2143,6 +2187,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Updates an existing tag (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -2230,6 +2275,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Deletes a tag (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -2283,6 +2329,7 @@
         "tags": [
           "Tags"
         ],
+        "summary": "Retrieves a specific tag by slug",
         "parameters": [
           {
             "name": "slug",
@@ -2322,6 +2369,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Retrieves all users (Admin only)",
         "responses": {
           "200": {
             "description": "OK",
@@ -2364,6 +2412,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Retrieves a specific user by ID",
         "parameters": [
           {
             "name": "id",
@@ -2422,6 +2471,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Deletes a user (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -2485,6 +2535,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Retrieves a specific user by username",
         "parameters": [
           {
             "name": "username",
@@ -2544,6 +2595,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Updates a user's role (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -2633,6 +2685,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Updates a user's status (Admin only)",
         "parameters": [
           {
             "name": "id",
@@ -2722,6 +2775,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Retrieves user statistics",
         "parameters": [
           {
             "name": "id",

@@ -202,7 +202,7 @@ const Home = () => {
                             <motion.button
                                 whileHover={{ x: 5 }}
                                 onClick={() => navigate('/posts')}
-                                className="flex items-center space-x-2 text-[#4a5b91] hover:text-[#3a4a7a] transition-colors text-sm"
+                                className="flex items-center space-x-2 text-[#4a5b91] hover:text-[#3a4a7a] transition-colors"
                             >
                                 <span>View all</span>
                                 <ArrowRight className="w-4 h-4" />

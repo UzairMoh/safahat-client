@@ -15,145 +15,177 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } fr
 
 export interface IApiClient {
     /**
+     * Authenticates user and returns JWT token
      * @param body (optional) 
      * @return OK
      */
     login(body: LoginRequest | undefined): Promise<AuthResponse>;
     /**
+     * Registers a new user account
      * @param body (optional) 
      * @return Created
      */
     register(body: RegisterRequest | undefined): Promise<AuthResponse>;
     /**
+     * Changes the authenticated user's password
      * @param body (optional) 
      * @return No Content
      */
     changePassword(body: ChangePasswordRequest | undefined): Promise<void>;
     /**
+     * Retrieves the authenticated user's profile
      * @return OK
      */
     profileGET(): Promise<UserResponse>;
     /**
+     * Updates the authenticated user's profile
      * @param body (optional) 
      * @return OK
      */
     profilePUT(body: UpdateUserProfileRequest | undefined): Promise<UserResponse>;
     /**
+     * Retrieves all categories
      * @return OK
      */
     categoriesAll(): Promise<CategoryResponse[]>;
     /**
+     * Creates a new category (Admin only)
      * @param body (optional) 
      * @return Created
      */
     categoriesPOST(body: CreateCategoryRequest | undefined): Promise<CategoryResponse>;
     /**
+     * Retrieves categories with post counts
      * @return OK
      */
     withPostCount(): Promise<CategoryResponse[]>;
     /**
+     * Retrieves a specific category by ID
      * @return OK
      */
     categoriesGET(id: string): Promise<CategoryResponse>;
     /**
+     * Updates an existing category (Admin only)
      * @param body (optional) 
      * @return OK
      */
     categoriesPUT(id: string, body: UpdateCategoryRequest | undefined): Promise<CategoryResponse>;
     /**
+     * Deletes a category (Admin only)
      * @return No Content
      */
     categoriesDELETE(id: string): Promise<void>;
     /**
+     * Retrieves a specific category by slug
      * @return OK
      */
     slug(slug: string): Promise<CategoryResponse>;
     /**
+     * Retrieves all comments (Admin only)
      * @return OK
      */
     commentsAll(): Promise<CommentResponse[]>;
     /**
+     * Creates a new comment
      * @param body (optional) 
      * @return Created
      */
     commentsPOST(body: CreateCommentRequest | undefined): Promise<CommentResponse>;
     /**
+     * Retrieves a specific comment by ID
      * @return OK
      */
     commentsGET(id: string): Promise<CommentResponse>;
     /**
+     * Updates an existing comment
      * @param body (optional) 
      * @return OK
      */
     commentsPUT(id: string, body: UpdateCommentRequest | undefined): Promise<CommentResponse>;
     /**
+     * Deletes a comment
      * @return No Content
      */
     commentsDELETE(id: string): Promise<void>;
     /**
+     * Retrieves all comments for a specific post
      * @return OK
      */
     post(postId: string): Promise<CommentResponse[]>;
     /**
+     * Retrieves comments by user
      * @return OK
      */
     user(userId: string): Promise<CommentResponse[]>;
     /**
+     * Retrieves pending comments for moderation (Admin only)
      * @return OK
      */
     pending(): Promise<CommentResponse[]>;
     /**
+     * Creates a reply to an existing comment
      * @param body (optional) 
      * @return Created
      */
     reply(parentCommentId: string, body: CreateCommentRequest | undefined): Promise<CommentResponse>;
     /**
+     * Approves a pending comment (Admin only)
      * @return No Content
      */
     approve(id: string): Promise<void>;
     /**
+     * Rejects a pending comment (Admin only)
      * @return No Content
      */
     reject(id: string): Promise<void>;
     /**
+     * Retrieves all posts (Admin only)
      * @return OK
      */
     postsAll(): Promise<PostResponse[]>;
     /**
+     * Creates a new post
      * @param body (optional) 
      * @return Created
      */
     postsPOST(body: CreatePostRequest | undefined): Promise<PostResponse>;
     /**
+     * Retrieves published posts with pagination
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
      */
     published(pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
     /**
+     * Retrieves a specific post by ID
      * @return OK
      */
     postsGET(id: string): Promise<PostResponse>;
     /**
+     * Updates an existing post
      * @param body (optional) 
      * @return OK
      */
     postsPUT(id: string, body: UpdatePostRequest | undefined): Promise<PostResponse>;
     /**
+     * Deletes a post
      * @return No Content
      */
     postsDELETE(id: string): Promise<void>;
     /**
+     * Retrieves a specific post by slug
      * @return OK
      */
     slug2(slug: string): Promise<PostResponse>;
     /**
+     * Retrieves posts by author with pagination
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
      */
     author(authorId: string, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
     /**
+     * Searches posts by query with pagination
      * @param query (optional) 
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
@@ -161,99 +193,121 @@ export interface IApiClient {
      */
     search(query: string | undefined, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
     /**
+     * Retrieves posts by category with pagination
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
      */
     category(categoryId: string, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
     /**
+     * Retrieves posts by tag with pagination
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
      */
     tag(tagId: string, pageNumber: number | undefined, pageSize: number | undefined): Promise<PostResponse[]>;
     /**
+     * Get featured posts
      * @return OK
      */
     featured(): Promise<PostResponse[]>;
     /**
+     * Publishes a draft post
      * @return No Content
      */
     publish(id: string): Promise<void>;
     /**
+     * Unpublishes a published post
      * @return No Content
      */
     unpublish(id: string): Promise<void>;
     /**
+     * Features a post (Admin only)
      * @return No Content
      */
     feature(id: string): Promise<void>;
     /**
+     * Unfeatures a post (Admin only)
      * @return No Content
      */
     unfeature(id: string): Promise<void>;
     /**
+     * Retrieves all tags
      * @return OK
      */
     tagsAll(): Promise<TagResponse[]>;
     /**
+     * Creates a new tag (Admin only)
      * @param body (optional) 
      * @return Created
      */
     tagsPOST(body: CreateTagRequest | undefined): Promise<TagResponse>;
     /**
+     * Retrieves tags with post counts
      * @return OK
      */
     withPostCount2(): Promise<TagResponse[]>;
     /**
+     * Retrieves popular tags by usage count
      * @param count (optional) 
      * @return OK
      */
     popular(count: number | undefined): Promise<TagResponse[]>;
     /**
+     * Retrieves a specific tag by ID
      * @return OK
      */
     tagsGET(id: string): Promise<TagResponse>;
     /**
+     * Updates an existing tag (Admin only)
      * @param body (optional) 
      * @return OK
      */
     tagsPUT(id: string, body: UpdateTagRequest | undefined): Promise<TagResponse>;
     /**
+     * Deletes a tag (Admin only)
      * @return No Content
      */
     tagsDELETE(id: string): Promise<void>;
     /**
+     * Retrieves a specific tag by slug
      * @return OK
      */
     slug3(slug: string): Promise<TagResponse>;
     /**
+     * Retrieves all users (Admin only)
      * @return OK
      */
     usersAll(): Promise<UserListItemResponse[]>;
     /**
+     * Retrieves a specific user by ID
      * @return OK
      */
     usersGET(id: string): Promise<UserDetailResponse>;
     /**
+     * Deletes a user (Admin only)
      * @return No Content
      */
     usersDELETE(id: string): Promise<void>;
     /**
+     * Retrieves a specific user by username
      * @return OK
      */
     username(username: string): Promise<UserDetailResponse>;
     /**
+     * Updates a user's role (Admin only)
      * @param body (optional) 
      * @return OK
      */
     role(id: string, body: UpdateUserRoleRequest | undefined): Promise<UserDetailResponse>;
     /**
+     * Updates a user's status (Admin only)
      * @param body (optional) 
      * @return OK
      */
     status(id: string, body: UpdateUserStatusRequest | undefined): Promise<UserDetailResponse>;
     /**
+     * Retrieves user statistics
      * @return OK
      */
     statistics(id: string): Promise<UserStatisticsResponse>;
@@ -273,6 +327,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Authenticates user and returns JWT token
      * @param body (optional) 
      * @return OK
      */
@@ -336,6 +391,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Registers a new user account
      * @param body (optional) 
      * @return Created
      */
@@ -399,6 +455,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Changes the authenticated user's password
      * @param body (optional) 
      * @return No Content
      */
@@ -465,6 +522,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves the authenticated user's profile
      * @return OK
      */
     profileGET( cancelToken?: CancelToken): Promise<UserResponse> {
@@ -530,6 +588,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Updates the authenticated user's profile
      * @param body (optional) 
      * @return OK
      */
@@ -600,6 +659,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves all categories
      * @return OK
      */
     categoriesAll( cancelToken?: CancelToken): Promise<CategoryResponse[]> {
@@ -658,6 +718,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Creates a new category (Admin only)
      * @param body (optional) 
      * @return Created
      */
@@ -735,6 +796,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves categories with post counts
      * @return OK
      */
     withPostCount( cancelToken?: CancelToken): Promise<CategoryResponse[]> {
@@ -793,6 +855,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific category by ID
      * @return OK
      */
     categoriesGET(id: string, cancelToken?: CancelToken): Promise<CategoryResponse> {
@@ -854,6 +917,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Updates an existing category (Admin only)
      * @param body (optional) 
      * @return OK
      */
@@ -941,6 +1005,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Deletes a category (Admin only)
      * @return No Content
      */
     categoriesDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -1012,6 +1077,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific category by slug
      * @return OK
      */
     slug(slug: string, cancelToken?: CancelToken): Promise<CategoryResponse> {
@@ -1073,6 +1139,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves all comments (Admin only)
      * @return OK
      */
     commentsAll( cancelToken?: CancelToken): Promise<CommentResponse[]> {
@@ -1145,6 +1212,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Creates a new comment
      * @param body (optional) 
      * @return Created
      */
@@ -1215,6 +1283,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific comment by ID
      * @return OK
      */
     commentsGET(id: string, cancelToken?: CancelToken): Promise<CommentResponse> {
@@ -1276,6 +1345,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Updates an existing comment
      * @param body (optional) 
      * @return OK
      */
@@ -1363,6 +1433,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Deletes a comment
      * @return No Content
      */
     commentsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -1434,6 +1505,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves all comments for a specific post
      * @return OK
      */
     post(postId: string, cancelToken?: CancelToken): Promise<CommentResponse[]> {
@@ -1495,6 +1567,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves comments by user
      * @return OK
      */
     user(userId: string, cancelToken?: CancelToken): Promise<CommentResponse[]> {
@@ -1570,6 +1643,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves pending comments for moderation (Admin only)
      * @return OK
      */
     pending( cancelToken?: CancelToken): Promise<CommentResponse[]> {
@@ -1642,6 +1716,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Creates a reply to an existing comment
      * @param body (optional) 
      * @return Created
      */
@@ -1715,6 +1790,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Approves a pending comment (Admin only)
      * @return No Content
      */
     approve(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -1786,6 +1862,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Rejects a pending comment (Admin only)
      * @return No Content
      */
     reject(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -1857,6 +1934,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves all posts (Admin only)
      * @return OK
      */
     postsAll( cancelToken?: CancelToken): Promise<PostResponse[]> {
@@ -1929,6 +2007,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Creates a new post
      * @param body (optional) 
      * @return Created
      */
@@ -1999,6 +2078,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves published posts with pagination
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
@@ -2067,6 +2147,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific post by ID
      * @return OK
      */
     postsGET(id: string, cancelToken?: CancelToken): Promise<PostResponse> {
@@ -2128,6 +2209,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Updates an existing post
      * @param body (optional) 
      * @return OK
      */
@@ -2215,6 +2297,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Deletes a post
      * @return No Content
      */
     postsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -2286,6 +2369,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific post by slug
      * @return OK
      */
     slug2(slug: string, cancelToken?: CancelToken): Promise<PostResponse> {
@@ -2347,6 +2431,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves posts by author with pagination
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
@@ -2418,6 +2503,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Searches posts by query with pagination
      * @param query (optional) 
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
@@ -2498,6 +2584,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves posts by category with pagination
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
@@ -2569,6 +2656,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves posts by tag with pagination
      * @param pageNumber (optional) 
      * @param pageSize (optional) 
      * @return OK
@@ -2640,6 +2728,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Get featured posts
      * @return OK
      */
     featured( cancelToken?: CancelToken): Promise<PostResponse[]> {
@@ -2698,6 +2787,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Publishes a draft post
      * @return No Content
      */
     publish(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -2769,6 +2859,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Unpublishes a published post
      * @return No Content
      */
     unpublish(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -2840,6 +2931,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Features a post (Admin only)
      * @return No Content
      */
     feature(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -2911,6 +3003,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Unfeatures a post (Admin only)
      * @return No Content
      */
     unfeature(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -2982,6 +3075,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves all tags
      * @return OK
      */
     tagsAll( cancelToken?: CancelToken): Promise<TagResponse[]> {
@@ -3040,6 +3134,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Creates a new tag (Admin only)
      * @param body (optional) 
      * @return Created
      */
@@ -3117,6 +3212,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves tags with post counts
      * @return OK
      */
     withPostCount2( cancelToken?: CancelToken): Promise<TagResponse[]> {
@@ -3175,6 +3271,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves popular tags by usage count
      * @param count (optional) 
      * @return OK
      */
@@ -3238,6 +3335,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific tag by ID
      * @return OK
      */
     tagsGET(id: string, cancelToken?: CancelToken): Promise<TagResponse> {
@@ -3299,6 +3397,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Updates an existing tag (Admin only)
      * @param body (optional) 
      * @return OK
      */
@@ -3386,6 +3485,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Deletes a tag (Admin only)
      * @return No Content
      */
     tagsDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -3457,6 +3557,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific tag by slug
      * @return OK
      */
     slug3(slug: string, cancelToken?: CancelToken): Promise<TagResponse> {
@@ -3518,6 +3619,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves all users (Admin only)
      * @return OK
      */
     usersAll( cancelToken?: CancelToken): Promise<UserListItemResponse[]> {
@@ -3590,6 +3692,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific user by ID
      * @return OK
      */
     usersGET(id: string, cancelToken?: CancelToken): Promise<UserDetailResponse> {
@@ -3665,6 +3768,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Deletes a user (Admin only)
      * @return No Content
      */
     usersDELETE(id: string, cancelToken?: CancelToken): Promise<void> {
@@ -3743,6 +3847,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves a specific user by username
      * @return OK
      */
     username(username: string, cancelToken?: CancelToken): Promise<UserDetailResponse> {
@@ -3818,6 +3923,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Updates a user's role (Admin only)
      * @param body (optional) 
      * @return OK
      */
@@ -3905,6 +4011,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Updates a user's status (Admin only)
      * @param body (optional) 
      * @return OK
      */
@@ -3992,6 +4099,7 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Retrieves user statistics
      * @return OK
      */
     statistics(id: string, cancelToken?: CancelToken): Promise<UserStatisticsResponse> {
