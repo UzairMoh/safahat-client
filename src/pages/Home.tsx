@@ -13,7 +13,8 @@ import { useAuthStore } from '../stores/authStore';
 import postService from '../services/post.service';
 import Navigation from '../components/common/Navigation';
 import Loading from '../components/common/Loading';
-import {IPostResponse} from "../api/Client.ts";
+import { IPostResponse } from "../api/Client.ts";
+import { ROUTES } from '../constants/routes/routes.ts';
 
 // Keep mock stats since no API endpoint exists
 const mockStats = [
@@ -57,7 +58,7 @@ const Home = () => {
 
     const handlePostClick = (post: IPostResponse) => {
         if (post.slug && post.status === 1) {
-            navigate(`/posts/${post.slug}`);
+            navigate(ROUTES.POSTS.VIEW(post.slug));
         }
     };
 
@@ -86,7 +87,7 @@ const Home = () => {
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => navigate('/posts/create')}
+                            onClick={() => navigate(ROUTES.POSTS.CREATE)}
                             className="flex items-center justify-center space-x-2 px-8 py-3 bg-[#4a5b91] text-white rounded-xl hover:bg-[#3a4a7a] transition-colors shadow-lg"
                         >
                             <PenTool className="w-5 h-5" />
@@ -95,7 +96,7 @@ const Home = () => {
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => navigate('/library')}
+                            onClick={() => navigate(ROUTES.LIBRARY)}
                             className="flex items-center justify-center space-x-2 px-8 py-3 bg-white border-2 border-[#c9d5ef] text-[#4a5b91] rounded-xl hover:bg-[#f6f8fd] transition-colors"
                         >
                             <BookOpen className="w-5 h-5" />
@@ -142,7 +143,7 @@ const Home = () => {
                         </div>
                         <motion.button
                             whileHover={{ x: 5 }}
-                            onClick={() => navigate('/posts?featured=true')}
+                            onClick={() => navigate(ROUTES.POSTS.FEATURED)}
                             className="flex items-center space-x-2 text-[#4a5b91] hover:text-[#3a4a7a] transition-colors"
                         >
                             <span>View all</span>
@@ -201,7 +202,7 @@ const Home = () => {
                             <h2 className="text-2xl font-bold text-[#4a5b91]">Recent Posts</h2>
                             <motion.button
                                 whileHover={{ x: 5 }}
-                                onClick={() => navigate('/posts')}
+                                onClick={() => navigate(ROUTES.POSTS.LIST)}
                                 className="flex items-center space-x-2 text-[#4a5b91] hover:text-[#3a4a7a] transition-colors"
                             >
                                 <span>View all</span>

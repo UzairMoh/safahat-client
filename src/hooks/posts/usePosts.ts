@@ -73,3 +73,30 @@ export const usePost = (postId: string) => {
         staleTime: 5 * 60 * 1000,
     });
 };
+
+export const usePublishedPosts = (pageNumber: number = 1, pageSize: number = 10) => {
+    return useQuery({
+        queryKey: POST_QUERY_KEYS.publishedPosts(pageNumber, pageSize),
+        queryFn: () => postService.getPublishedPosts(pageNumber, pageSize),
+        staleTime: 5 * 60 * 1000,
+        placeholderData: (previousData) => previousData, // Keeps previous data during pagination
+    });
+};
+
+export const useFeaturedPosts = () => {
+    return useQuery({
+        queryKey: POST_QUERY_KEYS.featuredPosts(),
+        queryFn: () => postService.getFeaturedPosts(),
+        staleTime: 5 * 60 * 1000,
+    });
+};
+
+export const useSearchPosts = (query: string, pageNumber: number = 1, pageSize: number = 10) => {
+    return useQuery({
+        queryKey: POST_QUERY_KEYS.searchPosts(query, pageNumber, pageSize),
+        queryFn: () => postService.searchPosts(query, pageNumber, pageSize),
+        enabled: !!query?.trim(),
+        staleTime: 5 * 60 * 1000,
+        placeholderData: (previousData) => previousData,
+    });
+};

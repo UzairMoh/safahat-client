@@ -5,13 +5,15 @@ import Library from "./pages/Library.tsx";
 import Explore from "./pages/Explore.tsx";
 import AuthPage from "../src/pages/AuthPage.tsx";
 import Profile from "./pages/Profile.tsx";
+import Posts from "./pages/Posts.tsx";
 import NotFound from "./components/common/NotFound.tsx";
 import Loading from "./components/common/Loading.tsx";
 import { useAuthStore } from './stores/authStore';
-import type {JSX} from "react";
+import type { JSX } from "react";
 import CreatePost from "./pages/CreatePosts.tsx";
 import BlogPost from "./pages/BlogPosts.tsx";
 import EditPost from './pages/EditPosts.tsx';
+import { ROUTES } from './constants/routes/routes.ts';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     const { isAuthenticated, isLoading, isInitialized } = useAuthStore();
@@ -44,7 +46,7 @@ function App() {
             <main>
                 <Routes>
                     <Route
-                        path="/"
+                        path={ROUTES.HOME}
                         element={
                             <ProtectedRoute>
                                 <Home />
@@ -52,7 +54,15 @@ function App() {
                         }
                     />
                     <Route
-                        path="/library"
+                        path={ROUTES.POSTS.LIST}
+                        element={
+                            <ProtectedRoute>
+                                <Posts />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path={ROUTES.LIBRARY}
                         element={
                             <ProtectedRoute>
                                 <Library />
@@ -60,7 +70,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/explore"
+                        path={ROUTES.EXPLORE}
                         element={
                             <ProtectedRoute>
                                 <Explore />
@@ -68,7 +78,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/profile"
+                        path={ROUTES.PROFILE}
                         element={
                             <ProtectedRoute>
                                 <Profile />
@@ -76,7 +86,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/posts/create"
+                        path={ROUTES.POSTS.CREATE}
                         element={
                             <ProtectedRoute>
                                 <CreatePost />
@@ -99,9 +109,9 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
-                    <Route path="/auth" element={<AuthPage />} />
-                    <Route path="/login" element={<Navigate to="/auth" replace />} />
-                    <Route path="/register" element={<Navigate to="/auth" replace />} />
+                    <Route path={ROUTES.AUTH} element={<AuthPage />} />
+                    <Route path={ROUTES.LOGIN} element={<Navigate to="/auth" replace />} />
+                    <Route path={ROUTES.REGISTER} element={<Navigate to="/auth" replace />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </main>
