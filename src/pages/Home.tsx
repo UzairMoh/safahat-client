@@ -2,9 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-    Users,
     Eye,
-    Star,
     ArrowRight,
     BookOpen,
     PenTool,
@@ -15,14 +13,6 @@ import Navigation from '../components/common/Navigation';
 import Loading from '../components/common/Loading';
 import { IPostResponse } from "../api/Client.ts";
 import { ROUTES } from '../constants/routes/routes.ts';
-
-// Keep mock stats since no API endpoint exists
-const mockStats = [
-    { label: "Total Posts", value: "1,247", icon: BookOpen },
-    { label: "Active Writers", value: "89", icon: Users },
-    { label: "Monthly Readers", value: "12.4K", icon: Eye },
-    { label: "Featured Articles", value: "156", icon: Star }
-];
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
@@ -102,31 +92,6 @@ const Home = () => {
                             <BookOpen className="w-5 h-5" />
                             <span className="font-medium">View Library</span>
                         </motion.button>
-                    </div>
-                </motion.section>
-
-                <motion.section
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
-                    className="mb-16"
-                >
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                        {mockStats.map((stat, index) => (
-                            <motion.div
-                                key={stat.label}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 0.1 * index }}
-                                className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
-                            >
-                                <div className="flex items-center justify-center w-12 h-12 bg-[#f6f8fd] rounded-xl mx-auto mb-4">
-                                    <stat.icon className="w-6 h-6 text-[#4a5b91]" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-[#4a5b91] mb-1">{stat.value}</h3>
-                                <p className="text-sm text-[#938384]">{stat.label}</p>
-                            </motion.div>
-                        ))}
                     </div>
                 </motion.section>
 

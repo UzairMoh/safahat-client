@@ -42,15 +42,6 @@ const commentService = {
         }
     },
 
-    getPendingComments: async (): Promise<CommentResponse[]> => {
-        try {
-            return await apiClient.pending();
-        } catch (error) {
-            console.error('Error fetching pending comments:', error);
-            throw error;
-        }
-    },
-
     createComment: async (comment: CreateCommentRequest): Promise<CommentResponse> => {
         try {
             return await apiClient.commentsPOST(comment);
@@ -83,24 +74,6 @@ const commentService = {
             return await apiClient.commentsDELETE(id);
         } catch (error) {
             console.error(`Error deleting comment ${id}:`, error);
-            throw error;
-        }
-    },
-
-    approveComment: async (id: string): Promise<void> => {
-        try {
-            return await apiClient.approve(id);
-        } catch (error) {
-            console.error(`Error approving comment ${id}:`, error);
-            throw error;
-        }
-    },
-
-    rejectComment: async (id: string): Promise<void> => {
-        try {
-            return await apiClient.reject(id);
-        } catch (error) {
-            console.error(`Error rejecting comment ${id}:`, error);
             throw error;
         }
     }

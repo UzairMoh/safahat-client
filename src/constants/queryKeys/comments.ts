@@ -7,5 +7,4 @@
     commentById: (id: string) => ['comments', 'id', id] as const,
     commentsByPost: (postId: string) => ['comments', 'post', postId] as const,
     commentsByUser: (userId: string) => ['comments', 'user', userId] as const,
-    pendingComments: () => ['comments', 'pending'] as const,
 } as const;

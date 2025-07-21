@@ -5,16 +5,13 @@ import {
     Edit,
     Trash2,
     MoreHorizontal,
-    Clock,
     Check,
     X,
-    Shield
 } from 'lucide-react';
-import { CommentResponse, UpdateCommentRequest } from '../../api/Client';
-import authService from '../../services/auth.service';
+import { CommentResponse, UpdateCommentRequest, UserRole } from '../../api/Client';
 import CommentForm from './CommentForm';
-import CommentModerationTools from './CommentModerationTools';
 import commentService from "../../services/comments.service.ts";
+import { useAuthStore } from '../../stores/authStore';
 
 interface CommentItemProps {
     comment: CommentResponse;
@@ -41,10 +38,10 @@ const CommentItem = ({
     const [showActions, setShowActions] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // Get current user info (you might want to implement this properly)
-    const isAuthenticated = authService.isAuthenticated();
-    const isAdmin = false; // You'll need to implement admin check
-    const isAuthor = false; // You'll need to implement author check based on current user
+    const { user: currentUser, isAuthenticated } = useAuthStore();
+
+    const isAdmin = currentUser?.role === UserRole._2; // Admin = 2
+    const isAuthor = currentUser?.id === comment.user?.id;
 
     const formatDate = (dateString: string | Date | undefined) => {
         if (!dateString) return '';
@@ -78,7 +75,6 @@ const CommentItem = ({
             setIsEditing(false);
         } catch (error: any) {
             console.error('Error updating comment:', error);
-            // You might want to show a toast notification here
         } finally {
             setLoading(false);
         }
@@ -93,7 +89,6 @@ const CommentItem = ({
             onCommentDeleted(comment.id!);
         } catch (error: any) {
             console.error('Error deleting comment:', error);
-            // You might want to show a toast notification here
         } finally {
             setLoading(false);
         }
@@ -104,23 +99,9 @@ const CommentItem = ({
         setShowReplyForm(false);
     };
 
-    const getStatusIcon = () => {
-        if (!comment.isApproved) {
-            return (
-                <div className="flex items-center" title="Pending approval">
-                    <Clock className="w-4 h-4 text-amber-500" />
-                </div>
-            );
-        }
-        return (
-            <div className="flex items-center" title="Approved">
-                <Check className="w-4 h-4 text-green-500" />
-            </div>
-        );
-    };
-
     const indentationClass = depth > 0 ? `ml-${Math.min(depth * 8, 24)}` : '';
     const canReply = depth < maxDepth && isAuthenticated;
+    const showDropdown = isAuthor || isAdmin;
 
     return (
         <motion.div
@@ -131,10 +112,8 @@ const CommentItem = ({
             className={`${indentationClass} ${depth > 0 ? 'border-l-2 border-[#c9d5ef]/30 pl-6' : ''}`}
         >
             <div className="bg-white border border-[#c9d5ef]/30 rounded-xl p-4 mb-4 hover:shadow-sm transition-shadow">
-                {/* Comment Header */}
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center space-x-3">
-                        {/* User Avatar */}
                         {comment.user?.profilePictureUrl ? (
                             <img
                                 src={comment.user.profilePictureUrl}
@@ -147,7 +126,6 @@ const CommentItem = ({
                             </div>
                         )}
 
-                        {/* User Info */}
                         <div className="flex items-center space-x-2">
                             <span className="font-medium text-[#4a5b91]">
                                 {comment.user?.fullName || comment.user?.username}
@@ -160,42 +138,55 @@ const CommentItem = ({
                                     (edited)
                                 </span>
                             )}
-                            {getStatusIcon()}
                         </div>
                     </div>
 
-                    {/* Actions Menu */}
-                    <div className="relative">
-                        <motion.button
-                            onClick={() => setShowActions(!showActions)}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="p-1 text-[#938384] hover:text-[#4a5b91] hover:bg-[#f6f8fd] rounded transition-colors"
-                        >
-                            <MoreHorizontal className="w-4 h-4" />
-                        </motion.button>
+                    {showDropdown && (
+                        <div className="relative">
+                            <motion.button
+                                onClick={() => setShowActions(!showActions)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="p-1 text-[#938384] hover:text-[#4a5b91] hover:bg-[#f6f8fd] rounded transition-colors"
+                            >
+                                <MoreHorizontal className="w-4 h-4" />
+                            </motion.button>
 
-                        <AnimatePresence>
-                            {showActions && (
-                                <motion.div
-                                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="absolute right-0 top-8 bg-white border border-[#c9d5ef] rounded-lg shadow-lg py-2 z-10 min-w-[120px]"
-                                >
-                                    {isAuthor && (
-                                        <>
-                                            <button
-                                                onClick={() => {
-                                                    setIsEditing(true);
-                                                    setShowActions(false);
-                                                }}
-                                                className="flex items-center space-x-2 w-full px-3 py-2 text-left text-sm text-[#4a5b91] hover:bg-[#f6f8fd] transition-colors"
-                                            >
-                                                <Edit className="w-4 h-4" />
-                                                <span>Edit</span>
-                                            </button>
+                            <AnimatePresence>
+                                {showActions && (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="absolute right-0 top-8 bg-white border border-[#c9d5ef] rounded-lg shadow-lg py-2 z-10 min-w-[120px]"
+                                    >
+                                        {isAuthor && (
+                                            <>
+                                                <button
+                                                    onClick={() => {
+                                                        setIsEditing(true);
+                                                        setShowActions(false);
+                                                    }}
+                                                    className="flex items-center space-x-2 w-full px-3 py-2 text-left text-sm text-[#4a5b91] hover:bg-[#f6f8fd] transition-colors"
+                                                >
+                                                    <Edit className="w-4 h-4" />
+                                                    <span>Edit</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        handleDelete();
+                                                        setShowActions(false);
+                                                    }}
+                                                    className="flex items-center space-x-2 w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                    <span>Delete</span>
+                                                </button>
+                                            </>
+                                        )}
+
+                                        {isAdmin && !isAuthor && (
                                             <button
                                                 onClick={() => {
                                                     handleDelete();
@@ -206,24 +197,14 @@ const CommentItem = ({
                                                 <Trash2 className="w-4 h-4" />
                                                 <span>Delete</span>
                                             </button>
-                                        </>
-                                    )}
-
-                                    {isAdmin && (
-                                        <div className="border-t border-[#c9d5ef]/30 mt-1 pt-1">
-                                            <div className="flex items-center space-x-2 px-3 py-1 text-xs text-[#938384]">
-                                                <Shield className="w-3 h-3" />
-                                                <span>Admin Actions</span>
-                                            </div>
-                                        </div>
-                                    )}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                                        )}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    )}
                 </div>
 
-                {/* Comment Content */}
                 {isEditing ? (
                     <div className="mb-4">
                         <motion.div
@@ -280,15 +261,6 @@ const CommentItem = ({
                     </div>
                 )}
 
-                {/* Admin Moderation Tools */}
-                {isAdmin && !comment.isApproved && (
-                    <CommentModerationTools
-                        comment={comment}
-                        onCommentUpdated={onCommentUpdated}
-                    />
-                )}
-
-                {/* Comment Actions */}
                 {!isEditing && (
                     <div className="flex items-center space-x-4 pt-2 border-t border-[#c9d5ef]/30">
                         {canReply && (
@@ -312,7 +284,6 @@ const CommentItem = ({
                 )}
             </div>
 
-            {/* Reply Form */}
             <AnimatePresence>
                 {showReplyForm && (
                     <motion.div
@@ -334,7 +305,6 @@ const CommentItem = ({
                 )}
             </AnimatePresence>
 
-            {/* Nested Replies */}
             {comment.replies && comment.replies.length > 0 && (
                 <div className="space-y-2">
                     <AnimatePresence>
@@ -361,7 +331,6 @@ const CommentItem = ({
                 </div>
             )}
 
-            {/* Click outside to close actions */}
             {showActions && (
                 <div
                     className="fixed inset-0 z-5"
