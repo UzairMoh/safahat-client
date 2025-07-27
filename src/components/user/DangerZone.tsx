@@ -35,11 +35,8 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
         setError(null);
 
         try {
-            // Note: The actual API might need password verification
-            // For now, we'll use the existing deleteUser endpoint
             await userService.deleteUser(userId);
 
-            // Log out the user and redirect
             logout();
             navigate('/auth', {
                 replace: true,
@@ -61,7 +58,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
 
     return (
         <>
-            {/* Danger Zone Section */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -78,7 +74,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
                     </div>
                 </div>
 
-                {/* Warning notice */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -116,7 +111,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
                     </div>
                 </motion.div>
 
-                {/* Delete Account Button */}
                 <div className="text-center">
                     <motion.button
                         onClick={() => setShowModal(true)}
@@ -130,7 +124,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
                 </div>
             </motion.div>
 
-            {/* Confirmation Modal */}
             <AnimatePresence>
                 {showModal && (
                     <motion.div
@@ -148,7 +141,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
                             onClick={(e) => e.stopPropagation()}
                         >
                             <div className="p-6">
-                                {/* Header */}
                                 <div className="flex items-center justify-between mb-6">
                                     <div className="flex items-center space-x-3">
                                         <div className="flex items-center justify-center w-10 h-10 bg-red-600 rounded-2xl">
@@ -164,7 +156,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
                                     </button>
                                 </div>
 
-                                {/* Confirmation text */}
                                 <div className="mb-6">
                                     <p className="text-[#938384] mb-4">
                                         Are you absolutely sure you want to delete your account? This action cannot be undone.
@@ -176,7 +167,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
                                     </div>
                                 </div>
 
-                                {/* Password input */}
                                 <div className="mb-6">
                                     <label className="block text-sm font-medium text-[#938384] mb-2">
                                         Your Password
@@ -201,7 +191,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
                                     </div>
                                 </div>
 
-                                {/* Error message */}
                                 {error && (
                                     <motion.div
                                         initial={{ opacity: 0, height: 0 }}
@@ -212,7 +201,6 @@ const DangerZone = ({ userId }: DangerZoneProps) => {
                                     </motion.div>
                                 )}
 
-                                {/* Action buttons */}
                                 <div className="flex space-x-3">
                                     <motion.button
                                         onClick={closeModal}

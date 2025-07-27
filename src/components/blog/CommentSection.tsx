@@ -24,12 +24,10 @@ const CommentSection = ({
                             onCommentDeleted,
                             onRefresh
                         }: CommentSectionProps) => {
-    // Group comments by parent/child relationship
     const organizeComments = (comments: CommentResponse[]) => {
         const commentMap = new Map<string, CommentResponse>();
         const rootComments: CommentResponse[] = [];
 
-        // First pass: create a map of all comments with replies initialized
         comments.forEach(comment => {
             const commentWithReplies = new CommentResponse({
                 ...comment,
@@ -38,7 +36,6 @@ const CommentSection = ({
             commentMap.set(comment.id!, commentWithReplies);
         });
 
-        // Second pass: organize into parent-child relationships
         comments.forEach(comment => {
             if (comment.parentCommentId) {
                 const parent = commentMap.get(comment.parentCommentId);
@@ -86,7 +83,6 @@ const CommentSection = ({
             className="px-8 py-8"
         >
             <div className="bg-white border-2 border-[#c9d5ef]/30 rounded-2xl overflow-hidden shadow-sm">
-                {/* Comments Header */}
                 <div className="bg-[#f6f8fd]/50 border-b border-[#c9d5ef]/30 p-6">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
@@ -108,7 +104,6 @@ const CommentSection = ({
                     </div>
                 </div>
 
-                {/* Comment Form */}
                 <div className="p-6 border-b border-[#c9d5ef]/30">
                     <CommentForm
                         postId={post.id!}
@@ -117,7 +112,6 @@ const CommentSection = ({
                     />
                 </div>
 
-                {/* Comments List */}
                 <div className="p-6">
                     {loading && comments.length === 0 ? (
                         <div className="flex items-center justify-center py-12">

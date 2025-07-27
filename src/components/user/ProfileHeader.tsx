@@ -34,7 +34,6 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
 
     return (
         <div className="space-y-6">
-            {/* Main Profile Card */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -42,7 +41,6 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                 className="bg-white rounded-2xl shadow-lg border border-[#c9d5ef]/30 p-8"
             >
                 <div className="text-center">
-                    {/* Profile Picture */}
                     <div className="flex justify-center mb-6">
                         <div className="relative">
                             <div className="w-32 h-32 rounded-full border-4 border-[#c9d5ef] overflow-hidden bg-[#f6f8fd]">
@@ -59,7 +57,6 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                                 )}
                             </div>
 
-                            {/* Role badge */}
                             <div className="absolute -bottom-2 -right-2 bg-white rounded-full p-2 border-2 border-[#c9d5ef] shadow-lg">
                                 <div className="w-8 h-8 bg-[#4a5b91] rounded-full flex items-center justify-center">
                                     <RoleIcon size={16} className="text-white" />
@@ -68,7 +65,6 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                         </div>
                     </div>
 
-                    {/* User Info */}
                     <div className="mb-6">
                         <h2 className="text-2xl font-semibold text-[#4a5b91] mb-2">
                             {user.fullName || user.username}
@@ -85,7 +81,6 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                 </div>
             </motion.div>
 
-            {/* Bio Section */}
             {user.bio && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -103,7 +98,6 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                 </motion.div>
             )}
 
-            {/* Contact Information */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -135,7 +129,6 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                 </div>
             </motion.div>
 
-            {/* Last Login */}
             {user.lastLoginAt && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

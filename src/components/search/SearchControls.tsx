@@ -67,7 +67,6 @@ const SearchControls = ({
             transition={{ delay: 0.1, duration: 0.5 }}
             className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-lg mb-8"
         >
-            {/* Search Section */}
             <form onSubmit={handleSearch} className="flex gap-4 items-start">
                 <div className="flex-1">
                     <div className="relative">
@@ -110,7 +109,6 @@ const SearchControls = ({
                 )}
             </form>
 
-            {/* Results Count */}
             {hasSearched && (
                 <div className="mt-4 pt-4 border-t border-[#c9d5ef]/30">
                     <p className="text-sm text-[#938384]">
@@ -119,7 +117,6 @@ const SearchControls = ({
                 </div>
             )}
 
-            {/* Filters */}
             <AnimatePresence mode="wait">
                 {hasSearched && showFilters && (
                     <motion.div
@@ -149,7 +146,6 @@ const SearchControls = ({
                         className="mt-4 pt-4 border-t border-[#c9d5ef]/30"
                     >
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            {/* Category */}
                             <div>
                                 <label className="block text-sm font-medium text-[#4a5b91] mb-2">Category</label>
                                 <select
@@ -166,7 +162,6 @@ const SearchControls = ({
                                 </select>
                             </div>
 
-                            {/* Date Range */}
                             <div>
                                 <label className="block text-sm font-medium text-[#4a5b91] mb-2">Date</label>
                                 <select
@@ -181,7 +176,6 @@ const SearchControls = ({
                                 </select>
                             </div>
 
-                            {/* Featured */}
                             <div>
                                 <label className="block text-sm font-medium text-[#4a5b91] mb-2">Type</label>
                                 <select
@@ -195,7 +189,6 @@ const SearchControls = ({
                                 </select>
                             </div>
 
-                            {/* Sort */}
                             <div>
                                 <label className="block text-sm font-medium text-[#4a5b91] mb-2">Sort</label>
                                 <select
@@ -211,7 +204,6 @@ const SearchControls = ({
                             </div>
                         </div>
 
-                        {/* Reset Button */}
                         {hasActiveFilters && (
                             <div className="mt-4 flex justify-end">
                                 <button

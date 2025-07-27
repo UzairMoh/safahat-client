@@ -46,9 +46,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
             transition={{ delay: 0.2, duration: 0.6 }}
             className="bg-white border border-[#c9d5ef]/30 rounded-2xl p-6 shadow-lg mb-8"
         >
-            {/* Search and Quick Filters */}
             <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-                {/* Search */}
                 <div className="relative flex-1 max-w-md">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#938384]" />
                     <input
@@ -60,9 +58,7 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                     />
                 </div>
 
-                {/* Quick Actions */}
                 <div className="flex items-center space-x-3">
-                    {/* Status Filter */}
                     <select
                         value={filters.status}
                         onChange={(e) => updateFilter('status', e.target.value)}
@@ -74,7 +70,6 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                         <option value="archived">Archived</option>
                     </select>
 
-                    {/* Advanced Filters Toggle */}
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -89,7 +84,6 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                         <span>Filters</span>
                     </motion.button>
 
-                    {/* Reset Filters */}
                     {hasActiveFilters && (
                         <motion.button
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -106,7 +100,6 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                 </div>
             </div>
 
-            {/* Advanced Filters */}
             <AnimatePresence mode="wait">
                 {showAdvanced && (
                     <motion.div
@@ -142,7 +135,6 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                             transition={{ delay: 0.1, duration: 0.2 }}
                             className="grid grid-cols-1 md:grid-cols-3 gap-4"
                         >
-                            {/* Sort By */}
                             <div>
                                 <label className="block text-sm font-medium text-[#4a5b91] mb-2">Sort By</label>
                                 <select
@@ -156,7 +148,6 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                                 </select>
                             </div>
 
-                            {/* Sort Order */}
                             <div>
                                 <label className="block text-sm font-medium text-[#4a5b91] mb-2">Order</label>
                                 <div className="flex space-x-2">
@@ -189,7 +180,6 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                                 </div>
                             </div>
 
-                            {/* Featured Filter */}
                             <div>
                                 <label className="block text-sm font-medium text-[#4a5b91] mb-2">Featured</label>
                                 <select
@@ -207,7 +197,6 @@ const LibraryFilters = ({ filters, onFiltersChange, postCount }: LibraryFiltersP
                 )}
             </AnimatePresence>
 
-            {/* Results Count */}
             <div className="mt-4 pt-4 border-t border-[#c9d5ef]/30">
                 <p className="text-sm text-[#938384]">
                     Showing <span className="font-medium text-[#4a5b91]">{postCount}</span> post{postCount !== 1 ? 's' : ''}

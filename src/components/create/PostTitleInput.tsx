@@ -1,6 +1,7 @@
 ﻿import { motion } from 'framer-motion';
 import { Control, Controller } from 'react-hook-form';
 import { useState } from 'react';
+import { AlertCircle } from 'lucide-react';
 
 interface PostTitleInputProps {
     control: Control<any>;
@@ -42,7 +43,7 @@ const PostTitleInput = ({ control, errors }: PostTitleInputProps) => {
                     animate={{ opacity: 1 }}
                     className="mt-4 text-sm text-red-500 flex items-center space-x-1"
                 >
-                    <span className="flex-shrink-0">⚠️</span>
+                    <AlertCircle size={16} className="flex-shrink-0" />
                     <span>{errors.title.message as string}</span>
                 </motion.p>
             )}

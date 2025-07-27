@@ -16,7 +16,6 @@ export const usePostFilters = (posts: PostResponse[]) => {
     const filteredPosts = useMemo(() => {
         let filtered = [...posts];
 
-        // Search filter
         if (filters.search) {
             const searchLower = filters.search.toLowerCase();
             filtered = filtered.filter(post =>
@@ -26,7 +25,6 @@ export const usePostFilters = (posts: PostResponse[]) => {
             );
         }
 
-        // Status filter
         if (filters.status !== 'all') {
             const statusMap = {
                 draft: PostStatus._0,
@@ -38,7 +36,6 @@ export const usePostFilters = (posts: PostResponse[]) => {
             );
         }
 
-        // Featured filter
         if (filters.featured !== 'all') {
             filtered = filtered.filter(post => {
                 if (filters.featured === 'featured') {
@@ -50,7 +47,6 @@ export const usePostFilters = (posts: PostResponse[]) => {
             });
         }
 
-        // Sorting
         filtered.sort((a, b) => {
             let aValue, bValue;
 

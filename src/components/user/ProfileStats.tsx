@@ -95,7 +95,6 @@ const ProfileStats = ({ userId }: ProfileStatsProps) => {
 
     return (
         <div className="space-y-6">
-            {/* Statistics Header */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -113,7 +112,6 @@ const ProfileStats = ({ userId }: ProfileStatsProps) => {
                 </div>
             </motion.div>
 
-            {/* Writing Statistics */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -151,7 +149,6 @@ const ProfileStats = ({ userId }: ProfileStatsProps) => {
                     })}
                 </div>
 
-                {/* Publish Rate */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -172,7 +169,6 @@ const ProfileStats = ({ userId }: ProfileStatsProps) => {
                 </motion.div>
             </motion.div>
 
-            {/* Engagement Statistics */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -210,7 +206,6 @@ const ProfileStats = ({ userId }: ProfileStatsProps) => {
                     })}
                 </div>
 
-                {/* Approval Rate */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

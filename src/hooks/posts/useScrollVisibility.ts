@@ -15,14 +15,12 @@ export const useScrollVisibility = (options: UseScrollVisibilityOptions = {}) =>
             const currentScrollY = window.scrollY;
 
             if (showOnScrollUp) {
-                // Show when scrolling up, hide when scrolling down
                 if (currentScrollY > lastScrollY && currentScrollY > threshold) {
                     setIsVisible(false);
                 } else if (currentScrollY < lastScrollY) {
                     setIsVisible(true);
                 }
             } else {
-                // Show when scrolled past threshold
                 setIsVisible(currentScrollY > threshold);
             }
 

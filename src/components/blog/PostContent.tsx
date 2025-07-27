@@ -50,7 +50,6 @@ const PostContent = ({ post }: PostContentProps) => {
                     }}
                 />
 
-                {/* Reading time estimation */}
                 {post.content && (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -68,7 +67,6 @@ const PostContent = ({ post }: PostContentProps) => {
                 )}
             </motion.div>
 
-            {/* Author Bio Section */}
             {post.author?.bio && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

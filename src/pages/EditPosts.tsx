@@ -51,7 +51,6 @@ const EditPost = () => {
 
     const watchedFields = watch();
 
-    // Fetch the post to edit
     useEffect(() => {
         const fetchPost = async () => {
             if (!id) {
@@ -65,7 +64,6 @@ const EditPost = () => {
                 const post = await postService.getPostById(id);
                 setOriginalPost(post);
 
-                // Reset form with fetched data
                 reset({
                     title: post.title || '',
                     content: post.content || '',
@@ -85,7 +83,6 @@ const EditPost = () => {
         fetchPost();
     }, [id, reset]);
 
-    // Fetch categories
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -141,7 +138,6 @@ const EditPost = () => {
         handleSubmit(onSubmit)();
     };
 
-    // Keyboard shortcuts
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.metaKey || e.ctrlKey) {

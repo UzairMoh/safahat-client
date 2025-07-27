@@ -29,7 +29,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
             [name]: value
         }));
 
-        // Reset image preview error when URL changes
         if (name === 'profilePictureUrl') {
             setImagePreviewError(false);
         }
@@ -55,7 +54,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
             setSaveMessage({ type: 'error', text: 'Failed to update profile. Please try again.' });
         } finally {
             setIsSaving(false);
-            // Clear message after 3 seconds
             setTimeout(() => setSaveMessage(null), 3000);
         }
     };
@@ -66,7 +64,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
 
     return (
         <div className="space-y-6">
-            {/* Settings Header */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -85,7 +82,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
             </motion.div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Profile Picture Section */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -100,7 +96,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                     </div>
 
                     <div className="flex flex-col md:flex-row gap-6">
-                        {/* Profile picture preview */}
                         <div className="flex-shrink-0">
                             <div className="w-32 h-32 rounded-full border-4 border-[#c9d5ef] overflow-hidden bg-[#f6f8fd]">
                                 {formData.profilePictureUrl && !imagePreviewError ? (
@@ -119,7 +114,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                             <p className="text-xs text-[#938384] text-center mt-2">Preview</p>
                         </div>
 
-                        {/* URL Input */}
                         <div className="flex-1">
                             <label className="block text-sm font-medium text-[#938384] mb-2">
                                 Profile Picture URL
@@ -149,7 +143,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                     </div>
                 </motion.div>
 
-                {/* Personal Information */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -164,7 +157,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                     </div>
 
                     <div className="space-y-6">
-                        {/* Username (Read-only) */}
                         <div>
                             <label className="block text-sm font-medium text-[#938384] mb-2">
                                 Username
@@ -178,7 +170,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                             <p className="text-xs text-[#938384] mt-1">Username cannot be changed</p>
                         </div>
 
-                        {/* Full Name */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-[#938384] mb-2">
@@ -208,7 +199,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                             </div>
                         </div>
 
-                        {/* Email (Read-only) */}
                         <div>
                             <label className="block text-sm font-medium text-[#938384] mb-2">
                                 Email Address
@@ -222,7 +212,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                             <p className="text-xs text-[#938384] mt-1">Email cannot be changed</p>
                         </div>
 
-                        {/* Bio */}
                         <div>
                             <label className="block text-sm font-medium text-[#938384] mb-2">
                                 Bio
@@ -243,7 +232,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                     </div>
                 </motion.div>
 
-                {/* Save Button */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -270,7 +258,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user }) => {
                 </motion.div>
             </form>
 
-            {/* Save Message */}
             {saveMessage && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

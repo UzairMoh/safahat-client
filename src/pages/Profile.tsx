@@ -17,7 +17,6 @@ const Profile = () => {
     const [activeTab, setActiveTab] = useState<TabType>('profile');
     const { user: currentUser } = useAuthStore();
 
-    // Fetch fresh user data from API
     const { data: userProfile, isLoading } = useUser(currentUser?.id || null);
 
     const tabs = [
@@ -69,7 +68,6 @@ const Profile = () => {
             <Navigation />
 
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Profile Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -87,7 +85,6 @@ const Profile = () => {
                     </div>
                 </motion.div>
 
-                {/* Tab Navigation */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -114,7 +111,6 @@ const Profile = () => {
                                     <Icon size={18} />
                                     <span className="font-medium">{tab.label}</span>
 
-                                    {/* Simple bottom border for active tab */}
                                     {isActive && (
                                         <motion.div
                                             layoutId="activeTab"
@@ -127,7 +123,6 @@ const Profile = () => {
                     </div>
                 </motion.div>
 
-                {/* Tab Content */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

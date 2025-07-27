@@ -38,7 +38,7 @@ const PostSummarySettings = ({ control }: PostSummarySettingsProps) => {
                             } ${
                                 charCount > maxChars ? 'border-red-300 focus:ring-red-200' : ''
                             }`}
-                            maxLength={maxChars + 50} // Allow slight overflow
+                            maxLength={maxChars + 50}
                         />
 
                         <div className="flex justify-between items-center text-xs">

@@ -9,7 +9,6 @@ interface SearchResultsProps {
 }
 
 const SearchResults = ({ results, loading, query }: SearchResultsProps) => {
-    // Loading state
     if (loading) {
         return (
             <div className="text-center py-16">
@@ -19,7 +18,6 @@ const SearchResults = ({ results, loading, query }: SearchResultsProps) => {
         );
     }
 
-    // No results state
     if (!loading && results.length === 0) {
         return (
             <div className="text-center py-16">
@@ -34,7 +32,6 @@ const SearchResults = ({ results, loading, query }: SearchResultsProps) => {
         );
     }
 
-    // Results found
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {results.map((post, index) => (

@@ -10,9 +10,16 @@ import {
 
 const authService = {
     login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-        const response = await apiClient.login(credentials);
-        localStorage.setItem('token', response.token!);
-        return response;
+        try {
+            const response = await apiClient.login(credentials);
+            localStorage.setItem('token', response.token!);
+            return response;
+        } catch (error) {
+            console.log('Raw error in authService:', error);
+            console.log('Raw error type:', typeof error);
+            console.log('Raw error constructor:', error?.constructor?.name);
+            throw error;
+        }
     },
 
     register: async (userData: RegisterRequest): Promise<AuthResponse> => {

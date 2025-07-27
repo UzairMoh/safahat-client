@@ -14,7 +14,7 @@ export const useDeleteModal = () => {
     }, []);
 
     const closeModal = useCallback(() => {
-        if (deleteMutation.isPending) return; // Prevent closing while deleting
+        if (deleteMutation.isPending) return;
         setIsOpen(false);
         setPostToDelete(null);
     }, [deleteMutation.isPending]);
@@ -28,7 +28,6 @@ export const useDeleteModal = () => {
             },
             onError: (error) => {
                 console.error('Delete failed:', error);
-                // Keep modal open on error so user can retry
             }
         });
     }, [postToDelete, deleteMutation, closeModal]);

@@ -52,7 +52,6 @@ const CommentForm = ({
             if (onCancel) onCancel();
         } catch (error: any) {
             console.error('Error posting comment:', error);
-            // You might want to show a toast notification here
         } finally {
             setLoading(false);
         }
@@ -141,7 +140,6 @@ const CommentForm = ({
                 </div>
             </motion.div>
 
-            {/* Helper Text */}
             <div className="text-xs text-[#938384] space-y-1">
                 <div className="flex items-center space-x-2">
                     <Lightbulb className="w-3 h-3" />

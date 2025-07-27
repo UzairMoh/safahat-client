@@ -59,7 +59,6 @@ const PostHeader = ({ post }: PostHeaderProps) => {
                 </motion.div>
             )}
 
-            {/* Post Status & Featured Badge */}
             <div className="flex items-center gap-3 mb-6">
                 <span className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(post.status!)}`}>
                     {post.status === 1 && <BadgeCheck className="w-3 h-3" />}
@@ -74,7 +73,6 @@ const PostHeader = ({ post }: PostHeaderProps) => {
                 )}
             </div>
 
-            {/* Title */}
             <motion.h1
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -84,7 +82,6 @@ const PostHeader = ({ post }: PostHeaderProps) => {
                 {post.title}
             </motion.h1>
 
-            {/* Summary */}
             {post.summary && (
                 <motion.p
                     initial={{ opacity: 0, y: 10 }}
@@ -96,39 +93,33 @@ const PostHeader = ({ post }: PostHeaderProps) => {
                 </motion.p>
             )}
 
-            {/* Author & Metadata */}
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="flex flex-wrap items-center gap-6 text-sm text-[#938384] mb-8"
             >
-                {/* Author */}
                 <div className="flex items-center space-x-2">
                     <User className="w-4 h-4" />
                     <span>{post.author?.fullName || post.author?.username}</span>
                 </div>
 
-                {/* Published Date */}
                 <div className="flex items-center space-x-2">
                     <Calendar className="w-4 h-4" />
                     <span>{formatDate(post.publishedAt || post.createdAt)}</span>
                 </div>
 
-                {/* View Count */}
                 <div className="flex items-center space-x-2">
                     <Eye className="w-4 h-4" />
                     <span>{post.viewCount} views</span>
                 </div>
 
-                {/* Comment Count */}
                 <div className="flex items-center space-x-2">
                     <MessageSquare className="w-4 h-4" />
                     <span>{post.commentCount} comments</span>
                 </div>
             </motion.div>
 
-            {/* Categories */}
             {post.categories && post.categories.length > 0 && (
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -150,7 +141,6 @@ const PostHeader = ({ post }: PostHeaderProps) => {
                 </motion.div>
             )}
 
-            {/* Tags */}
             {post.tags && post.tags.length > 0 && (
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}

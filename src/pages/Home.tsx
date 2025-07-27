@@ -28,11 +28,9 @@ const Home = () => {
 
         const loadData = async () => {
             try {
-                // Load featured posts
                 const featuredData = await postService.getFeaturedPosts();
                 setFeaturedPosts(featuredData);
 
-                // Load recent posts (first 4 published posts)
                 const recentData = await postService.getPublishedPosts(1, 4);
                 setRecentPosts(recentData);
 

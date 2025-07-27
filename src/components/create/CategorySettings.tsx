@@ -6,7 +6,7 @@ import {CategoryResponse} from "../../api/Client.ts";
 
 interface CategorySettingsProps {
     control: Control<any>;
-    categories?: CategoryResponse[] | null; // Make it optional and nullable
+    categories?: CategoryResponse[] | null;
 }
 
 const CategorySettings = ({ control, categories = [] }: CategorySettingsProps) => {

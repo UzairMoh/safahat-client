@@ -7,7 +7,7 @@ export const useUsers = () => {
     return useQuery({
         queryKey: USER_QUERY_KEYS.allUsers(),
         queryFn: () => userService.getAllUsers(),
-        staleTime: 5 * 60 * 1000, // 5 minutes - user lists don't change frequently
+        staleTime: 5 * 60 * 1000,
     });
 };
 
@@ -16,7 +16,7 @@ export const useUser = (id: string | null) => {
         queryKey: USER_QUERY_KEYS.userById(id || ''),
         queryFn: () => userService.getUserById(id!),
         enabled: !!id,
-        staleTime: 2 * 60 * 1000, // 2 minutes - user details change occasionally
+        staleTime: 2 * 60 * 1000,
     });
 };
 
@@ -25,7 +25,7 @@ export const useUserByUsername = (username: string | null) => {
         queryKey: USER_QUERY_KEYS.userByUsername(username || ''),
         queryFn: () => userService.getUserByUsername(username!),
         enabled: !!username,
-        staleTime: 2 * 60 * 1000, // 2 minutes - user details change occasionally
+        staleTime: 2 * 60 * 1000,
     });
 };
 
@@ -34,11 +34,10 @@ export const useUserStatistics = (id: string | null) => {
         queryKey: USER_QUERY_KEYS.userStatistics(id || ''),
         queryFn: () => userService.getUserStatistics(id!),
         enabled: !!id,
-        staleTime: 60 * 1000, // 1 minute - statistics might change more frequently
+        staleTime: 60 * 1000,
     });
 };
 
-// Essential mutation hooks
 export const useUpdateUserRole = () => {
     const queryClient = useQueryClient();
 
@@ -46,10 +45,8 @@ export const useUpdateUserRole = () => {
         mutationFn: ({ id, role }: { id: string; role: any }) =>
             userService.updateUserRole(id, role),
         onSuccess: (updatedUser, variables) => {
-            // Invalidate all users list
             queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.users });
 
-            // Update the specific user's data in cache
             if (updatedUser.id) {
                 queryClient.setQueryData(
                     USER_QUERY_KEYS.userById(updatedUser.id),
@@ -57,7 +54,6 @@ export const useUpdateUserRole = () => {
                 );
             }
 
-            // Invalidate user statistics as role change might affect stats
             queryClient.invalidateQueries({
                 queryKey: USER_QUERY_KEYS.userStatistics(variables.id)
             });
@@ -75,10 +71,8 @@ export const useUpdateUserStatus = () => {
         mutationFn: ({ id, status }: { id: string; status: any }) =>
             userService.updateUserStatus(id, status),
         onSuccess: (updatedUser, variables) => {
-            // Invalidate all users list
             queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.users });
 
-            // Update the specific user's data in cache
             if (updatedUser.id) {
                 queryClient.setQueryData(
                     USER_QUERY_KEYS.userById(updatedUser.id),
@@ -86,7 +80,6 @@ export const useUpdateUserStatus = () => {
                 );
             }
 
-            // Invalidate user statistics as status change might affect stats
             queryClient.invalidateQueries({
                 queryKey: USER_QUERY_KEYS.userStatistics(variables.id)
             });
@@ -103,11 +96,9 @@ export const useDeleteUser = () => {
     return useMutation({
         mutationFn: (userId: string) => userService.deleteUser(userId),
         onSuccess: (_, deletedUserId) => {
-            // Invalidate all user-related queries
             queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.users });
             queryClient.invalidateQueries({ queryKey: USER_QUERY_KEYS.statistics });
 
-            // Remove the deleted user from cache
             queryClient.removeQueries({
                 queryKey: USER_QUERY_KEYS.userById(deletedUserId)
             });

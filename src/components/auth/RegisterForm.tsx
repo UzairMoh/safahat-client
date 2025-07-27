@@ -25,7 +25,8 @@ const RegisterForm = ({ onSuccess, switchToLogin }: RegisterFormProps) => {
             await registerUser(data);
             onSuccess();
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Failed to register. Please try again.');
+            const errorMessage = err.error || err.detail || err.title || err.message || 'Failed to register. Please try again.';
+            setError(errorMessage);
         }
     };
 

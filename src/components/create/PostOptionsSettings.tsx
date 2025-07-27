@@ -63,7 +63,6 @@ const PostOptionsSettings = ({ control }: PostOptionsSettingsProps) => {
                     )}
                 />
 
-                {/* Future options can be added here */}
                 <div className="pt-2 border-t border-[#c9d5ef]/30">
                     <p className="text-xs text-[#938384] italic">
                         More post options coming soon...

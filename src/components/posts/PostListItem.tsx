@@ -17,7 +17,6 @@ const PostListItem = ({ post, query = '', onEdit, onDelete }: PostListItemProps)
     const navigate = useNavigate();
 
     const handleClick = (e: React.MouseEvent) => {
-        // Don't navigate if clicking on dropdown or its trigger
         if ((e.target as HTMLElement).closest('.dropdown-container')) {
             return;
         }
@@ -142,7 +141,6 @@ const PostListItem = ({ post, query = '', onEdit, onDelete }: PostListItemProps)
                 )}
             </div>
 
-            {/* Featured Image or Placeholder */}
             <div className="relative h-48 overflow-hidden">
                 {post.featuredImageUrl ? (
                     <img
@@ -162,7 +160,6 @@ const PostListItem = ({ post, query = '', onEdit, onDelete }: PostListItemProps)
                     </div>
                 )}
 
-                {/* Badges */}
                 <div className="absolute top-3 left-3 flex space-x-2">
                     <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusInfo.className}`}>
                         {statusInfo.label}
@@ -175,11 +172,8 @@ const PostListItem = ({ post, query = '', onEdit, onDelete }: PostListItemProps)
                 </div>
             </div>
 
-            {/* Content */}
             <div className="p-6">
-                {/* Header */}
                 <div className="mb-4">
-                    {/* Categories */}
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-2">
                             {post.categories && post.categories.length > 0 ? (
@@ -195,18 +189,15 @@ const PostListItem = ({ post, query = '', onEdit, onDelete }: PostListItemProps)
                         </div>
                     </div>
 
-                    {/* Title */}
                     <h3 className="text-lg font-semibold text-[#4a5b91] hover:text-[#3a4a7a] transition-colors line-clamp-2 mb-2">
                         {highlightText(post.title || 'Untitled Post', query)}
                     </h3>
 
-                    {/* Summary */}
                     <p className="text-[#938384] text-sm line-clamp-3 leading-relaxed">
                         {highlightText(post.summary || 'No description available for this post.', query)}
                     </p>
                 </div>
 
-                {/* Tags */}
                 {((post.tags && post.tags.length > 0) || (!post.tags || post.tags.length === 0)) && (
                     <div className="flex flex-wrap gap-1 mb-4">
                         {post.tags && post.tags.length > 0 ? (
@@ -233,10 +224,8 @@ const PostListItem = ({ post, query = '', onEdit, onDelete }: PostListItemProps)
                     </div>
                 )}
 
-                {/* Meta Information */}
                 <div className="flex items-center justify-between text-xs text-[#938384] pt-4 border-t border-[#c9d5ef]/20">
                     <div className="flex items-center space-x-3">
-                        {/* Author */}
                         <div className="flex items-center space-x-1">
                             <User className="w-3 h-3" />
                             <span>
@@ -244,7 +233,6 @@ const PostListItem = ({ post, query = '', onEdit, onDelete }: PostListItemProps)
                             </span>
                         </div>
 
-                        {/* Date */}
                         <div className="flex items-center space-x-1">
                             <Calendar className="w-3 h-3" />
                             <span>
@@ -257,13 +245,11 @@ const PostListItem = ({ post, query = '', onEdit, onDelete }: PostListItemProps)
                     </div>
 
                     <div className="flex items-center space-x-3">
-                        {/* Views */}
                         <div className="flex items-center space-x-1">
                             <Eye className="w-3 h-3" />
                             <span>{post.viewCount || 0}</span>
                         </div>
 
-                        {/* Comments */}
                         <div className="flex items-center space-x-1">
                             <MessageSquare className="w-3 h-3" />
                             <span>{post.allowComments ? (post.commentCount || 0) : '—'}</span>

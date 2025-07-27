@@ -18,12 +18,10 @@ import { ROUTES } from './constants/routes/routes.ts';
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     const { isAuthenticated, isLoading, isInitialized } = useAuthStore();
 
-    // Show loading while checking auth
     if (isLoading || !isInitialized) {
         return <Loading message="Checking authentication..." />;
     }
 
-    // Redirect to auth if not authenticated
     if (!isAuthenticated) {
         return <Navigate to="/auth" replace />;
     }
@@ -34,7 +32,6 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 function App() {
     const { initializeAuth, isInitialized } = useAuthStore();
 
-    // Initialize auth on app start
     useEffect(() => {
         if (!isInitialized) {
             initializeAuth();

@@ -68,7 +68,6 @@ const Posts = () => {
     const location = useLocation();
     const [searchParams] = useSearchParams();
 
-    // Determine view type from URL params
     const getViewType = (): ViewType => {
         if (searchParams.get('featured') === 'true') return 'featured';
         if (searchParams.get('recent') === 'true') return 'recent';
@@ -79,14 +78,12 @@ const Posts = () => {
     const viewType = getViewType();
     const config = viewConfigs[viewType];
 
-    // Get URL params for specific views
     const searchQuery = searchParams.get('q') || '';
 
     const [currentPage, setCurrentPage] = useState(1);
     const [localSearchQuery, setLocalSearchQuery] = useState('');
     const [filteredPosts, setFilteredPosts] = useState<IPostResponse[]>([]);
 
-    // Fetch data based on view type
     const { data: allPosts, isLoading: loadingAll } = usePublishedPosts(
         viewType === 'all' ? currentPage : 1,
         viewType === 'all' ? POSTS_PER_PAGE : 1
@@ -105,7 +102,6 @@ const Posts = () => {
         POSTS_PER_PAGE
     );
 
-    // Determine which data and loading state to use
     const getActiveData = () => {
         switch (viewType) {
             case 'featured': return { posts: featuredPosts, loading: loadingFeatured };
@@ -118,7 +114,6 @@ const Posts = () => {
     const { posts, loading } = getActiveData();
 
     useEffect(() => {
-        // Filter posts based on local search query
         if (posts) {
             if (localSearchQuery && config.showFilters) {
                 const filtered = posts.filter((post: IPostResponse) =>
@@ -133,7 +128,6 @@ const Posts = () => {
         }
     }, [posts, localSearchQuery, config.showFilters]);
 
-    // Reset page when view type changes
     useEffect(() => {
         setCurrentPage(1);
         setLocalSearchQuery('');
@@ -157,7 +151,6 @@ const Posts = () => {
         navigate(`${ROUTES.POSTS.LIST}?${params.toString()}`);
     };
 
-    // Calculate if there are more pages
     const hasMorePages = config.showPagination && posts?.length === POSTS_PER_PAGE;
 
     if (loading) {
@@ -171,7 +164,6 @@ const Posts = () => {
             <Navigation />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header Section */}
                 <motion.section
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -189,7 +181,6 @@ const Posts = () => {
                     </p>
                 </motion.section>
 
-                {/* Search and Filter Bar */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -210,7 +201,6 @@ const Posts = () => {
                             </div>
                         )}
 
-                        {/* View Type Filters */}
                         {location.pathname === ROUTES.POSTS.LIST && !searchQuery && (
                             <div className="flex gap-2">
                                 <motion.button
@@ -254,7 +244,6 @@ const Posts = () => {
                     </div>
                 </motion.div>
 
-                {/* Posts Grid */}
                 {filteredPosts && filteredPosts.length > 0 ? (
                     <>
                         <motion.div
@@ -304,7 +293,6 @@ const Posts = () => {
                             ))}
                         </motion.div>
 
-                        {/* Pagination */}
                         {config.showPagination && (
                             <motion.div
                                 initial={{ opacity: 0 }}

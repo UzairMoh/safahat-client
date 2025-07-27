@@ -6,8 +6,8 @@ export const useUserPosts = (userId: string | null) => {
     return useQuery({
         queryKey: POST_QUERY_KEYS.userPosts(userId || ''),
         queryFn: () => postService.getPostsByAuthor(userId!),
-        enabled: !!userId, // Only run if userId exists
-        staleTime: 5 * 60 * 1000, // 5 minutes
+        enabled: !!userId,
+        staleTime: 5 * 60 * 1000,
     });
 };
 
@@ -17,10 +17,8 @@ export const useDeletePost = () => {
     return useMutation({
         mutationFn: (postId: string) => postService.deletePost(postId),
         onSuccess: (_, deletedId) => {
-            // Remove specific post from cache
             queryClient.removeQueries({ queryKey: POST_QUERY_KEYS.postById(deletedId) });
 
-            // Invalidate all post lists to refetch them
             queryClient.invalidateQueries({ queryKey: POST_QUERY_KEYS.posts });
         },
         onError: (error) => {
@@ -35,10 +33,8 @@ export const useCreatePost = () => {
     return useMutation({
         mutationFn: postService.createPost,
         onSuccess: (newPost) => {
-            // Add new post to cache
             queryClient.setQueryData(POST_QUERY_KEYS.postById(newPost.id!), newPost);
 
-            // Invalidate post lists to include the new post
             queryClient.invalidateQueries({ queryKey: POST_QUERY_KEYS.posts });
         },
         onError: (error) => {
@@ -53,10 +49,8 @@ export const useUpdatePost = () => {
     return useMutation({
         mutationFn: ({ id, post }: { id: string; post: any }) => postService.updatePost(id, post),
         onSuccess: (updatedPost) => {
-            // Update specific post in cache
             queryClient.setQueryData(POST_QUERY_KEYS.postById(updatedPost.id!), updatedPost);
 
-            // Invalidate post lists to show updates
             queryClient.invalidateQueries({ queryKey: POST_QUERY_KEYS.posts });
         },
         onError: (error) => {

@@ -12,7 +12,7 @@ import {
     Quote,
     Type,
     Maximize2,
-    Minimize2
+    Minimize2, AlertCircle
 } from 'lucide-react';
 
 interface TextEditorProps {
@@ -130,7 +130,6 @@ Focus on your content - let your ideas flow freely.`;
             }}
             transition={{ duration: 0.2 }}
         >
-            {/* Header */}
             <motion.div
                 className="flex items-center justify-between p-4 bg-[#f6f8fd]/50 border-b border-[#c9d5ef]/30"
                 initial={{ opacity: 0 }}
@@ -177,7 +176,6 @@ Focus on your content - let your ideas flow freely.`;
                 </div>
             </motion.div>
 
-            {/* Formatting Toolbar */}
             <AnimatePresence>
                 {!preview && (
                     <motion.div
@@ -218,10 +216,8 @@ Focus on your content - let your ideas flow freely.`;
                 )}
             </AnimatePresence>
 
-            {/* Editor Content */}
             <div className="relative">
                 {sideBySide && fullPage ? (
-                    /* Side by Side View */
                     <div className="flex">
                         <div className="w-1/2 border-r border-[#c9d5ef]/30">
                             <textarea
@@ -246,7 +242,6 @@ Focus on your content - let your ideas flow freely.`;
                         </div>
                     </div>
                 ) : (
-                    /* Single View */
                     <AnimatePresence mode="wait">
                         {!preview ? (
                             <motion.div
@@ -285,7 +280,6 @@ Focus on your content - let your ideas flow freely.`;
                 )}
             </div>
 
-            {/* Status Bar */}
             <AnimatePresence>
                 {(value || error) && (
                     <motion.div
@@ -300,7 +294,7 @@ Focus on your content - let your ideas flow freely.`;
                                 animate={{ opacity: 1 }}
                                 className="text-sm text-red-500 flex items-center space-x-2"
                             >
-                                <span className="flex-shrink-0">⚠️</span>
+                                <AlertCircle size={16} className="flex-shrink-0" />
                                 <span>{error}</span>
                             </motion.p>
                         ) : (

@@ -10,7 +10,6 @@ interface LoginFormProps {
     switchToRegister: () => void;
 }
 
-// Extended login data to include remember me
 interface LoginFormData extends LoginRequest {
     rememberMe: boolean;
 }
@@ -27,19 +26,19 @@ const LoginForm = ({ onSuccess, switchToRegister }: LoginFormProps) => {
         }
     });
 
-    // Watch the remember me checkbox value
     const rememberMe = watch('rememberMe');
 
     const onSubmit = async (data: LoginFormData) => {
         setError(null);
 
         try {
-            // Pass the remember me preference to the login function
-            await login(data, data.rememberMe);
+            const response = await login(data, data.rememberMe);
+            setError(`Success: ${JSON.stringify(response, null, 2)}`);
             onSuccess();
         } catch (err: unknown) {
-            const error = err as { response?: { data?: { error?: string } } };
-            setError(error.response?.data?.error || 'Failed to login. Please try again.');
+            const error = err as any;
+            const errorMessage = error.error || error.detail || error.title || error.message || 'Failed to login. Please try again.';
+            setError(`${errorMessage}`);
         }
     };
 

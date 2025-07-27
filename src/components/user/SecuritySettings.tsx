@@ -20,7 +20,6 @@ const SecuritySettings = () => {
 
     return (
         <div className="space-y-6">
-            {/* Security Header */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -38,7 +37,6 @@ const SecuritySettings = () => {
                 </div>
             </motion.div>
 
-            {/* Coming Soon Notice */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -58,7 +56,6 @@ const SecuritySettings = () => {
                 </div>
             </motion.div>
 
-            {/* Password Change Section */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -73,7 +70,6 @@ const SecuritySettings = () => {
                 </div>
 
                 <div className="space-y-6">
-                    {/* Current Password */}
                     <div>
                         <label className="block text-sm font-medium text-[#938384] mb-2">
                             Current Password
@@ -100,7 +96,6 @@ const SecuritySettings = () => {
                         </div>
                     </div>
 
-                    {/* New Password */}
                     <div>
                         <label className="block text-sm font-medium text-[#938384] mb-2">
                             New Password
@@ -127,7 +122,6 @@ const SecuritySettings = () => {
                         </div>
                     </div>
 
-                    {/* Confirm New Password */}
                     <div>
                         <label className="block text-sm font-medium text-[#938384] mb-2">
                             Confirm New Password
@@ -154,7 +148,6 @@ const SecuritySettings = () => {
                         </div>
                     </div>
 
-                    {/* Password Requirements */}
                     <div className="bg-[#f6f8fd] rounded-xl p-4 border border-[#c9d5ef]/20">
                         <h4 className="text-sm font-semibold text-[#4a5b91] mb-3">Password Requirements:</h4>
                         <div className="space-y-2 text-sm text-[#938384]">
@@ -177,7 +170,6 @@ const SecuritySettings = () => {
                         </div>
                     </div>
 
-                    {/* Update Password Button */}
                     <div className="flex justify-end pt-4">
                         <button
                             disabled
@@ -190,7 +182,6 @@ const SecuritySettings = () => {
                 </div>
             </motion.div>
 
-            {/* Two-Factor Authentication */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -227,7 +218,6 @@ const SecuritySettings = () => {
                 </div>
             </motion.div>
 
-            {/* Login Activity */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

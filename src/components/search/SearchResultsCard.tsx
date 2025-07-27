@@ -57,7 +57,6 @@ const SearchResultCard = ({ post, query }: SearchResultCardProps) => {
                 isClickable ? 'cursor-pointer' : 'cursor-default'
             }`}
         >
-            {/* Featured Image */}
             {post.featuredImageUrl && (
                 <div className="relative h-48 overflow-hidden">
                     <img
@@ -81,11 +80,8 @@ const SearchResultCard = ({ post, query }: SearchResultCardProps) => {
                 </div>
             )}
 
-            {/* Content */}
             <div className="p-6">
-                {/* Header */}
                 <div className="mb-4">
-                    {/* Categories & Status (if no image) */}
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-2">
                             {post.categories && post.categories.length > 0 && (
@@ -110,12 +106,10 @@ const SearchResultCard = ({ post, query }: SearchResultCardProps) => {
                         )}
                     </div>
 
-                    {/* Title */}
                     <h3 className="text-lg font-semibold text-[#4a5b91] hover:text-[#3a4a7a] transition-colors line-clamp-2 mb-2">
                         {highlightText(post.title || 'Untitled Post', query)}
                     </h3>
 
-                    {/* Summary */}
                     {post.summary && (
                         <p className="text-[#938384] text-sm line-clamp-3 leading-relaxed">
                             {highlightText(post.summary, query)}
@@ -123,7 +117,6 @@ const SearchResultCard = ({ post, query }: SearchResultCardProps) => {
                     )}
                 </div>
 
-                {/* Tags */}
                 {post.tags && post.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1 mb-4">
                         {post.tags.slice(0, 3).map(tag => (
@@ -142,10 +135,8 @@ const SearchResultCard = ({ post, query }: SearchResultCardProps) => {
                     </div>
                 )}
 
-                {/* Meta Information */}
                 <div className="flex items-center justify-between text-xs text-[#938384] pt-4 border-t border-[#c9d5ef]/20">
                     <div className="flex items-center space-x-3">
-                        {/* Author */}
                         {post.author && (
                             <div className="flex items-center space-x-1">
                                 <User className="w-3 h-3" />
@@ -153,7 +144,6 @@ const SearchResultCard = ({ post, query }: SearchResultCardProps) => {
                             </div>
                         )}
 
-                        {/* Date */}
                         <div className="flex items-center space-x-1">
                             <Calendar className="w-3 h-3" />
                             <span>
@@ -166,13 +156,11 @@ const SearchResultCard = ({ post, query }: SearchResultCardProps) => {
                     </div>
 
                     <div className="flex items-center space-x-3">
-                        {/* Views */}
                         <div className="flex items-center space-x-1">
                             <Eye className="w-3 h-3" />
                             <span>{post.viewCount || 0}</span>
                         </div>
 
-                        {/* Comments */}
                         {post.allowComments && (
                             <div className="flex items-center space-x-1">
                                 <MessageSquare className="w-3 h-3" />

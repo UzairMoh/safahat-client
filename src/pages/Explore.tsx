@@ -26,7 +26,6 @@ const Explore = () => {
     const [currentQuery, setCurrentQuery] = useState('');
     const navigate = useNavigate();
 
-    // Get auth state from store
     const { isAuthenticated, isLoading: authLoading, isInitialized, user, logout } = useAuthStore();
 
     const [filters, setFilters] = useState<SearchFiltersState>({
@@ -36,19 +35,16 @@ const Explore = () => {
         sortBy: 'relevance'
     });
 
-    // Check authentication and redirect if needed
     useEffect(() => {
         if (isInitialized && !isAuthenticated) {
             navigate('/auth');
         }
     }, [isAuthenticated, isInitialized, navigate]);
 
-    // Show loading while checking auth
     if (authLoading || !isInitialized) {
         return <Loading message="Loading..." />;
     }
 
-    // Don't render if not authenticated
     if (!isAuthenticated) {
         return null;
     }
@@ -63,7 +59,6 @@ const Explore = () => {
 
             const results = await postService.searchPosts(query.trim());
 
-            // Apply client-side filters to results
             const filteredResults = applyFilters(results || []);
 
             setSearchResults(filteredResults);
@@ -80,14 +75,12 @@ const Explore = () => {
     const applyFilters = (results: PostResponse[]): PostResponse[] => {
         let filtered = [...results];
 
-        // Featured filter
         if (filters.featured !== 'all') {
             filtered = filtered.filter(post =>
                 filters.featured === 'featured' ? post.isFeatured : !post.isFeatured
             );
         }
 
-        // Date range filter
         if (filters.dateRange !== 'all') {
             const now = new Date();
             const filterDate = new Date();
@@ -110,7 +103,6 @@ const Explore = () => {
             });
         }
 
-        // Category filter
         if (filters.category !== 'all') {
             filtered = filtered.filter(post =>
                 post.categories?.some(cat =>
@@ -119,7 +111,6 @@ const Explore = () => {
             );
         }
 
-        // Sort results
         filtered.sort((a, b) => {
             switch (filters.sortBy) {
                 case 'date':
@@ -141,9 +132,7 @@ const Explore = () => {
     const handleFiltersChange = (newFilters: SearchFiltersState) => {
         setFilters(newFilters);
 
-        // Re-apply filters to current results if we have search results
         if (hasSearched && searchResults.length > 0) {
-            // We need to re-search to get unfiltered results, then apply new filters
             if (currentQuery) {
                 handleSearch(currentQuery);
             }
@@ -172,7 +161,6 @@ const Explore = () => {
             <Navigation/>
 
             <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -197,7 +185,6 @@ const Explore = () => {
                     </div>
                 </motion.div>
 
-                {/* Search and Filters */}
                 <SearchControls
                     filters={filters}
                     onFiltersChange={handleFiltersChange}
@@ -208,7 +195,6 @@ const Explore = () => {
                     hasSearched={hasSearched}
                 />
 
-                {/* Error State */}
                 {error && (
                     <div className="text-center py-12">
                         <Error
@@ -221,7 +207,6 @@ const Explore = () => {
                     </div>
                 )}
 
-                {/* Empty State - No Search Performed */}
                 {!hasSearched && !loading && !error && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -239,7 +224,6 @@ const Explore = () => {
                     </motion.div>
                 )}
 
-                {/* Search Results */}
                 {hasSearched && !error && (
                     <SearchResults
                         results={searchResults}

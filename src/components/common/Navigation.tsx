@@ -11,10 +11,8 @@ const Navigation = () => {
     const location = useLocation();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // Get user data and actions from auth store
     const { user, isAuthenticated, logout } = useAuthStore();
 
-    // Helper function to get role display name
     const getRoleDisplayName = (role: UserRole | undefined): string | null => {
         if (role === undefined) return null;
         switch (role) {
@@ -25,7 +23,6 @@ const Navigation = () => {
         }
     };
 
-    // Get display name with fallback priority
     const displayName = user?.fullName || user?.username || 'User';
     const userRole = user?.role;
     const profilePicture = user?.profilePictureUrl;
@@ -42,7 +39,6 @@ const Navigation = () => {
     const handleLogout = () => {
         logout();
         setIsDropdownOpen(false);
-        // Navigation will happen automatically via ProtectedRoute
     };
 
     const isActive = (path: string) => {
@@ -56,7 +52,6 @@ const Navigation = () => {
         { name: 'Profile', path: '/profile', icon: <User size={16} /> },
     ];
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
